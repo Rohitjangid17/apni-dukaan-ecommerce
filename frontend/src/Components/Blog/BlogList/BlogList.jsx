@@ -19,14 +19,6 @@ const BlogList = () => {
         <div className="blogListHeaderContainer">
           <div className="blogListHeader">
             <h2>The Blog</h2>
-            <div className="blogListHeaderCategories">
-              <p>ALL</p>
-              <p>COMPANY</p>
-              <p className="activeCategory">FASHION</p>
-              <p>STYLE</p>
-              <p>TRENDS</p>
-              <p>BEAUTY</p>
-            </div>
           </div>
         </div>
         <div className="blogPostListContainer">
@@ -47,14 +39,12 @@ const BlogList = () => {
                 </div>
                 <div className="blogPostContentDescription">
                   <p>
-                    Midst one brought greater also morning green saying had
-                    good. Open stars day let over gathered, grass face one every
-                    light of under.
+                    {blogPost.blogDescription}
                   </p>
                 </div>
                 <div className="blogPostContentReadMore">
                   <Link to="/BlogDetails" onClick={scrollToTop}>
-                    Continue Reading
+                    Read More
                   </Link>
                 </div>
               </div>

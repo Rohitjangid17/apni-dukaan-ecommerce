@@ -6,28 +6,53 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import { Navigation } from "swiper/modules";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../../Features/Cart/cartSlice";
 
 import StoreData from "../../../Data/StoreData";
 
-import { FiHeart } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import toast from "react-hot-toast";
+
 
 const RelatedProducts = () => {
-  const [wishList, setWishList] = useState({});
 
-  const handleWishlistClick = (productID) => {
-    setWishList((prevWishlist) => ({
-      ...prevWishlist,
-      [productID]: !prevWishlist[productID],
-    }));
-  };
+    const dispatch = useDispatch();
+  
+    const cartItems = useSelector((state) => state.cart.items);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    const handleAddToCart = (product) => {
+    const productInCart = cartItems.find(
+      (item) => item.productID === product.productID
+    );
+
+    if (productInCart && productInCart.quantity >= 20) {
+      toast.error("Product limit reached", {
+        duration: 2000,
+        style: {
+          backgroundColor: "#ff4b4b",
+          color: "white",
+        },
+        iconTheme: {
+          primary: "#fff",
+          secondary: "#ff4b4b",
+        },
+      });
+    } else {
+      dispatch(addToCart(product));
+      toast.success(`Added to cart!`, {
+        duration: 2000,
+        style: {
+          backgroundColor: "#07bc0c",
+          color: "white",
+        },
+        iconTheme: {
+          primary: "#fff",
+          secondary: "#07bc0c",
+        },
+      });
+    }
   };
 
   return (
@@ -77,36 +102,22 @@ const RelatedProducts = () => {
               return (
                 <SwiperSlide key={product.productID}>
                   <div className="rpContainer">
-                    <div className="rpImages" onClick={scrollToTop}>
+                    <div className="rpImages">
                       <img
                         src={product.frontImg}
                         alt={product.productName}
                         className="rpFrontImg"
                       />
-                      <img
-                        src={product.backImg}
-                        className="rpBackImg"
-                        alt={product.productName}
-                      />
-                      <h4>Add to Cart</h4>
+                      <h4 onClick={() => handleAddToCart(product)}>Add to Cart</h4>
                     </div>
 
                     <div className="relatedProductInfo">
                       <div className="rpCategoryWishlist">
-                        <p>Dresses</p>
-                        <FiHeart
-                          onClick={() => handleWishlistClick(product.productID)}
-                          style={{
-                            color: wishList[product.productID]
-                              ? "red"
-                              : "#767676",
-                            cursor: "pointer",
-                          }}
-                        />
+                        <p>{product.productTitle}</p>
                       </div>
                       <div className="productNameInfo">
-                        <h5 onClick={scrollToTop}>{product.productName}</h5>
-                        <p>${product.productPrice}</p>
+                        <h5>{product.productName}</h5>
+                        <p>₹{product.productPrice}</p>
                         <div className="productRatingReviews">
                           <div className="productRatingStar">
                             <FaStar color="#FEC78A" size={10} />

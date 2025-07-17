@@ -31,7 +31,7 @@
   }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 768px) {
   .services {
     padding: 0px 15px;
     grid-template-columns: 1fr;

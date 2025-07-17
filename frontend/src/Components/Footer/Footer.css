@@ -25,6 +25,8 @@
 }
 
 .footer_logo_container img {
+  height: 80px;
+  width: auto;
   background: none !important;
 }
 
@@ -46,10 +48,12 @@
 .social_links {
   display: flex;
   gap: 30px;
-  width: 240px;
 }
 
 .social_links svg {
+  background-color: white;
+  padding: 10px;
+  border-radius: 50%;
   cursor: pointer;
 }
 
@@ -120,14 +124,16 @@
 }
 
 .footer_right form input {
+  border-radius: 15px 0 0 15px;
   width: 100%;
-  padding: 19px 20px;
+  padding: 15px 20px;
   border: none;
   outline: none;
 }
 
 .footer_right form button {
-  padding: 10px 20px;
+  border-radius: 0 15px 15px 0;
+  padding: 15px 20px;
   background-color: white;
   color: black;
   border: none;
@@ -156,7 +162,8 @@
 .footer_bottom {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   margin-top: 20px;
   border-top: 1px solid #cfcdcd;
@@ -214,6 +221,12 @@
   }
   .paymentIconContainer {
     width: 200px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .footer_logo_container img {
+    height: 50px;
   }
 }
 

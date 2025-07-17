@@ -20,32 +20,21 @@ const ContactPage = () => {
     <>
       <div className="contactSection">
         <h2>Contact Us</h2>
-        <div className="contactMap">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d49206.16593395236!2d2.5776979486328124!3d39.57346430000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x129793280de39c05%3A0x85d5f5ea839d6c2a!2sUOMO!5e0!3m2!1sen!2sin!4v1708798894132!5m2!1sen!2sin"
-            width="800"
-            height="600"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="uomomap"
-          ></iframe>
-        </div>
         <div className="contactInfo">
-          <div className="contactAddress">
+          <div className="contactBox">
             <div className="address">
               <h3>Store in London</h3>
               <p>
-                1418 River Drive, Suite 35 Cottonhall, CA 9622
-                <br /> United Kingdom
+                Vidhyadhar Nagar, Jaipur
+                <br /> India
               </p>
               <p>
-                admin@dummymail.com
+                admin@apnidukaan.com
                 <br />
-                +44 20 7123 4567
+                +91 12345 12345
               </p>
             </div>
-            <div className="address">
+            {/* <div className="address">
               <h3>Store in India</h3>
               <p>
                 A-791, A-791, Bandra Reclamation Rd, Mumbai
@@ -56,8 +45,7 @@ const ContactPage = () => {
                 <br />
                 +44 20 7123 4567
               </p>
-            </div>
-          </div>
+            </div> */}
           <div className="contactForm">
             <h3>Get In Touch</h3>
             <form onSubmit={handleSubmit}>
@@ -84,6 +72,7 @@ const ContactPage = () => {
               />
               <button type="submit">Submit</button>
             </form>
+          </div>
           </div>
         </div>
       </div>

@@ -59,7 +59,7 @@ const ShoppingCart = () => {
   // Radio Button Data
 
   const [selectedPayment, setSelectedPayment] = useState(
-    "Direct Bank Transfer"
+    "UPI / Bank Transfer"
   );
 
   const handlePaymentChange = (e) => {
@@ -160,7 +160,7 @@ const ShoppingCart = () => {
                               data-label="Price"
                               style={{ textAlign: "center" }}
                             >
-                              ${item.productPrice}
+                              ₹{item.productPrice}
                             </td>
                             <td data-label="Quantity">
                               <div className="ShoppingBagTableQuantity">
@@ -205,7 +205,7 @@ const ShoppingCart = () => {
                                   fontWeight: "500",
                                 }}
                               >
-                                ${item.quantity * item.productPrice}
+                                ₹{item.quantity * item.productPrice}
                               </p>
                             </td>
                             <td data-label="">
@@ -321,7 +321,7 @@ const ShoppingCart = () => {
                                       +
                                     </button>
                                   </div>
-                                  <span>${item.productPrice}</span>
+                                  <span>₹{item.productPrice}</span>
                                 </div>
                                 <div className="shoppingBagTableMobileItemsDetailTotal">
                                   <MdOutlineClose
@@ -330,7 +330,7 @@ const ShoppingCart = () => {
                                       dispatch(removeFromCart(item.productID))
                                     }
                                   />
-                                  <p>${item.quantity * item.productPrice}</p>
+                                  <p>₹{item.quantity * item.productPrice}</p>
                                 </div>
                               </div>
                             </div>
@@ -378,14 +378,14 @@ const ShoppingCart = () => {
                     <tbody>
                       <tr>
                         <th>Subtotal</th>
-                        <td>${totalPrice.toFixed(2)}</td>
+                        <td>₹{totalPrice.toFixed(2)}</td>
                       </tr>
                       <tr>
                         <th>Shipping</th>
                         <td>
                           <div className="shoppingBagTotalTableCheck">
-                            <p>${(totalPrice === 0 ? 0 : 5).toFixed(2)}</p>
-                            <p>Shipping to Al..</p>
+                            <p>₹{(totalPrice === 0 ? 0 : 5).toFixed(2)}</p>
+                            <p>Shipping to Jaipur</p>
                             <p
                               onClick={scrollToTop}
                               style={{
@@ -399,12 +399,12 @@ const ShoppingCart = () => {
                       </tr>
                       <tr>
                         <th>VAT</th>
-                        <td>${(totalPrice === 0 ? 0 : 11).toFixed(2)}</td>
+                        <td>₹{(totalPrice === 0 ? 0 : 11).toFixed(2)}</td>
                       </tr>
                       <tr>
                         <th>Total</th>
                         <td>
-                          ${(totalPrice === 0 ? 0 : totalPrice + 16).toFixed(2)}
+                          ₹{(totalPrice === 0 ? 0 : totalPrice + 16).toFixed(2)}
                         </td>
                       </tr>
                     </tbody>
@@ -437,32 +437,30 @@ const ShoppingCart = () => {
                         type="text"
                         placeholder="Company Name (optional)"
                       />
-                      <select name="country" id="country">
-                        <option value="Country / Region" selected disabled>
-                          Country / Region
-                        </option>
-                        <option value="India">India</option>
-                        <option value="Canada">Canada</option>
-                        <option value="United Kingdom">United Kingdom</option>
-                        <option value="United States">United States</option>
-                        <option value="Turkey">Turkey</option>
+                        <select name="state" id="state" required>
+                        <option value="" selected disabled>Select State</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Chandigarh">Chandigarh</option>
                       </select>
                       <input type="text" placeholder="Street Address*" />
-                      <input type="text" placeholder="" />
                       <input type="text" placeholder="Town / City *" />
-                      <input type="text" placeholder="Postcode / ZIP *" />
+                      <input type="text" placeholder="6-digit Pincode *" required />
                       <input type="text" placeholder="Phone *" />
                       <input type="mail" placeholder="Your Mail *" />
-                      <div className="checkoutDetailsFormCheck">
-                        <label>
-                          <input type="checkbox" />
-                          <p>Create An Account?</p>
-                        </label>
-                        <label>
-                          <input type="checkbox" />
-                          <p>Ship to a different Address</p>
-                        </label>
-                      </div>
                       <textarea
                         cols={30}
                         rows={8}
@@ -488,7 +486,7 @@ const ShoppingCart = () => {
                               <td>
                                 {items.productName} x {items.quantity}
                               </td>
-                              <td>${items.productPrice * items.quantity}</td>
+                              <td>₹{items.productPrice * items.quantity}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -499,20 +497,20 @@ const ShoppingCart = () => {
                         <tbody>
                           <tr>
                             <th>Subtotal</th>
-                            <td>${totalPrice.toFixed(2)}</td>
+                            <td>₹{totalPrice.toFixed(2)}</td>
                           </tr>
                           <tr>
                             <th>Shipping</th>
-                            <td>$5</td>
+                            <td>₹5</td>
                           </tr>
                           <tr>
                             <th>VAT</th>
-                            <td>$11</td>
+                            <td>₹11</td>
                           </tr>
                           <tr>
                             <th>Total</th>
                             <td>
-                              $
+                              ₹
                               {(totalPrice === 0 ? 0 : totalPrice + 16).toFixed(
                                 2
                               )}
@@ -532,29 +530,9 @@ const ShoppingCart = () => {
                         onChange={handlePaymentChange}
                       />
                       <div className="checkoutPaymentMethod">
-                        <span>Direct Bank Transfer</span>
+                        <span>UPI / Bank Transfer</span>
                         <p>
-                          Make your payment directly into our bank account.
-                          Please use your Order ID as the payment reference.Your
-                          order will not be shipped until the funds have cleared
-                          in our account.
-                        </p>
-                      </div>
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="payment"
-                        value="Check Payments"
-                        onChange={handlePaymentChange}
-                      />
-                      <div className="checkoutPaymentMethod">
-                        <span>Check Payments</span>
-                        <p>
-                          Phasellus sed volutpat orci. Fusce eget lore mauris
-                          vehicula elementum gravida nec dui. Aenean aliquam
-                          varius ipsum, non ultricies tellus sodales eu. Donec
-                          dignissim viverra nunc, ut aliquet magna posuere eget.
+                         You can pay directly via UPI apps like PhonePe, Google Pay, or through a direct bank transfer. Please use your Order ID as the payment reference. Your order will be processed once payment is confirmed.
                         </p>
                       </div>
                     </label>
@@ -566,12 +544,9 @@ const ShoppingCart = () => {
                         onChange={handlePaymentChange}
                       />
                       <div className="checkoutPaymentMethod">
-                        <span>Cash on delivery</span>
+                        <span>Cash on Delivery (COD)</span>
                         <p>
-                          Phasellus sed volutpat orci. Fusce eget lore mauris
-                          vehicula elementum gravida nec dui. Aenean aliquam
-                          varius ipsum, non ultricies tellus sodales eu. Donec
-                          dignissim viverra nunc, ut aliquet magna posuere eget.
+                          Pay in cash when your order is delivered at your doorstep. Available only for select pincodes and products.
                         </p>
                       </div>
                     </label>
@@ -583,19 +558,14 @@ const ShoppingCart = () => {
                         onChange={handlePaymentChange}
                       />
                       <div className="checkoutPaymentMethod">
-                        <span>Paypal</span>
+                        <span>Paytm / Mobile Wallets</span>
                         <p>
-                          Phasellus sed volutpat orci. Fusce eget lore mauris
-                          vehicula elementum gravida nec dui. Aenean aliquam
-                          varius ipsum, non ultricies tellus sodales eu. Donec
-                          dignissim viverra nunc, ut aliquet magna posuere eget.
+                          Use your preferred mobile wallet like Paytm, PhonePe, or Mobikwik to complete the payment securely.
                         </p>
                       </div>
                     </label>
                     <div className="policyText">
-                      Your personal data will be used to process your order,
-                      support your experience throughout this website, and for
-                      other purposes described in our{" "}
+To know more, read our{" "}
                       <Link to="/terms" onClick={scrollToTop}>
                         Privacy Policy
                       </Link>
@@ -637,7 +607,7 @@ const ShoppingCart = () => {
                     </div>
                     <div className="orderInfoItem">
                       <p>Total</p>
-                      <h4>${totalPrice.toFixed(2)}</h4>
+                      <h4>₹{totalPrice.toFixed(2)}</h4>
                     </div>
                     <div className="orderInfoItem">
                       <p>Payment Method</p>
@@ -660,7 +630,7 @@ const ShoppingCart = () => {
                               <td>
                                 {items.productName} x {items.quantity}
                               </td>
-                              <td>${items.productPrice * items.quantity}</td>
+                              <td>₹{items.productPrice * items.quantity}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -671,20 +641,20 @@ const ShoppingCart = () => {
                         <tbody>
                           <tr>
                             <th>Subtotal</th>
-                            <td>${totalPrice.toFixed(2)}</td>
+                            <td>₹{totalPrice.toFixed(2)}</td>
                           </tr>
                           <tr>
                             <th>Shipping</th>
-                            <td>$5</td>
+                            <td>₹5</td>
                           </tr>
                           <tr>
                             <th>VAT</th>
-                            <td>$11</td>
+                            <td>₹11</td>
                           </tr>
                           <tr>
                             <th>Total</th>
                             <td>
-                              $
+                              ₹
                               {(totalPrice === 0 ? 0 : totalPrice + 16).toFixed(
                                 2
                               )}

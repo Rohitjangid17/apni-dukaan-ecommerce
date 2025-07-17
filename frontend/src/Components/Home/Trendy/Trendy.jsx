@@ -4,14 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../Features/Cart/cartSlice";
 import { Link } from "react-router-dom";
 import StoreData from "../../../Data/StoreData";
-import { FiHeart } from "react-icons/fi";
 import { FaStar, FaCartPlus } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 const Trendy = () => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("tab1");
-  const [wishList, setWishList] = useState({});
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -22,13 +20,6 @@ const Trendy = () => {
       top: 0,
       behavior: "smooth",
     });
-  };
-
-  const handleWishlistClick = (productID) => {
-    setWishList((prevWishlist) => ({
-      ...prevWishlist,
-      [productID]: !prevWishlist[productID],
-    }));
   };
 
   const sortByPrice = (a, b) => a.productPrice - b.productPrice;
@@ -124,11 +115,6 @@ const Trendy = () => {
                           alt=""
                           className="trendyProduct_front"
                         />
-                        <img
-                          src={product.backImg}
-                          alt=""
-                          className="trendyProduct_back"
-                        />
                       </Link>
                       <h4 onClick={() => handleAddToCart(product)}>
                         Add to Cart
@@ -142,23 +128,14 @@ const Trendy = () => {
                     </div>
                     <div className="trendyProductInfo">
                       <div className="trendyProductCategoryWishlist">
-                        <p>Dresses</p>
-                        <FiHeart
-                          onClick={() => handleWishlistClick(product.productID)}
-                          style={{
-                            color: wishList[product.productID]
-                              ? "red"
-                              : "#767676",
-                            cursor: "pointer",
-                          }}
-                        />
+                        <p>{product.productTitle}</p>
                       </div>
                       <div className="trendyProductNameInfo">
                         <Link to="product" onClick={scrollToTop}>
                           <h5>{product.productName}</h5>
                         </Link>
 
-                        <p>${product.productPrice}</p>
+                        <p>₹{product.productPrice}</p>
                         <div className="trendyProductRatingReviews">
                           <div className="trendyProductRatingStar">
                             <FaStar color="#FEC78A" size={10} />
@@ -190,11 +167,6 @@ const Trendy = () => {
                             alt=""
                             className="trendyProduct_front"
                           />
-                          <img
-                            src={product.backImg}
-                            alt=""
-                            className="trendyProduct_back"
-                          />
                         </Link>
                         <h4 onClick={() => handleAddToCart(product)}>
                           Add to Cart
@@ -208,25 +180,14 @@ const Trendy = () => {
                       </div>
                       <div className="trendyProductInfo">
                         <div className="trendyProductCategoryWishlist">
-                          <p>Dresses</p>
-                          <FiHeart
-                            onClick={() =>
-                              handleWishlistClick(product.productID)
-                            }
-                            style={{
-                              color: wishList[product.productID]
-                                ? "red"
-                                : "#767676",
-                              cursor: "pointer",
-                            }}
-                          />
+                          <p>{product.productTitle}</p>
                         </div>
                         <div className="trendyProductNameInfo">
                           <Link to="product" onClick={scrollToTop}>
                             <h5>{product.productName}</h5>
                           </Link>
 
-                          <p>${product.productPrice}</p>
+                          <p>₹{product.productPrice}</p>
                           <div className="trendyProductRatingReviews">
                             <div className="trendyProductRatingStar">
                               <FaStar color="#FEC78A" size={10} />
@@ -258,11 +219,6 @@ const Trendy = () => {
                             alt=""
                             className="trendyProduct_front"
                           />
-                          <img
-                            src={product.backImg}
-                            alt=""
-                            className="trendyProduct_back"
-                          />
                         </Link>
                         <h4 onClick={() => handleAddToCart(product)}>
                           Add to Cart
@@ -276,25 +232,14 @@ const Trendy = () => {
                       </div>
                       <div className="trendyProductInfo">
                         <div className="trendyProductCategoryWishlist">
-                          <p>Dresses</p>
-                          <FiHeart
-                            onClick={() =>
-                              handleWishlistClick(product.productID)
-                            }
-                            style={{
-                              color: wishList[product.productID]
-                                ? "red"
-                                : "#767676",
-                              cursor: "pointer",
-                            }}
-                          />
+                          <p>{product.productTitle}</p>
                         </div>
                         <div className="trendyProductNameInfo">
                           <Link to="product" onClick={scrollToTop}>
                             <h5>{product.productName}</h5>
                           </Link>
 
-                          <p>${product.productPrice}</p>
+                          <p>₹{product.productPrice}</p>
                           <div className="trendyProductRatingReviews">
                             <div className="trendyProductRatingStar">
                               <FaStar color="#FEC78A" size={10} />
@@ -326,11 +271,6 @@ const Trendy = () => {
                             alt=""
                             className="trendyProduct_front"
                           />
-                          <img
-                            src={product.backImg}
-                            alt=""
-                            className="trendyProduct_back"
-                          />
                         </Link>
                         <h4 onClick={() => handleAddToCart(product)}>
                           Add to Cart
@@ -344,25 +284,14 @@ const Trendy = () => {
                       </div>
                       <div className="trendyProductInfo">
                         <div className="trendyProductCategoryWishlist">
-                          <p>Dresses</p>
-                          <FiHeart
-                            onClick={() =>
-                              handleWishlistClick(product.productID)
-                            }
-                            style={{
-                              color: wishList[product.productID]
-                                ? "red"
-                                : "#767676",
-                              cursor: "pointer",
-                            }}
-                          />
+                          <p>{product.productTitle}</p>
                         </div>
                         <div className="trendyProductNameInfo">
                           <Link to="/product" onClick={scrollToTop}>
                             <h5>{product.productName}</h5>
                           </Link>
 
-                          <p>${product.productPrice}</p>
+                          <p>₹{product.productPrice}</p>
                           <div className="trendyProductRatingReviews">
                             <div className="trendyProductRatingStar">
                               <FaStar color="#FEC78A" size={10} />
