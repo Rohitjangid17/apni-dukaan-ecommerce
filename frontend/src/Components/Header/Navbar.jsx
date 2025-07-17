@@ -11,12 +11,6 @@ import { FiSearch } from "react-icons/fi";
 import { FaRegUser } from "react-icons/fa6";
 import { RiShoppingBagLine } from "react-icons/ri";
 import { MdOutlineClose } from "react-icons/md";
-import { FiHeart } from "react-icons/fi";
-import { FaFacebookF } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
-import { FaInstagram } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
-import { FaPinterest } from "react-icons/fa";
 
 import Badge from "@mui/material/Badge";
 
@@ -94,13 +88,11 @@ const Navbar = () => {
               <RiShoppingBagLine size={22} />
             </Badge>
           </Link>
-          <FiHeart size={22} onClick={scrollToTop} />
-          {/* <RiMenu2Line size={22} /> */}
         </div>
       </nav>
 
       {/* Mobile Menu */}
-      <nav>
+      <nav className="mobile-nav-outer">
         <div className="mobile-nav">
           {mobileMenuOpen ? (
             <MdOutlineClose size={22} onClick={toggleMobileMenu} />
@@ -164,41 +156,11 @@ const Navbar = () => {
                 </li>
               </ul>
             </div>
-          </div>
-
-          <div className="mobile-menuFooter">
-            <div className="mobile-menuFooterLogin">
+              <div className="mobile-menuFooterLogin">
               <Link to="/loginSignUp" onClick={toggleMobileMenu}>
                 <FaRegUser />
-                <p>My Account</p>
+                <p className="my_account_label">My Account</p>
               </Link>
-            </div>
-            <div className="mobile-menuFooterLangCurrency">
-              <div className="mobile-menuFooterLang">
-                <p>Language</p>
-                <select name="language" id="language">
-                  <option value="english">United States | English</option>
-                  <option value="Hindi">Hindi</option>
-                  <option value="Germany">Germany</option>
-                  <option value="French">French</option>
-                </select>
-              </div>
-              <div className="mobile-menuFooterCurrency">
-                <p>Currency</p>
-                <select name="currency" id="currency">
-                  <option value="USD">$ USD</option>
-                  <option value="INR">₹ INR</option>
-                  <option value="EUR">€ EUR</option>
-                  <option value="GBP">£ GBP</option>
-                </select>
-              </div>
-            </div>
-            <div className="mobile-menuSocial_links">
-              <FaFacebookF />
-              <FaXTwitter />
-              <FaInstagram />
-              <FaYoutube />
-              <FaPinterest />
             </div>
           </div>
         </div>

@@ -71,6 +71,7 @@
   top: 320px;
   text-align: center;
   padding: 10px;
+  border-radius: 30px;
   background-color: rgb(253, 253, 253);
   transition: all 0.2s cubic-bezier(0.99, 0.99, 0, 0.61);
   margin: 0 10px;

@@ -103,38 +103,6 @@
   width: 50%;
 }
 
-.prevNextLink {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-}
-
-.prevNextLink a {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  text-decoration: none;
-  color: black;
-  text-transform: uppercase;
-  font-weight: 500;
-  font-size: 14px;
-  position: relative;
-}
-
-.prevNextLink a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -5px;
-  width: 0;
-  border-bottom: 2px solid black;
-  transition: width 0.3s ease;
-}
-
-.prevNextLink a:hover::after {
-  width: 50%;
-}
-
 .productName h1 {
   font-size: 28px;
   font-weight: 500;
@@ -250,14 +218,14 @@
 .productQuantity {
   display: flex;
   border: 2px solid #e0e0e0;
+  border-radius: 30px;
   padding: 0 10px;
 }
 
 .productQuantity button {
-  background-color: white;
+  background-color: transparent;
   border: none;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 10px 15px;
   cursor: pointer;
 }
 
@@ -271,19 +239,14 @@
 
 .productCartBtn button {
   padding: 20px 110px;
-  background-color: black;
+  background-color: #2f3e46;
   color: white;
   font-weight: 600;
   text-transform: uppercase;
   border: none;
+  border-radius: 30px;
   cursor: pointer;
   white-space: nowrap;
-}
-
-.productWishShare {
-  display: flex;
-  gap: 30px;
-  margin-bottom: 25px;
 }
 
 .productWishList button {

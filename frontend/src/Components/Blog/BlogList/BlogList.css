@@ -105,20 +105,14 @@
 .blogPostContentReadMore a {
   text-decoration: none;
   font-size: 14px;
-  text-transform: uppercase;
   color: black;
+  text-decoration: underline;
   font-weight: 500;
   position: relative;
 }
 
-.blogPostContentReadMore a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -5px;
-  width: 70%;
-  border-bottom: 2px solid black;
-  transition: width 0.2s ease;
+.blogPostContentReadMore a:hover {
+  color: #0ea5e9;
 }
 
 .blogPostContentReadMore a:hover::after {

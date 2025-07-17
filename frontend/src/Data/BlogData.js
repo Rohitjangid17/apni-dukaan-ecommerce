@@ -9,38 +9,50 @@ let BlogData = [
   {
     blogID: 1,
     blogThumbnail: blog1,
-    blogDate: "April 01, 2024",
-    blogHeading: "Woman with good shoes is never be ugly place",
+    blogDate: "January 15, 2025",
+    blogHeading: "Top 10 Budget-Friendly Gadgets Available on Apni Dukaan",
+    blogDescription:
+      "Looking to upgrade your tech without breaking the bank? Here are the top 10 must-have gadgets under ₹2,000 available on Apni Dukaan right now!",
   },
   {
     blogID: 2,
     blogThumbnail: blog2,
-    blogDate: "April 14, 2024",
-    blogHeading: "Heaven upon heaven moveth every have known",
+    blogDate: "March 03, 2025",
+    blogHeading: "How to Choose the Right Smartphone Under ₹15,000 in 2025",
+    blogDescription:
+      "Choosing a budget smartphone can be confusing — so we’ve simplified it. Discover the best value-for-money mobile phones on Apni Dukaan this year.",
   },
   {
     blogID: 3,
     blogThumbnail: blog3,
-    blogDate: "April 24, 2024",
-    blogHeading: "Tree doesn't good void, waters without created",
+    blogDate: "February 20, 2025",
+    blogHeading: "5 Must-Have Kitchen Essentials Every Home Should Have",
+    blogDescription:
+      "Whether you're setting up a new home or upgrading your kitchen, these 5 affordable tools will save time, money, and effort — all available on Apni Dukaan.",
   },
   {
     blogID: 4,
     blogThumbnail: blog4,
-    blogDate: "April 30, 2024",
-    blogHeading: "Given Set was without from god divide rule Hath",
+    blogDate: "May 07, 2025",
+    blogHeading: "Why Apni Dukaan is the Best Choice for Small Town Shoppers",
+    blogDescription:
+      "No malls? No problem! Apni Dukaan delivers the latest products to even the smallest towns in India. Here’s why customers outside metros love us.",
   },
   {
     blogID: 5,
     blogThumbnail: blog5,
-    blogDate: "May 02, 2024",
-    blogHeading: "Tree earth fowl given moveth deep lesser after sky",
+    blogDate: "April 18, 2025",
+    blogHeading: "2025 Summer Fashion Trends – Affordable Looks on Apni Dukaan",
+    blogDescription:
+      "Stay stylish without spending a fortune! Explore this year’s hottest summer fashion trends — and how to get the look on a budget, only on Apni Dukaan.",
   },
   {
     blogID: 6,
     blogThumbnail: blog6,
-    blogDate: "May 19, 2024",
-    blogHeading: "Us yielding Fish sea night night the said him two",
+    blogDate: "July 10, 2025",
+    blogHeading: "Customer Stories: Real Experiences Shopping at Apni Dukaan",
+    blogDescription:
+      "From first-time buyers to loyal fans, read inspiring stories from real Apni Dukaan customers and how online shopping made their lives easier.",
   },
 ];
 

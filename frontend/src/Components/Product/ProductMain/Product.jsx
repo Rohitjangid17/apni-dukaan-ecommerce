@@ -92,10 +92,10 @@ const Product = () => {
   const handleAddToCart = () => {
     const productDetails = {
       productID: 14,
-      productName: "Lightweight Puffer Jacket",
-      productPrice: 90,
+      productName: "Men's Cotton Kurta",
+      productPrice: 899,
       frontImg: productImg[0],
-      productReviews: "8k+ reviews",
+      productReviews: "1.2k reviews",
     };
 
     const productInCart = cartItems.find(
@@ -159,19 +159,9 @@ const Product = () => {
                 <Link to="/">Home</Link>&nbsp;/&nbsp;
                 <Link to="/shop">The Shop</Link>
               </div>
-              <div className="prevNextLink">
-                <Link to="/product">
-                  <GoChevronLeft />
-                  <p>Prev</p>
-                </Link>
-                <Link to="/product">
-                  <p>Next</p>
-                  <GoChevronRight />
-                </Link>
-              </div>
             </div>
             <div className="productName">
-              <h1>Lightweight Puffer Jacket With a Hood</h1>
+              <h1>Men's Cotton Kurta</h1>
             </div>
             <div className="productRating">
               <FaStar color="#FEC78A" size={10} />
@@ -179,17 +169,15 @@ const Product = () => {
               <FaStar color="#FEC78A" size={10} />
               <FaStar color="#FEC78A" size={10} />
               <FaStar color="#FEC78A" size={10} />
-              <p>8k+ reviews</p>
+              <p>1.2k reviews</p>
             </div>
             <div className="productPrice">
-              <h3>$90</h3>
+              <h3>₹899</h3>
             </div>
             <div className="productDescription">
               <p>
-                Phasellus sed volutpat orci. Fusce eget lore mauris vehicula
-                elementum gravida nec dui. Aenean aliquam varius ipsum, non
-                ultricies tellus sodales eu. Donec dignissim viverra nunc, ut
-                aliquet magna posuere eget.
+                Embrace tradition in comfort with this 100% pure cotton kurta.
+                Lightweight and breathable, perfect for festive occasions and daily wear.
               </p>
             </div>
             <div className="productSizeColor">
@@ -264,27 +252,12 @@ const Product = () => {
                 <button onClick={handleAddToCart}>Add to Cart</button>
               </div>
             </div>
-            <div className="productWishShare">
-              <div className="productWishList">
-                <button onClick={handleWishClick}>
-                  <FiHeart color={clicked ? "red" : ""} size={17} />
-                  <p>Add to Wishlist</p>
-                </button>
-              </div>
-              <div className="productShare">
-                <PiShareNetworkLight size={22} />
-                <p>Share</p>
-              </div>
-            </div>
             <div className="productTags">
               <p>
-                <span>SKU: </span>N/A
+                <span>CATEGORIES: </span>Traditional Wear, Kurta, Men
               </p>
               <p>
-                <span>CATEGORIES: </span>Casual & Urban Wear, Jackets, Men
-              </p>
-              <p>
-                <span>TAGS: </span>biker, black, bomber, leather
+                <span>TAGS: </span>ethnic, cotton, festive, kurta, men
               </p>
             </div>
           </div>
