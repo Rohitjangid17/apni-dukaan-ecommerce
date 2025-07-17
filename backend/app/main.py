@@ -4,6 +4,14 @@ from app.database import Base, engine
 
 app = FastAPI()
 
+app = FastAPI(
+    title="Apni Dukaan API",
+    description="This is the backend API for the Apni Dukaan Ecommerce platform.",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
+
 # Auto-create tables
 Base.metadata.create_all(bind=engine)
 
