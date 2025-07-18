@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 import os
 
-from app.api import auth, category, product
+from app.api import auth, category, product, cart
 from app.database import Base, engine
 
 # Initialize FastAPI app
@@ -28,7 +28,7 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(category.router, prefix="/categories", tags=["Category"])
 app.include_router(product.router, prefix="/products", tags=["Products"])
-# app.include_router(cart.router, prefix="/cart", tags=["Cart"])
+app.include_router(cart.router, prefix="/cart", tags=["Cart"])
 
 @app.get("/")
 def root():
