@@ -106,6 +106,7 @@ const RelatedProducts = () => {
                       <img
                         src={product.frontImg}
                         alt={product.productName}
+                        loading="lazy"
                         className="rpFrontImg"
                       />
                       <h4 onClick={() => handleAddToCart(product)}>Add to Cart</h4>

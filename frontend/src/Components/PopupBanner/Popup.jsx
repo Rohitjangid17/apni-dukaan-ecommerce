@@ -22,7 +22,7 @@ const Popup = () => {
             ×
           </button>
           <div className="popup-left">
-            <img src={popupImg} alt="Newsletter" />
+            <img src={popupImg} alt="Newsletter" loading="lazy" />
           </div>
           <div className="popup-right">
             <h2>Sign Up to Our Newsletter</h2>

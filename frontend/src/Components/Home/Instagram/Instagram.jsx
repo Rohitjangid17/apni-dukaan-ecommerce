@@ -20,40 +20,40 @@ const Instagram = () => {
         <h2>Shop Smart. Shop Apni Dukaan</h2>
         <div className="instagramTiles">
           <div className="instagramtile">
-            <img src={insta1} alt="" />
+            <img src={insta1} alt="" loading="lazy" />
           </div>
           <div className="instagramtile">
-            <img src={insta2} alt="" />
+            <img src={insta2} alt="" loading="lazy" />
           </div>
           <div className="instagramtile">
-            <img src={insta3} alt="" />
+            <img src={insta3} alt="" loading="lazy" />
           </div>
           <div className="instagramtile">
-            <img src={insta4} alt="" />
+            <img src={insta4} alt="" loading="lazy" />
           </div>
           <div className="instagramtile">
-            <img src={insta5} alt="" />
+            <img src={insta5} alt="" loading="lazy" />
           </div>
           <div className="instagramtile">
-            <img src={insta6} alt="" />
+            <img src={insta6} alt="" loading="lazy" />
           </div>
           <div className="instagramtile">
-            <img src={insta7} alt="" />
+            <img src={insta7} alt="" loading="lazy" />
           </div>
           <div className="instagramtile">
-            <img src={insta8} alt="" />
+            <img src={insta8} alt="" loading="lazy" />
           </div>
           <div className="instagramtile">
-            <img src={insta9} alt="" />
+            <img src={insta9} alt="" loading="lazy" />
           </div>
           <div className="instagramtile">
-            <img src={insta10} alt="" />
+            <img src={insta10} alt="" loading="lazy" />
           </div>
           <div className="instagramtile">
-            <img src={insta11} alt="" />
+            <img src={insta11} alt="" loading="lazy" />
           </div>
           <div className="instagramtile">
-            <img src={insta12} alt="" />
+            <img src={insta12} alt="" loading="lazy" />
           </div>
         </div>
       </div>

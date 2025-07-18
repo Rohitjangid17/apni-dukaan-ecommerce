@@ -99,15 +99,11 @@ const ShopDetails = () => {
               </div>
               <div className="shopDetailsSort">
                 <select name="sort" id="sort">
-                  <option value="default">Default Sorting</option>
-                  <option value="Featured">Featured</option>
+                  <option value="priceLowHigh">Price: Low to High</option>
+                  <option value="priceHighLow">Price: High to Low</option>
+                  <option value="newest">Newest Arrivals</option>
+                  <option value="topRated">Top Rated</option>
                   <option value="bestSelling">Best Selling</option>
-                  <option value="a-z">Alphabetically, A-Z</option>
-                  <option value="z-a">Alphabetically, Z-A</option>
-                  <option value="lowToHigh">Price, Low to high</option>
-                  <option value="highToLow">Price, high to low</option>
-                  <option value="oldToNew">Date, old to new</option>
-                  <option value="newToOld">Date, new to old</option>
                 </select>
                 <div className="filterRight" onClick={toggleDrawer}>
                   <div className="filterSeprator"></div>
@@ -125,6 +121,7 @@ const ShopDetails = () => {
                         <img
                           src={product.frontImg}
                           alt=""
+                          loading="lazy"
                           className="sdProduct_front"
                         />
                       </Link>
@@ -136,7 +133,6 @@ const ShopDetails = () => {
                       className="sdProductImagesCart"
                       onClick={() => handleAddToCart(product)}
                     >
-                      <FaCartPlus />
                     </div>
                     <div className="sdProductInfo">
                       <div className="sdProductCategoryWishlist">
@@ -147,7 +143,7 @@ const ShopDetails = () => {
                           <h5>{product.productName}</h5>
                         </Link>
 
-                        <p>${product.productPrice}</p>
+                        <p>₹{product.productPrice}</p>
                         <div className="sdProductRatingReviews">
                           <div className="sdProductRatingStar">
                             <FaStar color="#FEC78A" size={10} />

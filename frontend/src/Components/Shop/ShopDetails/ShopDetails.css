@@ -336,7 +336,17 @@
   }
 
   .sdProductContainer h4 {
-    display: none;
+    position: absolute;
+    top: auto;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    transition: none;
+  }
+
+  .sdProductContainer:hover h4 {
+    top: auto;
+    bottom: 10px;
   }
 
   .sdProductImagesCart {

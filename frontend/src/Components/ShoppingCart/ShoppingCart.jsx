@@ -144,7 +144,7 @@ const ShoppingCart = () => {
                             <td data-label="Product">
                               <div className="shoppingBagTableImg">
                                 <Link to="/product" onClick={scrollToTop}>
-                                  <img src={item.frontImg} alt="" />
+                                  <img src={item.frontImg} alt="" loading="lazy" />
                                 </Link>
                               </div>
                             </td>
@@ -278,7 +278,7 @@ const ShoppingCart = () => {
                             <div className="shoppingBagTableMobileItems">
                               <div className="shoppingBagTableMobileItemsImg">
                                 <Link to="/product" onClick={scrollToTop}>
-                                  <img src={item.frontImg} alt="" />
+                                  <img src={item.frontImg} alt="" loading="lazy" />
                                 </Link>
                               </div>
                               <div className="shoppingBagTableMobileItemsDetail">
@@ -591,7 +591,7 @@ To know more, read our{" "}
                 <div className="orderComplete">
                   <div className="orderCompleteMessage">
                     <div className="orderCompleteMessageImg">
-                      <img src={success} alt="" />
+                      <img src={success} alt="" loading="lazy" />
                     </div>
                     <h3>Your order is completed!</h3>
                     <p>Thank you. Your order has been received.</p>

@@ -62,8 +62,8 @@ const BlogDetails = () => {
           </div>
 
           <div className="blogDetailsContentImg">
-            <img src={blogimage1} alt="blog detail" />
-            <img src={blogimage2} alt="blog detail" />
+            <img src={blogimage1} alt="blog detail" loading="lazy" />
+            <img src={blogimage2} alt="blog detail" loading="lazy" />
           </div>
 
           <div className="blogDetailsContent">

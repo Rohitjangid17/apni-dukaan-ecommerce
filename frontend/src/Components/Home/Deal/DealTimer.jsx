@@ -65,14 +65,14 @@ const DealTimer = () => {
         <div className="dealTimer">
           <div className="dealTimerMainContent">
             <div className="dealTimeContent">
-              <p>Deal of the Week</p>
+              <p>Apni Dukaan Exclusive Deal</p>
               <h3>
-                Spring
-                <span> Collection</span>
+                Monsoon
+                <span> Sale</span>
               </h3>
               <div className="dealTimeLink">
                 <Link to="/shop" onClick={scrollToTop}>
-                  Shop Now
+                  Browse Deals
                 </Link>
               </div>
             </div>
