@@ -123,7 +123,7 @@ const AdditionalInfo = () => {
                       style={{ borderBottom: "1px solid #e4e4e4" }}
                     >
                       <div className="userReviewImg">
-                        <img src={user1} alt="" />
+                        <img src={user1} alt="" loading="lazy" />
                       </div>
                       <div className="userReviewContent">
                         <div className="userReviewTopContent">
@@ -155,7 +155,7 @@ const AdditionalInfo = () => {
                     </div>
                     <div className="userReview">
                       <div className="userReviewImg">
-                        <img src={user2} alt="" />
+                        <img src={user2} alt="" loading="lazy" />
                       </div>
                       <div className="userReviewContent">
                         <div className="userReviewTopContent">

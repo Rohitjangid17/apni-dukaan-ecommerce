@@ -28,22 +28,10 @@
 
 .dealTimeContent p {
   position: relative;
-  padding-left: 50px;
-  color: #c32929;
+  padding-left: 5px;
+  color: #2f3e46;
   text-transform: uppercase;
   font-weight: 500;
-}
-
-.dealTimeContent p::before {
-  content: "";
-  display: block;
-  width: 35px;
-  height: 2px;
-  background-color: #c32929;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .dealTimeContent h3 {

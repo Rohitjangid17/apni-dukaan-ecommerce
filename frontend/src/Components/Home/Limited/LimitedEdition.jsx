@@ -121,6 +121,7 @@ const LimitedEdition = () => {
                         <img
                           src={product.frontImg}
                           alt={product.productName}
+                          loading="lazy"
                           className="lpImage"
                         />
                       </Link>
@@ -132,7 +133,6 @@ const LimitedEdition = () => {
                       className="lpProductImagesCart"
                       onClick={() => handleAddToCart(product)}
                     >
-                      <FaCartPlus />
                     </div>
                     <div className="limitedProductInfo">
                       <div className="lpCategoryWishlist">

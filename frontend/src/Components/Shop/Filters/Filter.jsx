@@ -233,10 +233,10 @@ const Filter = () => {
               <div className="filterSliderPrice">
                 <div className="priceRange">
                   <p>
-                    Min Price: <span>${value[0]}</span>
+                    Min Price: <span>₹{value[0]}</span>
                   </p>
                   <p>
-                    Max Price: <span>${value[1]}</span>
+                    Max Price: <span>₹{value[1]}</span>
                   </p>
                 </div>
               </div>

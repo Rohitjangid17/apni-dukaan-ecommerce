@@ -31,7 +31,7 @@ const Footer = () => {
         <div className="footer__container">
           <div className="footer_left">
             <div className="footer_logo_container">
-              <img src={logo} alt="" Z />
+              <img src={logo} alt="" loading="lazy" />
             </div>
 
             <p>Vidhyadhar Nagar, Jaipur</p>
@@ -118,7 +118,7 @@ const Footer = () => {
 
             <h6>Secure Payments</h6>
             <div className="paymentIconContainer">
-              <img src={paymentIcon} alt="" />
+              <img src={paymentIcon} alt="" loading="lazy" />
             </div>
           </div>
         </div>
