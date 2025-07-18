@@ -127,11 +127,6 @@ const ShopDetails = () => {
                           alt=""
                           className="sdProduct_front"
                         />
-                        <img
-                          src={product.backImg}
-                          alt=""
-                          className="sdProduct_back"
-                        />
                       </Link>
                       <h4 onClick={() => handleAddToCart(product)}>
                         Add to Cart
@@ -145,16 +140,7 @@ const ShopDetails = () => {
                     </div>
                     <div className="sdProductInfo">
                       <div className="sdProductCategoryWishlist">
-                        <p>Dresses</p>
-                        <FiHeart
-                          onClick={() => handleWishlistClick(product.productID)}
-                          style={{
-                            color: wishList[product.productID]
-                              ? "red"
-                              : "#767676",
-                            cursor: "pointer",
-                          }}
-                        />
+                        <p>{product.productTitle}</p>
                       </div>
                       <div className="sdProductNameInfo">
                         <Link to="/product" onClick={scrollToTop}>

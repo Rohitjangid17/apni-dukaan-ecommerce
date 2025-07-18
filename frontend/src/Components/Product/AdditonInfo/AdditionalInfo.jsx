@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./AdditionalInfo.css";
 
-import user1 from "../../../Assets/Users/user1.jpeg";
-import user2 from "../../../Assets/Users/user2.jpeg";
+import user1 from "../../../Assets/Users/user1.jpg";
+import user2 from "../../../Assets/Users/user2.jpg";
 
 import { FaStar } from "react-icons/fa";
 import Rating from "@mui/material/Rating";
@@ -41,90 +41,77 @@ const AdditionalInfo = () => {
             </div>
           </div>
           <div className="productAdditionalInfoContent">
-            {/* Tab1 */}
-
+            {/* Tab1 / Description*/}
             {activeTab === "aiTab1" && (
               <div className="aiTabDescription">
                 <div className="descriptionPara">
-                  <h3>Sed do eiusmod tempor incididunt ut labore</h3>
+                  <h3>Premium Cotton Kurta Set for Men</h3>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum. Sed ut perspiciatis
-                    unde omnis iste natus error sit voluptatem accusantium
-                    doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
-                    illo inventore veritatis et quasi architecto beatae vitae
-                    dicta sunt explicabo.
+                    Elevate your festive wardrobe with this high-quality, 100%
+                  cotton kurta set tailored for comfort and elegance. Ideal for
+                  weddings, pujas, or casual ethnic wear. Lightweight,
+                  breathable, and skin-friendly—perfect for Indian summers.
                   </p>
                 </div>
                 <div className="descriptionParaGrid">
                   <div className="descriptionPara">
-                    <h3>Why choose product?</h3>
+                    <h3>Why Buy This Product?</h3>
                     <p>
                       <ul>
-                        <li>Creat by cotton fibric with soft and smooth</li>
-                        <li>
-                          Simple, Configurable (e.g. size, color, etc.), bundled
-                        </li>
-                        <li>Downloadable/Digital Products, Virtual Products</li>
+                        <li>Made in India with premium cotton fabric</li>
+                        <li>Perfect for festivals like Diwali, Holi, or Eid</li>
+                        <li>Available in multiple sizes and vibrant colors</li>
                       </ul>
                     </p>
                   </div>
                   <div className="descriptionPara">
-                    <h3>Sample Number List</h3>
+                    <h3>Included in the Package</h3>
                     <p>
                       <ol>
-                        <li>Creat by cotton fibric with soft and smooth</li>
-                        <li>
-                          Simple, Configurable (e.g. size, color, etc.), bundled
-                        </li>
-                        <li>Downloadable/Digital Products, Virtual Products</li>
+                        <li>1 x Kurta (Beige)</li>
+                        <li>1 x Pyjama (White)</li>
+                        <li>Free matching cotton mask</li>
                       </ol>
                     </p>
                   </div>
                 </div>
                 <div className="descriptionPara">
-                  <h3>Lining</h3>
+                  <h3>Fabric Composition</h3>
                   <p style={{ marginTop: "-10px" }}>
-                    100% Polyester, Main: 100% Polyester.
+                    Top & Bottom: 100% Cotton | Lining: Not required (opaque)
                   </p>
                 </div>
               </div>
             )}
 
-            {/* Tab2 */}
+            {/* Tab2 / Additional Info*/}
 
             {activeTab === "aiTab2" && (
-              <div className="aiTabAdditionalInfo">
-                <div className="additionalInfoContainer">
-                  <h6>Weight</h6>
-                  <p> 1.25 kg</p>
-                </div>
-                <div className="additionalInfoContainer">
-                  <h6>Dimensions</h6>
-                  <p> 90 x 60 x 90 cm</p>
-                </div>
-                <div className="additionalInfoContainer">
-                  <h6>Size</h6>
-                  <p> XS, S, M, L, XL</p>
-                </div>
-                <div className="additionalInfoContainer">
-                  <h6>Color</h6>
-                  <p> Black, Orange, White</p>
-                </div>
-                <div className="additionalInfoContainer">
-                  <h6>Storage</h6>
-                  <p> Relaxed fit shirt-style dress with a rugged</p>
-                </div>
+            <div className="aiTabAdditionalInfo">
+              <div className="additionalInfoContainer">
+                <h6>Weight</h6>
+                <p> 800 g</p>
               </div>
-            )}
+              <div className="additionalInfoContainer">
+                <h6>Dimensions</h6>
+                <p> 40 x 30 x 4 cm</p>
+              </div>
+              <div className="additionalInfoContainer">
+                <h6>Size</h6>
+                <p> S, M, L, XL, XXL</p>
+              </div>
+              <div className="additionalInfoContainer">
+                <h6>Color</h6>
+                <p> Maroon, White, Navy Blue, Mustard Yellow</p>
+              </div>
+              <div className="additionalInfoContainer">
+                <h6>Occasion</h6>
+                <p> Ethnic Wear, Festive, Wedding, Casual</p>
+              </div>
+            </div>
+          )}
 
-            {/* Tab3 */}
+            {/* Tab3 / Reviews*/}
 
             {activeTab === "aiTab3" && (
               <div className="aiTabReview">
@@ -141,7 +128,7 @@ const AdditionalInfo = () => {
                       <div className="userReviewContent">
                         <div className="userReviewTopContent">
                           <div className="userNameRating">
-                            <h6>Janice Miller</h6>
+                            <h6>Rahul Sharma</h6>
                             <div className="userRating">
                               <FaStar color="#FEC78A" size={10} />
                               <FaStar color="#FEC78A" size={10} />
@@ -151,7 +138,7 @@ const AdditionalInfo = () => {
                             </div>
                           </div>
                           <div className="userDate">
-                            <p>April 06, 2023</p>
+                            <p>June 10, 2025</p>
                           </div>
                         </div>
                         <div
@@ -159,10 +146,9 @@ const AdditionalInfo = () => {
                           style={{ marginBottom: "30px" }}
                         >
                           <p>
-                            Nam libero tempore, cum soluta nobis est eligendi
-                            optio cumque nihil impedit quo minus id quod maxime
-                            placeat facere possimus, omnis voluptas assumenda
-                            est…
+                            Quality is top-notch! Got so many compliments during
+                          my cousin’s wedding. Fits perfectly and the color is
+                          just as shown. Value for money!
                           </p>
                         </div>
                       </div>
@@ -174,7 +160,7 @@ const AdditionalInfo = () => {
                       <div className="userReviewContent">
                         <div className="userReviewTopContent">
                           <div className="userNameRating">
-                            <h6>Benjam Porter</h6>
+                            <h6>Anjali Verma</h6>
                             <div className="userRating">
                               <FaStar color="#FEC78A" size={10} />
                               <FaStar color="#FEC78A" size={10} />
@@ -184,15 +170,14 @@ const AdditionalInfo = () => {
                             </div>
                           </div>
                           <div className="userDate">
-                            <p>April 12, 2023</p>
+                            <p>May 22, 2025</p>
                           </div>
                         </div>
                         <div className="userReviewBottomContent">
                           <p>
-                            Nam libero tempore, cum soluta nobis est eligendi
-                            optio cumque nihil impedit quo minus id quod maxime
-                            placeat facere possimus, omnis voluptas assumenda
-                            est…
+                            I bought this for my brother and he loved it.
+                          Breathable material and good stitching. Would
+                          recommend it for any festive occasion.
                           </p>
                         </div>
                       </div>
@@ -201,12 +186,10 @@ const AdditionalInfo = () => {
                   <div className="userNewReview">
                     <div className="userNewReviewMessage">
                       <h5>
-                        Be the first to review “Lightweight Puffer Jacket With a
-                        Hood”
+                        Be the first to review “Premium Cotton Kurta Set for Men”
                       </h5>
                       <p>
-                        Your email address will not be published. Required
-                        fields are marked *
+                        Your email address will not be published. Required fields are marked *
                       </p>
                     </div>
                     <div className="userNewReviewRating">

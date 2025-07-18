@@ -20,6 +20,7 @@ const BlogDetails = () => {
       behavior: "smooth",
     });
   };
+
   return (
     <>
       <div className="blogDetailsSection">
@@ -28,117 +29,52 @@ const BlogDetails = () => {
             <h2>5 Tips to Increase Your Online Sales</h2>
             <div className="blogDetailsMetaData">
               <span>by admin</span>
-              <span>May 19, 2023</span>
+              <span>July 16, 2025</span>
               <span>Trends</span>
             </div>
           </div>
-          <div className="blogDetailsFeaturedImg">
-            <img src={blogdetail1} alt="" />
+
+          <div className="blogDetailsContent">
+            <h5>Welcome to Apni Dukaan Blogs</h5>
+            <p>
+              At Apni Dukaan, we believe shopping should be simple, affordable, and enjoyable. That’s why our blog exists — to help you discover new trends, shop smarter, and make informed choices whether you're buying fashion, electronics, kitchen essentials, or daily-use products.
+            </p>
+
+            <p>
+              In today's fast-paced digital world, understanding your customer and providing a seamless shopping experience is key to increasing online sales. Whether you're a small business owner, a seller on our platform, or a curious reader — these tips will help you grow and thrive in the e-commerce space.
+            </p>
+
+            <h5>Why Apni Dukaan?</h5>
+            <p>
+              We serve customers across India — from metro cities to rural towns — ensuring that quality and convenience reach everyone. Our platform is designed to support easy navigation, smooth checkout, and reliable delivery backed by customer trust.
+              At Apni Dukaan, we believe online shopping should be more than just convenient — it should be trustworthy, affordable, and tailored to your needs. Whether you’re browsing for daily essentials, upgrading your wardrobe, or looking for something special for your home, our goal is to make your experience smooth, reliable, and enjoyable. Through this blog, we aim to share valuable insights that help you shop smarter, discover trending products, and make informed buying decisions.
+              Every blog we publish is written with our users in mind — to inspire, educate, and guide you through your shopping journey. Whether it’s a product review, a festival shopping guide, or simple tips to make the most of your order, we want this space to be useful and relevant for you. Your trust and satisfaction are at the heart of what we do, and we’re excited to keep growing with your support.
+            </p>
           </div>
+
           <div className="blogDetailsContent">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Amet
-              sapien dignissim a elementum. Sociis metus, hendrerit mauris id
-              in. Quis sit sit ultrices tincidunt euismod luctus diam. Turpis
-              sodales orci etiam phasellus lacus id leo. Amet turpis nunc, nulla
-              massa est viverra interdum. Praesent auctor nulla morbi non
-              posuere mattis. Arcu eu id maecenas cras. Eget fames tincidunt
-              leo, sed vitae, pretium interdum. Non massa, imperdiet nunc sit
-              sapien. Tempor lectus ornare quis mi vel. Nibh euismod donec elit
-              posuere lobortis consequat faucibus aliquam metus. Ornare
-              consequat, vulputate sit maecenas mauris urna sed fringilla. Urna
-              fermentum iaculis pharetra, maecenas dui nullam nullam rhoncus.
-              Facilisis quis vulputate sem gravida lacus, justo placerat.
+              Our mission is to make online shopping feel like your trusted local store — friendly, fast, and fair. From detailed product listings to verified reviews and helpful return policies, we aim to build long-term relationships with our customers, not just one-time sales.
             </p>
-            <h5>Sed do eiusmod tempor incididunt ut labore</h5>
             <p>
-              Saw wherein fruitful good days image them, midst, waters upon,
-              saw. Seas lights seasons. Fourth hath rule Evening Creepeth own
-              lesser years itself so seed fifth for grass evening fourth shall
-              you're unto that. Had. Female replenish for yielding so saw all
-              one to yielding grass you'll air sea it, open waters subdue, hath.
-              Brought second Made. Be. Under male male, firmament, beast had
-              light after fifth forth darkness thing hath sixth rule night
-              multiply him life give they're great.
-            </p>
-            <div className="blogDetailsContentBullets">
-              <div className="blogDetailsContentBulletscontent">
-                <h5>Why choose product?</h5>
-                <p>
-                  <ul>
-                    <li>Creat by cotton fibric with soft and smooth</li>
-                    <li>
-                      Simple, Configurable (e.g. size, color, etc.), bundled
-                    </li>
-                    <li>Downloadable/Digital Products, Virtual Products</li>
-                  </ul>
-                </p>
-              </div>
-              <div className="blogDetailsContentBulletscontent">
-                <h5>Sample Number List</h5>
-                <p>
-                  <ol>
-                    <li>Creat by cotton fibric with soft and smooth</li>
-                    <li>
-                      Simple, Configurable (e.g. size, color, etc.), bundled
-                    </li>
-                    <li>Downloadable/Digital Products, Virtual Products</li>
-                  </ol>
-                </p>
-              </div>
-            </div>
-            <p>
-              She'd years darkness days. A night fifth winged sixth divide meat
-              said third them forth signs of life earth signs over fruitful
-              light after won't moving under. Thing yielding upon seed. Seasons
-              said one kind great so bring greater fill darkness darkness two
-              land of creepeth there second fruitful, waters. Make don't void
-              years Gathering gathering divide fill.
+              Stay tuned to our blog space as we continue to share shopping inspiration, product launches, festival season deals, and helpful tips to make your Apni Dukaan experience even better.
             </p>
           </div>
+
           <div className="blogDetailsContentImg">
-            <img src={blogimage1} alt="" />
-            <img src={blogimage2} alt="" />
+            <img src={blogimage1} alt="blog detail" />
+            <img src={blogimage2} alt="blog detail" />
           </div>
+
           <div className="blogDetailsContent">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Amet
-              sapien dignissim a elementum. Sociis metus, hendrerit mauris id
-              in. Quis sit sit ultrices tincidunt euismod luctus diam. Turpis
-              sodales orci etiam phasellus lacus id leo. Amet turpis nunc, nulla
-              massa est viverra interdum. Praesent auctor nulla morbi non
-              posuere mattis. Arcu eu id maecenas cras. Eget fames tincidunt
-              leo, sed vitae, pretium interdum. Non massa, imperdiet nunc sit
-              sapien. Tempor lectus ornare quis mi vel. Nibh euismod donec elit
-              posuere lobortis consequat faucibus aliquam metus. Ornare
-              consequat, vulputate sit maecenas mauris urna sed fringilla. Urna
-              fermentum iaculis pharetra, maecenas dui nullam nullam rhoncus.
-              Facilisis quis vulputate sem gravida lacus, justo placerat.
+              Thanks for being a part of our journey. Whether you're a customer, seller, or first-time visitor — we welcome you to the Apni Dukaan family. Let’s shop smarter, support local, and grow together in the world of online commerce.
             </p>
             <p>
-              She'd years darkness days. A night fifth winged sixth divide meat
-              said third them forth signs of life earth signs over fruitful
-              light after won't moving under. Thing yielding upon seed. Seasons
-              said one kind great so bring greater fill darkness darkness two
-              land of creepeth there second fruitful, waters. Make don't void
-              years Gathering gathering divide fill.
+              For more blogs like this, keep browsing and don’t forget to follow us on social media for daily tips and trending product updates!
             </p>
           </div>
-          <div className="share-buttons">
-            <button className="share-button facebook">
-              <FaFacebookF /> Share on Facebook
-            </button>
-            <button className="share-button twitter">
-              <FaXTwitter />
-              Share on Twitter
-            </button>
-            <button className="share-button pinterest">
-              <FaPinterest /> Share on Pinterest
-            </button>
-            <button className="share-button more">
-              <FaPlus size={20} />
-            </button>
-          </div>
+
           <div className="blogDetailsNextPrev">
             <div className="blogDetailsNextPrevContainer">
               <div
@@ -148,7 +84,7 @@ const BlogDetails = () => {
                 <GoChevronLeft size={20} />
                 <p>PREVIOUS POST</p>
               </div>
-              <p>Given Set was without from god divide rule Hath</p>
+              <p>Why Apni Dukaan is the Best Choice for Small Town Shoppers</p>
             </div>
             <div className="blogDetailsNextPrevContainer">
               <div
@@ -159,7 +95,7 @@ const BlogDetails = () => {
                 <GoChevronRight size={20} />
               </div>
               <p style={{ textAlign: "right" }}>
-                Tree earth fowl given moveth deep lesser after
+                2025 Summer Fashion Trends – Affordable Looks on Apni Dukaan
               </p>
             </div>
           </div>

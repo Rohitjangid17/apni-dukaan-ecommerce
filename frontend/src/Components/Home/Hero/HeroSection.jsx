@@ -24,16 +24,16 @@ const HeroSection = () => {
     <>
       <div className="heroMain">
         <div className="sectionleft">
-          <p>New Trend</p>
-          <h1>Summer Sale Stylish</h1>
-          <span>Limited Time Offer - Up to 60% off & Free Shipping</span>
+          <p>Best Deals</p>
+          <h1>Apni Dukaan Mega Sale</h1>
+          <span>Shop Smart – Save Big! Up to 70% Off on Top Picks</span>
           <div className="heroLink">
             <Link to="/shop" onClick={scrollToTop}>
-              <h5>Discover More</h5>
+              <h5>Start Shopping</h5>
             </Link>
           </div>
         </div>
-        <div className="sectionright">
+        {/* <div className="sectionright">
           <Canvas
             className="canvasModel"
             camera={{ position: [0, 5, 15], fov: 50 }}
@@ -74,7 +74,7 @@ const HeroSection = () => {
               style={{ backgroundColor: "red" }}
             ></button>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

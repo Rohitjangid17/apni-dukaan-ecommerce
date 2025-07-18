@@ -34,19 +34,11 @@ const Footer = () => {
               <img src={logo} alt="" Z />
             </div>
 
-            <p>1418 River Drive, Suite 35 Cottonhall, CA 9622 United States</p>
+            <p>Vidhyadhar Nagar, Jaipur</p>
 
             <div className="footer_address">
-              <strong> sale@uomo.com </strong>
-              <strong> +1 246-345-0695 </strong>
-            </div>
-
-            <div className="social_links">
-              <FaFacebookF />
-              <FaXTwitter />
-              <FaInstagram />
-              <FaYoutube />
-              <FaPinterest />
+              <strong> sale@apnidukaan.com </strong>
+              <strong> +91 12345 12345 </strong>
             </div>
           </div>
 
@@ -56,9 +48,6 @@ const Footer = () => {
               <ul onClick={scrollToTop}>
                 <li>
                   <Link to="/about">About Us</Link>
-                </li>
-                <li>
-                  <Link to="/about">Career</Link>
                 </li>
                 <li>
                   <Link to="*">Affilates</Link>
@@ -113,22 +102,18 @@ const Footer = () => {
                 <li>
                   <Link to="/contact">Contact</Link>
                 </li>
-                <li>
-                  <Link to="/">Gift Card</Link>
-                </li>
               </ul>
             </div>
           </div>
           <div className="footer_right">
             <h5>Subscribe</h5>
             <p>
-              Be the first to get the latest news about trends, promotions, and
-              much more!
+              Stay ahead with the latest offers, new arrivals, and smart shopping tips from Apni Dukaan!
             </p>
 
             <form onSubmit={handleSubscribe}>
-              <input type="email" placeholder="Your email address" required />
-              <button type="submit">Join</button>
+              <input type="email" placeholder="Enter your email" required />
+              <button type="submit">Subscribe</button>
             </form>
 
             <h6>Secure Payments</h6>
@@ -138,38 +123,16 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer_bottom">
+               <div className="social_links">
+              <FaFacebookF />
+              <FaXTwitter />
+              <FaInstagram />
+              <FaYoutube />
+              <FaPinterest />
+            </div>
           <p>
-            © {getCurrentYear()} Uomo. All Rights Reserved | Made By{" "}
-            <a
-              href="https://github.com/shakti177"
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: "#C22928", textDecoration: "none" }}
-            >
-              Shakti Tamrakar
-            </a>{" "}
-            with ❤️
+            © {getCurrentYear()} Apni Dukaan. All Rights Reserved
           </p>
-          <div className="footerLangCurrency">
-            <div className="footerLang">
-              <p>Language</p>
-              <select name="language" id="language">
-                <option value="english">United States | English</option>
-                <option value="Hindi">Hindi</option>
-                <option value="Germany">Germany</option>
-                <option value="French">French</option>
-              </select>
-            </div>
-            <div className="footerCurrency">
-              <p>Currency</p>
-              <select name="currency" id="currency">
-                <option value="USD">$ USD</option>
-                <option value="INR">₹ INR</option>
-                <option value="EUR">€ EUR</option>
-                <option value="GBP">£ GBP</option>
-              </select>
-            </div>
-          </div>
         </div>
       </footer>
     </>

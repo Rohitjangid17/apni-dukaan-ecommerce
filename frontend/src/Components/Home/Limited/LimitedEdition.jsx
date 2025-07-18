@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 
 import StoreData from "../../../Data/StoreData";
 
-import { FiHeart } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { FaCartPlus } from "react-icons/fa";
@@ -24,15 +23,6 @@ import toast from "react-hot-toast";
 
 const LimitedEdition = () => {
   const dispatch = useDispatch();
-
-  const [wishList, setWishList] = useState({});
-
-  const handleWishlistClick = (productID) => {
-    setWishList((prevWishlist) => ({
-      ...prevWishlist,
-      [productID]: !prevWishlist[productID],
-    }));
-  };
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -146,22 +136,13 @@ const LimitedEdition = () => {
                     </div>
                     <div className="limitedProductInfo">
                       <div className="lpCategoryWishlist">
-                        <p>Dresses</p>
-                        <FiHeart
-                          onClick={() => handleWishlistClick(product.productID)}
-                          style={{
-                            color: wishList[product.productID]
-                              ? "red"
-                              : "#767676",
-                            cursor: "pointer",
-                          }}
-                        />
+                        <p>{product.productTitle}</p>
                       </div>
                       <div className="productNameInfo">
                         <Link to="/Product" onClick={scrollToTop}>
                           <h5>{product.productName}</h5>
                         </Link>
-                        <p>${product.productPrice}</p>
+                        <p>₹{product.productPrice}</p>
                         <div className="productRatingReviews">
                           <div className="productRatingStar">
                             <FaStar color="#FEC78A" size={10} />
