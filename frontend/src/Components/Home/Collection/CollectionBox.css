@@ -8,6 +8,7 @@
 }
 
 .collectionLeft {
+  border-radius: 30px;
   background-image: url("../../../Assets/Collection/collection1.jpg");
   background-size: cover;
   background-position: center center;
@@ -47,6 +48,7 @@
 }
 
 .collectionTop {
+  border-radius: 30px;
   background-image: url("../../../Assets/Collection/collection2.jpg");
   background-size: cover;
   background-position: center;
@@ -64,6 +66,7 @@
 }
 
 .box1 {
+  border-radius: 30px;
   background-image: url("../../../Assets/Collection/collection3.jpg");
   background-size: cover;
   background-position: center;
@@ -75,6 +78,7 @@
 }
 
 .box2 {
+  border-radius: 30px;
   background-color: #f4e5e0;
   display: flex;
   flex-direction: column;

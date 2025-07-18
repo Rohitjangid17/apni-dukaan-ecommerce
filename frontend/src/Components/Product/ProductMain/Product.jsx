@@ -136,13 +136,13 @@ const Product = () => {
         <div className="productShowCase">
           <div className="productGallery">
             <div className="productThumb">
-              <img src={product1} onClick={() => setCurrentImg(0)} alt="" />
-              <img src={product2} onClick={() => setCurrentImg(1)} alt="" />
-              <img src={product3} onClick={() => setCurrentImg(2)} alt="" />
-              <img src={product4} onClick={() => setCurrentImg(3)} alt="" />
+              <img src={product1} onClick={() => setCurrentImg(0)} alt="" loading="lazy"/>
+              <img src={product2} onClick={() => setCurrentImg(1)} alt="" loading="lazy"/>
+              <img src={product3} onClick={() => setCurrentImg(2)} alt="" loading="lazy"/>
+              <img src={product4} onClick={() => setCurrentImg(3)} alt="" loading="lazy"/>
             </div>
             <div className="productFullImg">
-              <img src={productImg[currentImg]} alt="" />
+              <img src={productImg[currentImg]} alt="" loading="lazy"/>
               <div className="buttonsGroup">
                 <button onClick={prevImg} className="directionBtn">
                   <GoChevronLeft size={18} />

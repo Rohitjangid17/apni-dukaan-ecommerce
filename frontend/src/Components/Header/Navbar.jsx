@@ -38,7 +38,7 @@ const Navbar = () => {
         <div className="logoLinkContainer">
           <div className="logoContainer">
             <Link to="/" onClick={scrollToTop}>
-              <img src={logo} alt="Logo" />
+              <img src={logo} alt="Logo" loading="lazy" />
             </Link>
           </div>
           <div className="linkContainer">
@@ -101,7 +101,7 @@ const Navbar = () => {
           )}
           <div className="logoContainer">
             <Link to="/">
-              <img src={logo} alt="Logo" />
+              <img src={logo} alt="Logo" loading="lazy" />
             </Link>
           </div>
           <Link to="/cart">

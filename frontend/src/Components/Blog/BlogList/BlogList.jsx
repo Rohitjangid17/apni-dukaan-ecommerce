@@ -25,7 +25,7 @@ const BlogList = () => {
           {BlogData.map((blogPost) => (
             <div className="blogPost">
               <div className="blogPostThumb">
-                <img src={blogPost.blogThumbnail} alt="blogPost" />
+                <img src={blogPost.blogThumbnail} alt="blogPost" loading="lazy" />
               </div>
               <div className="blogPostContent">
                 <div className="blogPostContentDate">
