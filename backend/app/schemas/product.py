@@ -7,6 +7,13 @@ class ProductBase(BaseModel):
     price: float
     category_id: int
     created_by: int
+    weight: Optional[float]
+    dimensions: Optional[str]
+    sizes: Optional[List[str]]
+    colors: Optional[List[str]]
+    storage: Optional[str]
+    tags: Optional[List[str]]
+    lining: Optional[str]
 
 class ProductCreate(ProductBase):
     pass
