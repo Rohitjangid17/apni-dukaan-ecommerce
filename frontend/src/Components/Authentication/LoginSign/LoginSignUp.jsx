@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./LoginSignUp.css";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const LoginSignUp = () => {
@@ -249,9 +249,6 @@ const LoginSignUp = () => {
                       <input type="checkbox" className="brandRadio" />
                       <p>Remember me</p>
                     </label>
-                    <p>
-                      <Link to="/resetPassword">Forgot your password</Link>
-                    </p>
                   </div>
                   <button type="submit">{loading ? "Logging in..." : "Log In"}</button>
                 </form>

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AdditionalInfo.css";
+import BASE_URL from "../../../constants/apiConfig";
 
 import user1 from "../../../Assets/Users/user1.jpg";
 import user2 from "../../../Assets/Users/user2.jpg";
@@ -7,12 +8,34 @@ import user2 from "../../../Assets/Users/user2.jpg";
 import { FaStar } from "react-icons/fa";
 import Rating from "@mui/material/Rating";
 
-const AdditionalInfo = () => {
+const AdditionalInfo = ({ productId }) => {
   const [activeTab, setActiveTab] = useState("aiTab1");
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+
+  console.log(product)
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/products/${productId}`);
+        const data = await res.json();
+        setProduct(data);
+      } catch (err) {
+        console.error("Failed to load product info:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+  if (!product) return <p>Loading additional info...</p>;
 
   return (
     <>
@@ -43,71 +66,68 @@ const AdditionalInfo = () => {
           <div className="productAdditionalInfoContent">
             {/* Tab1 / Description*/}
             {activeTab === "aiTab1" && (
-              <div className="aiTabDescription">
+            <div className="aiTabDescription">
+              {product.name && (
                 <div className="descriptionPara">
-                  <h3>Premium Cotton Kurta Set for Men</h3>
-                  <p>
-                    Elevate your festive wardrobe with this high-quality, 100%
-                  cotton kurta set tailored for comfort and elegance. Ideal for
-                  weddings, pujas, or casual ethnic wear. Lightweight,
-                  breathable, and skin-friendly—perfect for Indian summers.
-                  </p>
+                  <h3>Category</h3>
+                  <p>{product.name || '-'}</p>
                 </div>
-                <div className="descriptionParaGrid">
-                  <div className="descriptionPara">
-                    <h3>Why Buy This Product?</h3>
-                    <p>
-                      <ul>
-                        <li>Made in India with premium cotton fabric</li>
-                        <li>Perfect for festivals like Diwali, Holi, or Eid</li>
-                        <li>Available in multiple sizes and vibrant colors</li>
-                      </ul>
-                    </p>
-                  </div>
-                  <div className="descriptionPara">
-                    <h3>Included in the Package</h3>
-                    <p>
-                      <ol>
-                        <li>1 x Kurta (Beige)</li>
-                        <li>1 x Pyjama (White)</li>
-                        <li>Free matching cotton mask</li>
-                      </ol>
-                    </p>
-                  </div>
-                </div>
+              )}
+              {product.description && (
                 <div className="descriptionPara">
-                  <h3>Fabric Composition</h3>
-                  <p style={{ marginTop: "-10px" }}>
-                    Top & Bottom: 100% Cotton | Lining: Not required (opaque)
-                  </p>
+                  <h3>Description</h3>
+                  <p>{product.description || '-'}</p>
                 </div>
-              </div>
-            )}
+              )}
+              {product.tags?.length > 0 && (
+                <div className="descriptionPara">
+                  <h3>Tags</h3>
+                  <p>{product.tags.join(", ")}</p>
+                </div>
+              )}
+              {product.lining && (
+                <div className="descriptionPara">
+                  <h3>Lining Material</h3>
+                  <p>{product.lining || '-'}</p>
+                </div>
+              )}
+              {product.storage && (
+                <div className="descriptionPara">
+                  <h3>Storage Info</h3>
+                  <p>{product?.storage || '-'}</p>
+                </div>
+              )}
+            </div>
+          )}
 
             {/* Tab2 / Additional Info*/}
 
             {activeTab === "aiTab2" && (
             <div className="aiTabAdditionalInfo">
-              <div className="additionalInfoContainer">
-                <h6>Weight</h6>
-                <p> 800 g</p>
-              </div>
-              <div className="additionalInfoContainer">
-                <h6>Dimensions</h6>
-                <p> 40 x 30 x 4 cm</p>
-              </div>
-              <div className="additionalInfoContainer">
-                <h6>Size</h6>
-                <p> S, M, L, XL, XXL</p>
-              </div>
-              <div className="additionalInfoContainer">
-                <h6>Color</h6>
-                <p> Maroon, White, Navy Blue, Mustard Yellow</p>
-              </div>
-              <div className="additionalInfoContainer">
-                <h6>Occasion</h6>
-                <p> Ethnic Wear, Festive, Wedding, Casual</p>
-              </div>
+              {product.weight && (
+                <div className="additionalInfoContainer">
+                  <h6>Weight</h6>
+                  <p>{product.weight} kg</p>
+                </div>
+              )}
+              {product.dimensions && (
+                <div className="additionalInfoContainer">
+                  <h6>Dimensions</h6>
+                  <p>{product.dimensions}</p>
+                </div>
+              )}
+              {product.sizes?.length > 0 && (
+                <div className="additionalInfoContainer">
+                  <h6>Sizes Available</h6>
+                  <p>{product.sizes.join(", ")}</p>
+                </div>
+              )}
+              {product.colors?.length > 0 && (
+                <div className="additionalInfoContainer">
+                  <h6>Colors Available</h6>
+                  <p>{product.colors.join(", ")}</p>
+                </div>
+              )}
             </div>
           )}
 
