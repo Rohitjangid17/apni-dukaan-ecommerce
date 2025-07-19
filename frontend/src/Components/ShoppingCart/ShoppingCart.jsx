@@ -8,14 +8,14 @@ import {
 } from "../../Features/Cart/cartSlice";
 
 import { MdOutlineClose } from "react-icons/md";
-
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import success from "../../Assets/success.png";
+import toast from "react-hot-toast";
 
 const ShoppingCart = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("cartTab1");
   const [payments, setPayments] = useState(false);
@@ -65,6 +65,30 @@ const ShoppingCart = () => {
   const handlePaymentChange = (e) => {
     setSelectedPayment(e.target.value);
   };
+
+    const showErrorToast = (message) =>
+    toast.error(message, {
+      duration: 2000,
+      style: { backgroundColor: "#ff4b4b", color: "white" },
+      iconTheme: { primary: "#fff", secondary: "#ff4b4b" },
+    });
+
+
+  // Function to handle checkout access
+
+  const handleCheckoutAccess = (targetTab, callback = () => {}) => {
+  const token = localStorage.getItem("access_token");
+  if (!token) {
+    showErrorToast("Please login or sign up to continue checkout.");
+    navigate("/loginSignUp");
+    return;
+  }
+
+    handleTabClick(targetTab);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    callback();
+  };
+
 
   return (
     <>
@@ -409,15 +433,12 @@ const ShoppingCart = () => {
                       </tr>
                     </tbody>
                   </table>
-                  <button
-                    onClick={() => {
-                      handleTabClick("cartTab2");
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }}
-                    disabled={cartItems.length === 0}
-                  >
-                    Proceed to Checkout
-                  </button>
+                    <button
+                      onClick={() => handleCheckoutAccess("cartTab2")}
+                      disabled={cartItems.length === 0}
+                    >
+                      Proceed to Checkout
+                    </button>
                 </div>
               </div>
             )}
@@ -565,7 +586,7 @@ const ShoppingCart = () => {
                       </div>
                     </label>
                     <div className="policyText">
-To know more, read our{" "}
+                      To know more, read our{" "}
                       <Link to="/terms" onClick={scrollToTop}>
                         Privacy Policy
                       </Link>
@@ -573,11 +594,9 @@ To know more, read our{" "}
                     </div>
                   </div>
                   <button
-                    onClick={() => {
-                      handleTabClick("cartTab3");
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                      setPayments(true);
-                    }}
+                    onClick={() =>
+                      handleCheckoutAccess("cartTab3", () => setPayments(true))
+                    }
                   >
                     Place Order
                   </button>
