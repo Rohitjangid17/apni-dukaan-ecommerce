@@ -65,7 +65,7 @@ const ShopDetails = () => {
 
   const handleAddToCart = (product) => {
     const productInCart = cartItems.find(
-      (item) => item.productID === product.productID
+      (item) => item.id === product.id
     );
 
     if (productInCart && productInCart.quantity >= 20) {
@@ -95,10 +95,6 @@ const ShopDetails = () => {
       });
     }
   };
-
-  products.map((product) => {
-    console.log(product)
-  })
 
   return (
     <>

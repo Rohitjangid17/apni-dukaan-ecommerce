@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./RelatedProducts.css";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,22 +9,48 @@ import { Navigation } from "swiper/modules";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../Features/Cart/cartSlice";
 
-import StoreData from "../../../Data/StoreData";
-
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import toast from "react-hot-toast";
+import BASE_URL from "../../../constants/apiConfig";
+import { Link } from "react-router-dom";
+import Spinner from "../../Spinner/Spinner";
 
 
 const RelatedProducts = () => {
 
     const dispatch = useDispatch();
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
   
     const cartItems = useSelector((state) => state.cart.items);
 
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    };
+
+    useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          const response = await fetch(`${BASE_URL}/products/`);
+          const data = await response.json();
+          setProducts(data);
+        } catch (error) {
+          console.error("Failed to fetch products:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchProducts();
+    }, []);
+
     const handleAddToCart = (product) => {
     const productInCart = cartItems.find(
-      (item) => item.productID === product.productID
+      (item) => item.id === product.id
     );
 
     if (productInCart && productInCart.quantity >= 20) {
@@ -70,6 +96,9 @@ const RelatedProducts = () => {
           <div className="swiper-button image-swiper-button-prev">
             <IoIosArrowBack />
           </div>
+          {loading ? (
+                <Spinner />
+            ) : (
           <Swiper
             slidesPerView={4}
             slidesPerGroup={4}
@@ -98,27 +127,33 @@ const RelatedProducts = () => {
               },
             }}
           >
-            {StoreData.slice(0, 8).map((product) => {
+            {products.slice(0, 8).map((product) => {
               return (
-                <SwiperSlide key={product.productID}>
+                <SwiperSlide key={product.id}>
                   <div className="rpContainer">
                     <div className="rpImages">
+                      <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+                      {product.images?.[0] && (
                       <img
-                        src={product.frontImg}
-                        alt={product.productName}
+                        src={`${BASE_URL}${product.images[0]}`}
+                        alt={product.name}
                         loading="lazy"
                         className="rpFrontImg"
                       />
+                      )}
+                      </Link>
                       <h4 onClick={() => handleAddToCart(product)}>Add to Cart</h4>
                     </div>
 
                     <div className="relatedProductInfo">
                       <div className="rpCategoryWishlist">
-                        <p>{product.productTitle}</p>
+                        <p>{product.name}</p>
                       </div>
                       <div className="productNameInfo">
-                        <h5>{product.productName}</h5>
-                        <p>₹{product.productPrice}</p>
+                        <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+                        <h5>{product.description}</h5>
+                        </Link>
+                        <p>₹{product.price}</p>
                         <div className="productRatingReviews">
                           <div className="productRatingStar">
                             <FaStar color="#FEC78A" size={10} />
@@ -128,7 +163,7 @@ const RelatedProducts = () => {
                             <FaStar color="#FEC78A" size={10} />
                           </div>
 
-                          <span>{product.productReviews}</span>
+                          <span>0 reviews</span>
                         </div>
                       </div>
                     </div>
@@ -137,6 +172,7 @@ const RelatedProducts = () => {
               );
             })}
           </Swiper>
+            )}
         </div>
       </div>
     </>
