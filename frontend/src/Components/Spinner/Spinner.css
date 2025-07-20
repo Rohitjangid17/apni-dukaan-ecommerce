@@ -1,4 +1,3 @@
-/* Spinner container */
 .spinnerWrapper {
   display: flex;
   justify-content: center;
@@ -7,7 +6,6 @@
   width: 100%;
 }
 
-/* Premium spinner */
 .loader {
   font-size: 10px;
   width: 1em;

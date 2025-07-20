@@ -6,12 +6,9 @@ import { addToCart } from "../../../Features/Cart/cartSlice";
 
 import Filter from "../Filters/Filter";
 import { Link } from "react-router-dom";
-import StoreData from "../../../Data/StoreData";
-import { FiHeart } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import { IoFilterSharp, IoClose } from "react-icons/io5";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
-import { FaCartPlus } from "react-icons/fa";
 import BASE_URL from "../../../constants/apiConfig";
 import toast from "react-hot-toast";
 import Spinner from "../../Spinner/Spinner";
@@ -47,7 +44,17 @@ const ShopDetails = () => {
         const data = await response.json();
         setProducts(data);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
+        toast.error("Failed to fetch products", {
+          duration: 2000,
+          style: {
+            backgroundColor: "#ff4b4b",
+            color: "white",
+          },
+          iconTheme: {
+            primary: "#fff",
+            secondary: "#ff4b4b",
+          },
+        });
       } finally {
         setLoading(false);
       }

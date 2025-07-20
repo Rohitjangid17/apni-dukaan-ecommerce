@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./LimitedEdition.css";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -13,16 +13,78 @@ import { Autoplay } from "swiper/modules";
 
 import { Link } from "react-router-dom";
 
-import StoreData from "../../../Data/StoreData";
-
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { FaCartPlus } from "react-icons/fa";
+import { FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import BASE_URL from "../../../constants/apiConfig";
 
 import toast from "react-hot-toast";
+import Spinner from "../../Spinner/Spinner";
+
+// Function to render stars based on rating
+const renderStars = (rating) => {
+  const stars = [];
+
+  for (let i = 1; i <= 5; i++) {
+    if (rating >= i) {
+      stars.push(<FaStar key={i} color="#FEC78A" size={10} />);
+    } else if (rating >= i - 0.5) {
+      stars.push(<FaStarHalfAlt key={i} color="#FEC78A" size={10} />);
+    } else {
+      stars.push(<FaRegStar key={i} color="#FEC78A" size={10} />);
+    }
+  }
+
+  return stars;
+};
 
 const LimitedEdition = () => {
   const dispatch = useDispatch();
+  const [limitedProducts, setLimitedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fake review data
+  const fakeReviewList = [
+  "4.8k+ reviews", "3.5k+ reviews", "5.1k+ reviews", "2.2k+ reviews", "4.1k+ reviews",
+  "1.9k+ reviews", "3.8k+ reviews", "3.1k+ reviews", "2.5k+ reviews", "4.9k+ reviews",
+  "1.1k+ reviews", "2.9k+ reviews", "1.4k+ reviews", "3.6k+ reviews", "2.0k+ reviews"
+  ];
+
+  useEffect(() => {
+    // Fetch products
+    const fetchLimitedProducts = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`${BASE_URL}/products/`);
+        const data = await res.json();
+
+        // Map products to include fake reviews and ratings
+        const limited = data.slice(0, 5).map((product, index) => ({
+          ...product,
+          productReviews: fakeReviewList[index % fakeReviewList.length],
+          rating: (Math.random() * 2 + 3).toFixed(1), // Random rating between 3.0 - 5.0
+        }));
+
+        setLimitedProducts(limited);
+      } catch (err) {
+          toast.error("Failed to fetch limited products", {
+          duration: 2000,
+          style: {
+            backgroundColor: "#ff4b4b",
+            color: "white",
+          },
+          iconTheme: {
+            primary: "#fff",
+            secondary: "#ff4b4b",
+          },
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLimitedProducts();
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -112,15 +174,18 @@ const LimitedEdition = () => {
               },
             }}
           >
-            {StoreData.slice(8, 13).map((product) => {
+            {loading ? (
+              <Spinner />
+            ) : (
+            limitedProducts.map((product) => {
               return (
-                <SwiperSlide key={product.productID}>
+                <SwiperSlide key={product.id}>
                   <div className="lpContainer">
                     <div className="lpImageContainer">
-                      <Link to="/Product" onClick={scrollToTop}>
+                      <Link to={`/product/${product.id}`} onClick={scrollToTop}>
                         <img
-                          src={product.frontImg}
-                          alt={product.productName}
+                          src={`${BASE_URL}${product.images?.[0]}`}
+                          alt={product.name}
                           loading="lazy"
                           className="lpImage"
                         />
@@ -136,30 +201,28 @@ const LimitedEdition = () => {
                     </div>
                     <div className="limitedProductInfo">
                       <div className="lpCategoryWishlist">
-                        <p>{product.productTitle}</p>
+                        <p>{product.name}</p>
                       </div>
                       <div className="productNameInfo">
-                        <Link to="/Product" onClick={scrollToTop}>
-                          <h5>{product.productName}</h5>
+                        <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+                          <h5>{product.description}</h5>
                         </Link>
-                        <p>₹{product.productPrice}</p>
+                        <p>₹{product.price}</p>
                         <div className="productRatingReviews">
                           <div className="productRatingStar">
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
+                            {renderStars(product.rating || 4.5)}
                           </div>
 
                           <span>{product.productReviews}</span>
+                         
                         </div>
                       </div>
                     </div>
                   </div>
                 </SwiperSlide>
               );
-            })}
+            })
+          )}
           </Swiper>
         </div>
       </div>
