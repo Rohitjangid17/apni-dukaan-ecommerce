@@ -30,6 +30,12 @@ backend/.env.*
 backend/.venv/
 backend/venv/
 backend/Pipfile.lock
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/*.sqlite3
+backend/.env
+
 
 # === IDE & OS Files ===
 *.swp
