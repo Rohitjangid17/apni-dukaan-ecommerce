@@ -24,3 +24,10 @@ class ProductOut(ProductBase):
 
     class Config:
         orm_mode = True
+
+class PaginatedProductOut(BaseModel):
+    total: int
+    page: int
+    limit: int
+    total_pages: int
+    data: List[ProductOut]

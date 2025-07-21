@@ -1,8 +1,8 @@
-from fastapi import APIRouter, UploadFile, File, Form, Depends, HTTPException
+from fastapi import APIRouter, UploadFile, File, Form, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import List
 from app.models.product import Product
-from app.schemas.product import ProductOut
+from app.schemas.product import ProductOut, PaginatedProductOut
 from app.utils.file_handler import save_image
 from app.database import SessionLocal
 
@@ -73,12 +73,20 @@ async def create_product(
     )
 
 
-@router.get("/", response_model=List[ProductOut])
-def get_all_products(db: Session = Depends(get_db)):
-    products = db.query(Product).all()
-    result = []
-    for p in products:
-        result.append(ProductOut(
+@router.get("/", response_model=PaginatedProductOut)
+def get_all_products(
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1, le=100),
+    db: Session = Depends(get_db)
+):
+    skip = (page - 1) * limit
+    total = db.query(Product).count()
+    total_pages = (total + limit - 1) // limit
+
+    products = db.query(Product).offset(skip).limit(limit).all()
+
+    result = [
+        ProductOut(
             id=p.id,
             name=p.name,
             description=p.description,
@@ -93,8 +101,17 @@ def get_all_products(db: Session = Depends(get_db)):
             storage=p.storage,
             tags=p.tags.split(",") if p.tags else [],
             lining=p.lining
-        ))
-    return result
+        )
+        for p in products
+    ]
+
+    return {
+        "total": total,
+        "page": page,
+        "limit": limit,
+        "total_pages": total_pages,
+        "data": result
+    }
 
 
 @router.get("/{product_id}", response_model=ProductOut)
@@ -102,6 +119,7 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
     product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
+
     return ProductOut(
         id=product.id,
         name=product.name,
@@ -145,20 +163,18 @@ async def update_product(
     storage: str = Form(None),
     tags: str = Form(None),
     lining: str = Form(None),
-    images: List[UploadFile] = File(None),  # Optional: update only if provided
+    images: List[UploadFile] = File(None),
     db: Session = Depends(get_db)
 ):
     product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    # Handle image update (replace only if new images are provided)
     if images:
         image_urls = [save_image(image) for image in images]
         product.images = ",".join(image_urls)
     image_urls = product.images.split(",") if product.images else []
 
-    # Update fields
     product.name = name
     product.description = description
     product.price = price
