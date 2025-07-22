@@ -20,7 +20,7 @@ class ProductCreate(ProductBase):
     pass
 
 class ProductOut(ProductBase):
-    id: int
+    product_id: int
     images: List[str]
     category: CategoryOut
 
@@ -52,7 +52,7 @@ class PaginatedProductOut(BaseModel):
         from_attributes = True
 
 class ProductInCart(BaseModel):
-    id: int
+    product_id: int
     name: str
     description: str
     price: float

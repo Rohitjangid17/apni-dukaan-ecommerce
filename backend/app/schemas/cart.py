@@ -19,7 +19,8 @@ class CartUpdate(BaseModel):
     size: Optional[str] = None
 
 class CartOut(CartBase):
-    id: int
+    cart_id: int
+    product_id: int
     product: ProductInCart
 
     class Config:
