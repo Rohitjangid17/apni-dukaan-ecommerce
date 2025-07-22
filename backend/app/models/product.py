@@ -10,7 +10,7 @@ class Product(Base):
     description = Column(String(1000))
     price = Column(Float, nullable=False)
     category_id = Column(Integer, ForeignKey("categories.category_id"), nullable=False)
-    created_by = Column(Integer, nullable=False)
+    created_by = Column(Integer, ForeignKey("users.user_id"), nullable=False)
     images = Column(String(1000))
 
     weight = Column(Float, nullable=True)
