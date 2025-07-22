@@ -7,6 +7,7 @@ import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import toast from "react-hot-toast";
 import BASE_URL from "../../../constants/apiConfig";
 import Spinner from "../../Spinner/Spinner";
+import useAddToCart from "../../../hooks/useAddToCart";
 
 // Function to render stars based on rating
 const renderStars = (rating) => {
@@ -26,7 +27,7 @@ const renderStars = (rating) => {
 };
 
 const Trendy = () => {
-  const dispatch = useDispatch();
+  const addToCartHandler = useAddToCart();;
   const [activeTab, setActiveTab] = useState("tab1");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -87,26 +88,6 @@ const Trendy = () => {
     fetchProducts();
   }, []);
 
-  const handleAddToCart = (product) => {
-    const productInCart = cartItems.find(
-      (item) => item.productID === product.productID
-    );
-
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: { backgroundColor: "#ff4b4b", color: "white" },
-        iconTheme: { primary: "#fff", secondary: "#ff4b4b" },
-      });
-    } else {
-      dispatch(addToCart(product));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: { backgroundColor: "#07bc0c", color: "white" },
-        iconTheme: { primary: "#fff", secondary: "#07bc0c" },
-      });
-    }
-  };
 
   // useMemo optimized data
   const allProducts = useMemo(() => {
@@ -150,7 +131,7 @@ const Trendy = () => {
               className="trendyProduct_front"
             />
           </Link>
-          <h4 onClick={() => handleAddToCart(product)}>Add to Cart</h4>
+          <h4 onClick={() => addToCartHandler(product)}>Add to Cart</h4>
         </div>
         <div className="trendyProductInfo">
           <div className="trendyProductCategoryWishlist">

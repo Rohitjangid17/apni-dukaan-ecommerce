@@ -12,9 +12,9 @@ import { FaStar } from "react-icons/fa";
 import BASE_URL from "../../../constants/apiConfig";
 import Spinner from "../../Spinner/Spinner";
 import { Link } from "react-router-dom";
+import useAddToCart from "../../../hooks/useAddToCart";
 
 import toast from "react-hot-toast";
-
 import "./Product.css";
 
 const Product = ({productId}) => {
@@ -22,6 +22,7 @@ const Product = ({productId}) => {
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState(null);
   const [productImg, setProductImg] = useState([]);
+  const addToCartHandler = useAddToCart();
   
   // Fetch product details from API
   useEffect(() => {
@@ -47,7 +48,6 @@ const Product = ({productId}) => {
   
   
   // Product images Gallery
-  
   const [currentImg, setCurrentImg] = useState(0);
   const prevImg = () => {
     setCurrentImg(currentImg === 0 ? productImg.length - 1 : currentImg - 1);
@@ -58,7 +58,6 @@ const Product = ({productId}) => {
   };
 
   // Product Quantity
-
   const [quantity, setQuantity] = useState(1);
 
   const increment = () => {
@@ -78,78 +77,50 @@ const Product = ({productId}) => {
     }
   };
 
-  // Product WishList
+  // Size and Color Selection
+  const [selectSize, setSelectSize] = useState(null);
+  const [highlightedColor, setHighlightedColor] = useState(null);
 
-  const [clicked, setClicked] = useState(false);
-
-  // Product Sizes
-
-  const sizes = product?.sizes || [];
-
-  const [selectSize, setSelectSize] = useState("S");
-
-  // Product Colors
-
-  const [highlightedColor, setHighlightedColor] = useState("#C8393D");
-  const colors = product?.colors || [];
-
-  // Product Detail to Redux
-
-  const dispatch = useDispatch();
-
-  const cartItems = useSelector((state) => state.cart.items);
-
-  const handleAddToCart = () => {
-      const productDetails = {
-        productID: product.id,
-        productName: product.name,
-        productPrice: product.price,
-        frontImg: `${BASE_URL}${product.images?.[0]}`,
-        productReviews: product.reviews || "1.2k reviews",
-      };
-
-    const productInCart = cartItems.find(
-      (item) => item.productID === productDetails.productID
-    );
-
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: {
-          backgroundColor: "#ff4b4b",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#ff4b4b",
-        },
-      });
-    } else {
-      dispatch(addToCart(productDetails));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: {
-          backgroundColor: "#07bc0c",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#07bc0c",
-        },
-      });
+  // Set default size and color after product is loaded
+  useEffect(() => {
+    if (product) {
+      if (!selectSize && product.sizes?.length > 0) {
+        setSelectSize(product.sizes[0]);
+      }
+      if (!highlightedColor && product.colors?.length > 0) {
+        setHighlightedColor(product.colors[0]);
+      }
     }
-  };
+  }, [product]);
 
-  if (loading) {
+  // Add to Cart Handler
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    const selectedColor = highlightedColor || (Array.isArray(product.colors) && product.colors[0]) || "-";
+    const selectedSize = selectSize || (Array.isArray(product.sizes) && product.sizes[0]) || "-";
+
+      addToCartHandler(
+        {
+          ...product,
+          color: selectedColor,
+          size: selectedSize,
+        },
+        8,
+        quantity
+      );
+    };
+
+    if (loading) {
+      return (
+        <div className="loadingContainer">
+          <Spinner />
+        </div>
+      );
+    }
+
     return (
-      <div className="loadingContainer">
-        <Spinner />
-      </div>
-    );
-  }
-
-  return (
-    <>
+      <>
       <div className="productSection">
         <div className="productShowCase">
           <div className="productGallery">
@@ -212,7 +183,7 @@ const Product = ({productId}) => {
               <div className="productSize">
                 <p>Sizes</p>
                 <div className="sizeBtn">
-                  {sizes.map((size) => (
+                  {product?.sizes?.map((size) => (
                     <Tooltip
                       key={size}
                       title={size}
@@ -235,7 +206,7 @@ const Product = ({productId}) => {
               <div className="productColor">
                   <p>Color</p>
                   <div className="colorBtn">
-                    {colors.map((color, index) => (
+                    {product?.colors?.map((color, index) => (
                       <Tooltip
                         key={index}
                         title={color}

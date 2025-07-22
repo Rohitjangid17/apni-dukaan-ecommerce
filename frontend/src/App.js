@@ -17,8 +17,8 @@ import Authentication from "./Pages/Authentication";
 import BlogDetails from "./Components/Blog/BlogDetails/BlogDetails";
 import TermsConditions from "./Pages/TermsConditions";
 import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
-import Popup from "./Components/PopupBanner/Popup";
 import { Toaster } from "react-hot-toast";
+import Search from "./Pages/Search";
 
 const App = () => {
   return (
@@ -32,6 +32,7 @@ const App = () => {
           <Route path="/shop" element={<Shop />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/product/:productId" element={<ProductDetails />} />
           <Route path="/loginSignUp" element={<Authentication />} />
           <Route path="/BlogDetails" element={<BlogDetails />} />

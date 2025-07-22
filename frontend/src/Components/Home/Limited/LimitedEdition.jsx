@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./LimitedEdition.css";
 
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../../Features/Cart/cartSlice";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -19,10 +16,11 @@ import BASE_URL from "../../../constants/apiConfig";
 
 import toast from "react-hot-toast";
 import Spinner from "../../Spinner/Spinner";
+import useAddToCart from "../../../hooks/useAddToCart";
 
 
 const LimitedEdition = () => {
-  const dispatch = useDispatch();
+  const addToCartHandler = useAddToCart();
   const [limitedProducts, setLimitedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -60,43 +58,6 @@ const LimitedEdition = () => {
       top: 0,
       behavior: "smooth",
     });
-  };
-
-  const cartItems = useSelector((state) => state.cart.items);
-
-  const handleAddToCart = (product) => {
-    const productInCart = cartItems.find(
-      (item) => item.productId === product.id
-    );
-    
-    console.log("productInCart", productInCart);
-
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: {
-          backgroundColor: "#ff4b4b",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#ff4b4b",
-        },
-      });
-    } else {
-      dispatch(addToCart(product));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: {
-          backgroundColor: "#07bc0c",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#07bc0c",
-        },
-      });
-    }
   };
 
   return (
@@ -164,14 +125,9 @@ const LimitedEdition = () => {
                           className="lpImage"
                         />
                       </Link>
-                      <h4 onClick={() => handleAddToCart(product)}>
+                      <h4 onClick={() => addToCartHandler(product)}>
                         Add to Cart
                       </h4>
-                    </div>
-                    <div
-                      className="lpProductImagesCart"
-                      onClick={() => handleAddToCart(product)}
-                    >
                     </div>
                     <div className="limitedProductInfo">
                       <div className="lpCategoryWishlist">

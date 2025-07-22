@@ -17,8 +17,6 @@ const AdditionalInfo = ({ productId }) => {
     setActiveTab(tab);
   };
 
-  console.log(product)
-
   useEffect(() => {
     const fetchProduct = async () => {
       try {

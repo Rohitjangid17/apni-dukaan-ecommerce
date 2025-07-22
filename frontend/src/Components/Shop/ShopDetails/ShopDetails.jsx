@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ShopDetails.css";
 
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../../Features/Cart/cartSlice";
-
 import Filter from "../Filters/Filter";
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
@@ -12,10 +9,11 @@ import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 import BASE_URL from "../../../constants/apiConfig";
 import toast from "react-hot-toast";
 import Spinner from "../../Spinner/Spinner";
+import useAddToCart from "../../../hooks/useAddToCart";
 
 const ShopDetails = () => {
-  const dispatch = useDispatch();
 
+  const addToCartHandler = useAddToCart();
   const [loading, setLoading] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [products, setProducts] = useState([]);
@@ -35,9 +33,7 @@ const ShopDetails = () => {
     setIsDrawerOpen(false);
   };
 
-  const cartItems = useSelector((state) => state.cart.items);
-
-    useEffect(() => {
+  useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(`${BASE_URL}/products/`);
@@ -63,38 +59,6 @@ const ShopDetails = () => {
     fetchProducts();
   }, []);
 
-  const handleAddToCart = (product) => {
-    const productInCart = cartItems.find(
-      (item) => item.id === product.id
-    );
-
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: {
-          backgroundColor: "#ff4b4b",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#ff4b4b",
-        },
-      });
-    } else {
-      dispatch(addToCart(product));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: {
-          backgroundColor: "#07bc0c",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#07bc0c",
-        },
-      });
-    }
-  };
 
   return (
     <>
@@ -150,14 +114,9 @@ const ShopDetails = () => {
                           alt="product image" />
                         )}
                       </Link>
-                      <h4 onClick={() => handleAddToCart(product)}>
-                        Add to Cart
+                      <h4 onClick={() => addToCartHandler(product)}>
+                        Add to Cart for Test
                       </h4>
-                    </div>
-                    <div
-                      className="sdProductImagesCart"
-                      onClick={() => handleAddToCart(product)}
-                    >
                     </div>
                     <div className="sdProductInfo">
                       <div className="sdProductCategoryWishlist">

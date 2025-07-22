@@ -6,24 +6,20 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import { Navigation } from "swiper/modules";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../../Features/Cart/cartSlice";
 
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import toast from "react-hot-toast";
 import BASE_URL from "../../../constants/apiConfig";
 import { Link } from "react-router-dom";
 import Spinner from "../../Spinner/Spinner";
+import useAddToCart from "../../../hooks/useAddToCart";
 
 
 const RelatedProducts = () => {
-
-    const dispatch = useDispatch();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-  
-    const cartItems = useSelector((state) => state.cart.items);
+
+    const addToCartHandler = useAddToCart();
 
     const scrollToTop = () => {
       window.scrollTo({
@@ -47,39 +43,6 @@ const RelatedProducts = () => {
 
       fetchProducts();
     }, []);
-
-    const handleAddToCart = (product) => {
-    const productInCart = cartItems.find(
-      (item) => item.id === product.id
-    );
-
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: {
-          backgroundColor: "#ff4b4b",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#ff4b4b",
-        },
-      });
-    } else {
-      dispatch(addToCart(product));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: {
-          backgroundColor: "#07bc0c",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#07bc0c",
-        },
-      });
-    }
-  };
 
   return (
     <>
@@ -142,7 +105,7 @@ const RelatedProducts = () => {
                       />
                       )}
                       </Link>
-                      <h4 onClick={() => handleAddToCart(product)}>Add to Cart</h4>
+                      <h4 onClick={() => addToCartHandler(product)}>Add to Cart</h4>
                     </div>
 
                     <div className="relatedProductInfo">
