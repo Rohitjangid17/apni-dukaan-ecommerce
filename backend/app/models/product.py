@@ -22,3 +22,4 @@ class Product(Base):
     lining = Column(String(255), nullable=True)
 
     category = relationship("Category", backref="products")
+    cart_items = relationship("Cart", back_populates="product")

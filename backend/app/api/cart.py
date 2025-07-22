@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List
 from app.database import SessionLocal
 from app.models.cart import Cart
@@ -7,7 +7,7 @@ from app.schemas.cart import CartCreate, CartUpdate, CartOut
 
 router = APIRouter()
 
-# Dependency to get DB session
+# Dependency
 def get_db():
     db = SessionLocal()
     try:
@@ -25,11 +25,11 @@ def add_to_cart(payload: CartCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=List[CartOut])
 def get_all_cart_items(db: Session = Depends(get_db)):
-    return db.query(Cart).all()
+    return db.query(Cart).options(joinedload(Cart.product)).all()
 
 @router.get("/user/{user_id}", response_model=List[CartOut])
 def get_cart_by_user(user_id: int, db: Session = Depends(get_db)):
-    return db.query(Cart).filter(Cart.user_id == user_id).all()
+    return db.query(Cart).options(joinedload(Cart.product)).filter(Cart.user_id == user_id).all()
 
 @router.put("/{cart_id}", response_model=CartOut)
 def update_cart(cart_id: int, payload: CartUpdate, db: Session = Depends(get_db)):
