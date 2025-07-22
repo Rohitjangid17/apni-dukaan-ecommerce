@@ -20,6 +20,7 @@
 }
 
 .productThumb img {
+  border: 1px solid #e0e0e0;
   width: 80px;
   height: 80px;
 }
@@ -310,7 +311,7 @@
 
 .productTags p {
   font-size: 13px;
-  color: black;
+  color: #767676;
 }
 
 .productTags span {

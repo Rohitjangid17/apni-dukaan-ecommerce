@@ -1,31 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ShopDetails.css";
-
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../../Features/Cart/cartSlice";
 
 import Filter from "../Filters/Filter";
 import { Link } from "react-router-dom";
-import StoreData from "../../../Data/StoreData";
-import { FiHeart } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import { IoFilterSharp, IoClose } from "react-icons/io5";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
-import { FaCartPlus } from "react-icons/fa";
+import BASE_URL from "../../../constants/apiConfig";
 import toast from "react-hot-toast";
+import Spinner from "../../Spinner/Spinner";
+import useAddToCart from "../../../hooks/useAddToCart";
 
 const ShopDetails = () => {
-  const dispatch = useDispatch();
 
-  const [wishList, setWishList] = useState({});
+  const addToCartHandler = useAddToCart();
+  const [loading, setLoading] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  const handleWishlistClick = (productID) => {
-    setWishList((prevWishlist) => ({
-      ...prevWishlist,
-      [productID]: !prevWishlist[productID],
-    }));
-  };
+  const [products, setProducts] = useState([]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -42,43 +33,41 @@ const ShopDetails = () => {
     setIsDrawerOpen(false);
   };
 
-  const cartItems = useSelector((state) => state.cart.items);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/products/`);
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        toast.error("Failed to fetch products", {
+          duration: 2000,
+          style: {
+            backgroundColor: "#ff4b4b",
+            color: "white",
+          },
+          iconTheme: {
+            primary: "#fff",
+            secondary: "#ff4b4b",
+          },
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleAddToCart = (product) => {
-    const productInCart = cartItems.find(
-      (item) => item.productID === product.productID
-    );
+    fetchProducts();
+  }, []);
 
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: {
-          backgroundColor: "#ff4b4b",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#ff4b4b",
-        },
-      });
-    } else {
-      dispatch(addToCart(product));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: {
-          backgroundColor: "#07bc0c",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#07bc0c",
-        },
-      });
-    }
-  };
 
   return (
     <>
+      {loading ? (
+        <div className="loaderContainer">
+          <Spinner/>
+        </div>
+      ) : (
+      
       <div className="shopDetails">
         <div className="shopDetailMain">
           <div className="shopDetails__left">
@@ -114,36 +103,31 @@ const ShopDetails = () => {
             </div>
             <div className="shopDetailsProducts">
               <div className="shopDetailsProductsContainer">
-                {StoreData.slice(0, 6).map((product) => (
-                  <div className="sdProductContainer">
+                {products.map((product) => (
+                  <div className="sdProductContainer" key={product.id}>
                     <div className="sdProductImages">
-                      <Link to="/Product" onClick={scrollToTop}>
-                        <img
-                          src={product.frontImg}
-                          alt=""
+                      <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+                        {product.images && product.images.length > 0 && (
+                          <img src={`${BASE_URL}${product.images[0]}`}
                           loading="lazy"
                           className="sdProduct_front"
-                        />
+                          alt="product image" />
+                        )}
                       </Link>
-                      <h4 onClick={() => handleAddToCart(product)}>
-                        Add to Cart
+                      <h4 onClick={() => addToCartHandler(product)}>
+                        Add to Cart for Test
                       </h4>
-                    </div>
-                    <div
-                      className="sdProductImagesCart"
-                      onClick={() => handleAddToCart(product)}
-                    >
                     </div>
                     <div className="sdProductInfo">
                       <div className="sdProductCategoryWishlist">
-                        <p>{product.productTitle}</p>
+                        <p>{product?.name}</p>
                       </div>
                       <div className="sdProductNameInfo">
-                        <Link to="/product" onClick={scrollToTop}>
-                          <h5>{product.productName}</h5>
+                        <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+                          <h5>{product?.description}</h5>
                         </Link>
 
-                        <p>₹{product.productPrice}</p>
+                        <p>₹{product?.price}</p>
                         <div className="sdProductRatingReviews">
                           <div className="sdProductRatingStar">
                             <FaStar color="#FEC78A" size={10} />
@@ -185,6 +169,9 @@ const ShopDetails = () => {
           </div>
         </div>
       </div>
+      )}
+
+
       {/* Drawer */}
       <div className={`filterDrawer ${isDrawerOpen ? "open" : ""}`}>
         <div className="drawerHeader">

@@ -1,6 +1,8 @@
+# app/routes/auth.py
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.user import UserCreate, UserLogin, Token
+from app.schemas.user import UserCreate, UserLogin, Token, UserOut
 from app.models.user import User
 from app.database import SessionLocal
 from app.utils.security import get_password_hash, verify_password, create_access_token
@@ -13,6 +15,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
 
 @router.post("/signup", response_model=Token)
 def signup(user: UserCreate, db: Session = Depends(get_db)):
@@ -29,7 +32,13 @@ def signup(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     token = create_access_token(data={"sub": new_user.email})
-    return {"access_token": token, "token_type": "bearer"}
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "message": "Signup successful",
+        "user": new_user
+    }
+
 
 @router.post("/login", response_model=Token)
 def login(user: UserLogin, db: Session = Depends(get_db)):
@@ -38,4 +47,9 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     token = create_access_token(data={"sub": db_user.email})
-    return {"access_token": token, "token_type": "bearer"}
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "message": "Login successful",
+        "user": db_user
+    }

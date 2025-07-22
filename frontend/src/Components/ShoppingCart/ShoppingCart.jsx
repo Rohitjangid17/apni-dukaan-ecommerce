@@ -1,24 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ShoppingCart.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
   removeFromCart,
   updateQuantity,
   selectCartTotalAmount,
-} from "../../Features/Cart/cartSlice";
+} from "../../Features/Cart/cartSlice"; 
 
 import { MdOutlineClose } from "react-icons/md";
-
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import success from "../../Assets/success.png";
+import toast from "react-hot-toast";
+import { setCartItems } from "../../Features/Cart/cartSlice";
+import BASE_URL from "../../constants/apiConfig";
 
 const ShoppingCart = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("cartTab1");
   const [payments, setPayments] = useState(false);
+
+
+  const fetchCartItems = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      if (!token) return;
+      const res = await fetch("http://127.0.0.1:8000/cart/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) throw new Error("Failed to fetch");
+
+      const data = await res.json();
+
+      const formatted = data.map((item) => ({
+        productID: item.id,
+        product_id: item.product_id,
+        productName: item.product_name || 'My Product',
+        productPrice: item.price,
+        quantity: item.quantity,
+        frontImg: item.image_url,
+        productReviews: item.reviews || "1.2k reviews",
+      }));
+
+      dispatch(setCartItems(formatted));
+    } catch (err) {
+      console.error("Fetch cart failed", err);
+    }
+  };
+
+  useEffect(() => {
+  fetchCartItems();
+  }, []);
 
   const handleTabClick = (tab) => {
     if (tab === "cartTab1" || cartItems.length > 0) {
@@ -64,6 +101,56 @@ const ShoppingCart = () => {
 
   const handlePaymentChange = (e) => {
     setSelectedPayment(e.target.value);
+  };
+
+    const showErrorToast = (message) =>
+    toast.error(message, {
+      duration: 2000,
+      style: { backgroundColor: "#ff4b4b", color: "white" },
+      iconTheme: { primary: "#fff", secondary: "#ff4b4b" },
+    });
+
+
+  // Function to handle checkout access
+
+  const handleCheckoutAccess = (targetTab, callback = () => {}) => {
+  const token = localStorage.getItem("access_token");
+  if (!token) {
+    showErrorToast("Please login or sign up to continue checkout.");
+    navigate("/loginSignUp");
+    return;
+  }
+
+    handleTabClick(targetTab);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    callback();
+  };
+
+  const handleRemoveFromCart = async (productID) => {
+  const token = localStorage.getItem("access_token");
+  if (!token) return;
+
+  try {
+      const res = await fetch(`http://127.0.0.1:8000/cart/${productID}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) throw new Error("Failed to delete item from backend");
+
+      dispatch(removeFromCart(productID));
+      await fetchCartItems(dispatch);
+      toast.success("Item removed from cart", {
+        duration: 2000,
+        style: { backgroundColor: "#07bc0c", color: "white" },
+        iconTheme: { primary: "#fff", secondary: "#07bc0c" },
+      });
+    } catch (err) {
+      console.error("Delete cart item error:", err);
+      toast.error("Failed to remove item");
+    }
   };
 
   return (
@@ -143,14 +230,14 @@ const ShoppingCart = () => {
                           <tr key={item.productID}>
                             <td data-label="Product">
                               <div className="shoppingBagTableImg">
-                                <Link to="/product" onClick={scrollToTop}>
-                                  <img src={item.frontImg} alt="" loading="lazy" />
+                                <Link to={`/product/${item.product_id}`} onClick={scrollToTop}>
+                                  <img src={`${BASE_URL}${item.images?.[0]}`} alt="" loading="lazy" />
                                 </Link>
                               </div>
                             </td>
                             <td data-label="">
                               <div className="shoppingBagTableProductDetail">
-                                <Link to="/product" onClick={scrollToTop}>
+                                <Link to={`/product/${item.product_id}`} onClick={scrollToTop}>
                                   <h4>{item.productName}</h4>
                                 </Link>
                                 <p>{item.productReviews}</p>
@@ -210,9 +297,7 @@ const ShoppingCart = () => {
                             </td>
                             <td data-label="">
                               <MdOutlineClose
-                                onClick={() =>
-                                  dispatch(removeFromCart(item.productID))
-                                }
+                                onClick={() => handleRemoveFromCart(item.productID)}
                               />
                             </td>
                           </tr>
@@ -230,42 +315,6 @@ const ShoppingCart = () => {
                         </tr>
                       )}
                     </tbody>
-                    <tfoot>
-                      <th
-                        colSpan="6"
-                        className="shopCartFooter"
-                        style={{
-                          borderBottom: "none",
-                          padding: "20px 0px",
-                        }}
-                      >
-                        {cartItems.length > 0 && (
-                          <div className="shopCartFooterContainer">
-                            <form>
-                              <input
-                                type="text"
-                                placeholder="Coupon Code"
-                              ></input>
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                }}
-                              >
-                                Apply Coupon
-                              </button>
-                            </form>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                              }}
-                              className="shopCartFooterbutton"
-                            >
-                              Update Cart
-                            </button>
-                          </div>
-                        )}
-                      </th>
-                    </tfoot>
                   </table>
 
                   {/* For Mobile devices */}
@@ -277,13 +326,13 @@ const ShoppingCart = () => {
                           <div key={item.productID}>
                             <div className="shoppingBagTableMobileItems">
                               <div className="shoppingBagTableMobileItemsImg">
-                                <Link to="/product" onClick={scrollToTop}>
-                                  <img src={item.frontImg} alt="" loading="lazy" />
+                                <Link to={`/product/${item.product_id}`} onClick={scrollToTop}>
+                                  <img src={`${BASE_URL}${item.images?.[0]}`} alt="" loading="lazy" />
                                 </Link>
                               </div>
                               <div className="shoppingBagTableMobileItemsDetail">
                                 <div className="shoppingBagTableMobileItemsDetailMain">
-                                  <Link to="/product" onClick={scrollToTop}>
+                                  <Link to={`/product/${item.product_id}`} onClick={scrollToTop}>
                                     <h4>{item.productName}</h4>
                                   </Link>
                                   <p>{item.productReviews}</p>
@@ -326,9 +375,7 @@ const ShoppingCart = () => {
                                 <div className="shoppingBagTableMobileItemsDetailTotal">
                                   <MdOutlineClose
                                     size={20}
-                                    onClick={() =>
-                                      dispatch(removeFromCart(item.productID))
-                                    }
+                                    onClick={() => handleRemoveFromCart(item.productID)}
                                   />
                                   <p>₹{item.quantity * item.productPrice}</p>
                                 </div>
@@ -336,31 +383,6 @@ const ShoppingCart = () => {
                             </div>
                           </div>
                         ))}
-                        <div className="shopCartFooter">
-                          <div className="shopCartFooterContainer">
-                            <form>
-                              <input
-                                type="text"
-                                placeholder="Coupon Code"
-                              ></input>
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                }}
-                              >
-                                Apply Coupon
-                              </button>
-                            </form>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                              }}
-                              className="shopCartFooterbutton"
-                            >
-                              Update Cart
-                            </button>
-                          </div>
-                        </div>
                       </>
                     ) : (
                       <div className="shoppingCartEmpty">
@@ -409,15 +431,12 @@ const ShoppingCart = () => {
                       </tr>
                     </tbody>
                   </table>
-                  <button
-                    onClick={() => {
-                      handleTabClick("cartTab2");
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }}
-                    disabled={cartItems.length === 0}
-                  >
-                    Proceed to Checkout
-                  </button>
+                    <button
+                      onClick={() => handleCheckoutAccess("cartTab2")}
+                      disabled={cartItems.length === 0}
+                    >
+                      Proceed to Checkout
+                    </button>
                 </div>
               </div>
             )}
@@ -565,7 +584,7 @@ const ShoppingCart = () => {
                       </div>
                     </label>
                     <div className="policyText">
-To know more, read our{" "}
+                      To know more, read our{" "}
                       <Link to="/terms" onClick={scrollToTop}>
                         Privacy Policy
                       </Link>
@@ -573,11 +592,9 @@ To know more, read our{" "}
                     </div>
                   </div>
                   <button
-                    onClick={() => {
-                      handleTabClick("cartTab3");
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                      setPayments(true);
-                    }}
+                    onClick={() =>
+                      handleCheckoutAccess("cartTab3", () => setPayments(true))
+                    }
                   >
                     Place Order
                   </button>

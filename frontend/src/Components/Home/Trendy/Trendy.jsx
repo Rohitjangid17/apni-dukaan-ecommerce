@@ -1,15 +1,51 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "./Trendy.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../Features/Cart/cartSlice";
 import { Link } from "react-router-dom";
-import StoreData from "../../../Data/StoreData";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import toast from "react-hot-toast";
+import BASE_URL from "../../../constants/apiConfig";
+import Spinner from "../../Spinner/Spinner";
+import useAddToCart from "../../../hooks/useAddToCart";
+
+// Function to render stars based on rating
+const renderStars = (rating) => {
+  const stars = [];
+
+  for (let i = 1; i <= 5; i++) {
+    if (rating >= i) {
+      stars.push(<FaStar key={i} color="#FEC78A" size={10} />);
+    } else if (rating >= i - 0.5) {
+      stars.push(<FaStarHalfAlt key={i} color="#FEC78A" size={10} />);
+    } else {
+      stars.push(<FaRegStar key={i} color="#FEC78A" size={10} />);
+    }
+  }
+
+  return stars;
+};
 
 const Trendy = () => {
-  const dispatch = useDispatch();
+  const addToCartHandler = useAddToCart();;
   const [activeTab, setActiveTab] = useState("tab1");
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fake review data
+    const fakeReviewList = [
+      "4.8k+ reviews", "3.5k+ reviews", "5.1k+ reviews", "2.2k+ reviews", "4.1k+ reviews",
+      "1.9k+ reviews", "3.8k+ reviews", "3.1k+ reviews", "2.5k+ reviews", "4.9k+ reviews",
+      "1.1k+ reviews", "2.9k+ reviews", "1.4k+ reviews", "3.6k+ reviews", "2.0k+ reviews",
+      "1.7k+ reviews", "2.4k+ reviews", "1.3k+ reviews", "1.6k+ reviews", "1.2k+ reviews",
+      "2.6k+ reviews", "3.4k+ reviews", "4.3k+ reviews", "1.8k+ reviews", "2.1k+ reviews",
+      "3.9k+ reviews", "4.2k+ reviews", "2.3k+ reviews", "1.5k+ reviews", "5.0k+ reviews",
+      "1.0k+ reviews", "2.8k+ reviews", "3.3k+ reviews", "4.6k+ reviews", "3.2k+ reviews", 
+      "2.7k+ reviews", "1.8k+ reviews", "4.5k+ reviews",
+      "3.0k+ reviews", "2.2k+ reviews", "1.9k+ reviews", "3.7k+ reviews", "2.6k+ reviews",
+      "4.4k+ reviews", "3.3k+ reviews", "2.1k+ reviews", "1.6k+ reviews", "3.5k+ reviews",
+      "4.0k+ reviews", "2.9k+ reviews"
+    ];
 
   const cartItems = useSelector((state) => state.cart.items);
 
@@ -24,72 +60,91 @@ const Trendy = () => {
     setActiveTab(tab);
   };
 
-  const handleAddToCart = (product) => {
-    const productInCart = cartItems.find(
-      (item) => item.productID === product.productID
-    );
+  useEffect(() => {
+  // Fetch products
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${BASE_URL}/products/`);
+      const data = await response.json();
 
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: { backgroundColor: "#ff4b4b", color: "white" },
-        iconTheme: { primary: "#fff", secondary: "#ff4b4b" },
-      });
-    } else {
-      dispatch(addToCart(product));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: { backgroundColor: "#07bc0c", color: "white" },
-        iconTheme: { primary: "#fff", secondary: "#07bc0c" },
-      });
+      // Map products to include fake reviews and ratings
+      const productsWithReviews = data.map((product, index) => ({
+        ...product,
+        productReviews: fakeReviewList[index % fakeReviewList.length],
+        rating: (Math.random() * 2 + 3).toFixed(1),
+      }));
+      
+
+      setProducts(productsWithReviews);
+      // setProducts(data);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
+    fetchProducts();
+  }, []);
+
+
   // useMemo optimized data
-  const allProducts = useMemo(() => StoreData.slice(0, 8), []);
-  const newArrivals = useMemo(() => [...StoreData.slice(0, 8)].reverse(), []);
+  const allProducts = useMemo(() => {
+    return products.length > 0 ? products.slice(0, 8) : [];
+  }, [products]);
+
+  const newArrivals = useMemo(() => {
+    return products.length > 0 ? [...products.slice(0, 8)].reverse() : [];
+  }, [products]);
+
   const bestSellers = useMemo(() => {
-    return [...StoreData.slice(0, 8)].sort((a, b) => {
-      const reviewsA = parseInt(a.productReviews.replace("k+ reviews", "").replace(",", ""));
-      const reviewsB = parseInt(b.productReviews.replace("k+ reviews", "").replace(",", ""));
-      return reviewsB - reviewsA;
-    });
-  }, []);
+  const parseReview = (str) => {
+    return str.includes("k")
+      ? parseFloat(str) * 1000
+      : parseInt(str.replace(/[^\d]/g, ""));
+  };
+
+    return products.length > 0
+      ? [...products.slice(0, 8)].sort((a, b) => {
+          const reviewsA = parseReview(a.productReviews);
+          const reviewsB = parseReview(b.productReviews);
+          return reviewsB - reviewsA;
+        })
+      : [];
+  }, [products]);
+
   const topRated = useMemo(() => {
-    return [...StoreData.slice(0, 8)].sort((a, b) => a.productPrice - b.productPrice);
-  }, []);
+    return products.length > 0 ? [...products.slice(0, 8)].sort((a, b) => b.rating - a.rating) : [];
+  }, [products]);
 
   // render cards
   const renderProducts = (products) =>
     products.map((product) => (
       <div className="trendyProductContainer" key={product.id}>
         <div className="trendyProductImages">
-          <Link to="/Product" onClick={scrollToTop}>
+          <Link to={`/product/${product.id}`} onClick={scrollToTop}>
             <img
-              src={product.frontImg}
+              src={`${BASE_URL}${product.images?.[0]}`}
               alt=""
               loading="lazy"
               className="trendyProduct_front"
             />
           </Link>
-          <h4 onClick={() => handleAddToCart(product)}>Add to Cart</h4>
+          <h4 onClick={() => addToCartHandler(product)}>Add to Cart</h4>
         </div>
         <div className="trendyProductInfo">
           <div className="trendyProductCategoryWishlist">
-            <p>{product.productTitle}</p>
+            <p>{product.name}</p>
           </div>
           <div className="trendyProductNameInfo">
-            <Link to="/Product" onClick={scrollToTop}>
-              <h5>{product.productName}</h5>
+            <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+              <h5>{product.description}</h5>
             </Link>
-            <p>₹{product.productPrice}</p>
+            <p>₹{product.price}</p>
             <div className="trendyProductRatingReviews">
               <div className="trendyProductRatingStar">
-                {Array(5)
-                  .fill()
-                  .map((_, i) => (
-                    <FaStar key={i} color="#FEC78A" size={10} />
-                  ))}
+                {renderStars(product.rating || 4.3)}
               </div>
               <span>{product.productReviews}</span>
             </div>
@@ -113,10 +168,19 @@ const Trendy = () => {
         </div>
 
         <div className="trendyTabContent">
-          {activeTab === "tab1" && <div className="trendyMainContainer">{renderProducts(allProducts)}</div>}
-          {activeTab === "tab2" && <div className="trendyMainContainer">{renderProducts(newArrivals)}</div>}
-          {activeTab === "tab3" && <div className="trendyMainContainer">{renderProducts(bestSellers)}</div>}
-          {activeTab === "tab4" && <div className="trendyMainContainer">{renderProducts(topRated)}</div>}
+          <div className="trendyMainContainer">
+            {loading ? (
+              <Spinner />
+            ) : activeTab === "tab1" ? (
+              renderProducts(allProducts)
+            ) : activeTab === "tab2" ? (
+              renderProducts(newArrivals)
+            ) : activeTab === "tab3" ? (
+              renderProducts(bestSellers)
+            ) : activeTab === "tab4" ? (
+              renderProducts(topRated)
+            ) : null}
+          </div>
         </div>
       </div>
 

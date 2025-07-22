@@ -69,13 +69,15 @@
 
 .aiTabDescription {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 30px;
 }
 
 .descriptionPara {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
 }
 

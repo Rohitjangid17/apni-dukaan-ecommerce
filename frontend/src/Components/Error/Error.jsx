@@ -7,14 +7,13 @@ const Error = () => {
   return (
     <>
       <div className="errorContainer">
-        <h1>OOPS!</h1>
-        <h3>Page not found</h3>
+        <h1>Oops!</h1>
+        <h3>This page doesn't exist</h3>
         <p>
-          Sorry, we couldn't find the page you where looking for. We suggest
-          that you <br />
-          return to home page.
+          The page you’re trying to reach isn’t available on <strong>Apni Dukaan</strong>. <br />
+          Don’t worry, click the button below to head back to the home page and continue shopping!
         </p>
-        <Link to="/">Go Back</Link>
+        <Link to="/" className="errorBackBtn">Return to Homepage</Link>
       </div>
     </>
   );
