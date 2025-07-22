@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./RelatedProducts.css";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -6,54 +6,43 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import { Navigation } from "swiper/modules";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../../Features/Cart/cartSlice";
-
-import StoreData from "../../../Data/StoreData";
 
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import toast from "react-hot-toast";
+import BASE_URL from "../../../constants/apiConfig";
+import { Link } from "react-router-dom";
+import Spinner from "../../Spinner/Spinner";
+import useAddToCart from "../../../hooks/useAddToCart";
 
 
 const RelatedProducts = () => {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const dispatch = useDispatch();
-  
-    const cartItems = useSelector((state) => state.cart.items);
+    const addToCartHandler = useAddToCart();
 
-    const handleAddToCart = (product) => {
-    const productInCart = cartItems.find(
-      (item) => item.productID === product.productID
-    );
-
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: {
-          backgroundColor: "#ff4b4b",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#ff4b4b",
-        },
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
       });
-    } else {
-      dispatch(addToCart(product));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: {
-          backgroundColor: "#07bc0c",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#07bc0c",
-        },
-      });
-    }
-  };
+    };
+
+    useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          const response = await fetch(`${BASE_URL}/products/`);
+          const data = await response.json();
+          setProducts(data);
+        } catch (error) {
+          console.error("Failed to fetch products:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchProducts();
+    }, []);
 
   return (
     <>
@@ -70,6 +59,9 @@ const RelatedProducts = () => {
           <div className="swiper-button image-swiper-button-prev">
             <IoIosArrowBack />
           </div>
+          {loading ? (
+                <Spinner />
+            ) : (
           <Swiper
             slidesPerView={4}
             slidesPerGroup={4}
@@ -98,27 +90,33 @@ const RelatedProducts = () => {
               },
             }}
           >
-            {StoreData.slice(0, 8).map((product) => {
+            {products.slice(0, 8).map((product) => {
               return (
-                <SwiperSlide key={product.productID}>
+                <SwiperSlide key={product.id}>
                   <div className="rpContainer">
                     <div className="rpImages">
+                      <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+                      {product.images?.[0] && (
                       <img
-                        src={product.frontImg}
-                        alt={product.productName}
+                        src={`${BASE_URL}${product.images[0]}`}
+                        alt={product.name}
                         loading="lazy"
                         className="rpFrontImg"
                       />
-                      <h4 onClick={() => handleAddToCart(product)}>Add to Cart</h4>
+                      )}
+                      </Link>
+                      <h4 onClick={() => addToCartHandler(product)}>Add to Cart</h4>
                     </div>
 
                     <div className="relatedProductInfo">
                       <div className="rpCategoryWishlist">
-                        <p>{product.productTitle}</p>
+                        <p>{product.name}</p>
                       </div>
                       <div className="productNameInfo">
-                        <h5>{product.productName}</h5>
-                        <p>₹{product.productPrice}</p>
+                        <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+                        <h5>{product.description}</h5>
+                        </Link>
+                        <p>₹{product.price}</p>
                         <div className="productRatingReviews">
                           <div className="productRatingStar">
                             <FaStar color="#FEC78A" size={10} />
@@ -128,7 +126,7 @@ const RelatedProducts = () => {
                             <FaStar color="#FEC78A" size={10} />
                           </div>
 
-                          <span>{product.productReviews}</span>
+                          <span>0 reviews</span>
                         </div>
                       </div>
                     </div>
@@ -137,6 +135,7 @@ const RelatedProducts = () => {
               );
             })}
           </Swiper>
+            )}
         </div>
       </div>
     </>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Navbar.css";
 
 import { useSelector } from "react-redux";
@@ -11,17 +11,31 @@ import { FiSearch } from "react-icons/fi";
 import { FaRegUser } from "react-icons/fa6";
 import { RiShoppingBagLine } from "react-icons/ri";
 import { MdOutlineClose } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 import Badge from "@mui/material/Badge";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   const cart = useSelector((state) => state.cart);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "auto";
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [mobileMenuOpen]);
+
+  const toggleSearch = () => setShowSearch(prev => !prev);
 
   const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-    document.body.style.overflow = mobileMenuOpen ? "auto" : "hidden";
+    setMobileMenuOpen(prev => !prev);
   };
 
   const scrollToTop = () => {
@@ -29,6 +43,19 @@ const Navbar = () => {
       top: 0,
       behavior: "smooth",
     });
+  };
+
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const query = searchTerm.trim();
+    if (query) {
+      navigate(`/search?query=${encodeURIComponent(query)}`);
+      setShowSearch(false);
+      setSearchTerm("");
+      setMobileMenuOpen(false);
+      scrollToTop();
+    }
   };
 
   return (
@@ -72,13 +99,26 @@ const Navbar = () => {
           </div>
         </div>
         <div className="iconContainer">
-          <FiSearch size={22} onClick={scrollToTop} />
+          {showSearch ? (
+            <form onSubmit={handleSearchSubmit} className="searchBox">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <MdOutlineClose size={20} onClick={toggleSearch} className="searchCloseIcon" />
+            </form>
+          ) : (
+            <FiSearch size={22} onClick={toggleSearch} />
+          )}
+
           <Link to="/loginSignUp" onClick={scrollToTop}>
             <FaRegUser size={22} />
           </Link>
           <Link to="/cart" onClick={scrollToTop}>
             <Badge
-              badgeContent={cart.items.length === 0 ? "0" : cart.items.length}
+              badgeContent={cart.items.length}
               color="primary"
               anchorOrigin={{
                 vertical: "bottom",
@@ -106,7 +146,7 @@ const Navbar = () => {
           </div>
           <Link to="/cart">
             <Badge
-              badgeContent={cart.items.length === 0 ? "0" : cart.items.length}
+              badgeContent={cart.items.length}
               color="primary"
               anchorOrigin={{
                 vertical: "bottom",
@@ -121,10 +161,15 @@ const Navbar = () => {
           <div className="mobile-menuTop">
             <div className="mobile-menuSearchBar">
               <div className="mobile-menuSearchBarContainer">
-                <input type="text" placeholder="Search products" />
-                <Link to="/shop">
-                  <FiSearch size={22} onClick={toggleMobileMenu} />
-                </Link>
+                <form onSubmit={handleSearchSubmit} className="mobile-searchBox">
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <MdOutlineClose size={20} onClick={() => setSearchTerm("")} className="searchCloseIcon" />
+                </form>
               </div>
             </div>
             <div className="mobile-menuList">

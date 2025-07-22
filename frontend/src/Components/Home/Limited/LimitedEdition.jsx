@@ -1,8 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./LimitedEdition.css";
-
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../../Features/Cart/cartSlice";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -13,57 +10,54 @@ import { Autoplay } from "swiper/modules";
 
 import { Link } from "react-router-dom";
 
-import StoreData from "../../../Data/StoreData";
-
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { FaCartPlus } from "react-icons/fa";
+import BASE_URL from "../../../constants/apiConfig";
 
 import toast from "react-hot-toast";
+import Spinner from "../../Spinner/Spinner";
+import useAddToCart from "../../../hooks/useAddToCart";
+
 
 const LimitedEdition = () => {
-  const dispatch = useDispatch();
+  const addToCartHandler = useAddToCart();
+  const [limitedProducts, setLimitedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch products
+    const fetchLimitedProducts = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`${BASE_URL}/products/`);
+        const data = await res.json();
+
+        setLimitedProducts(data);
+      } catch (err) {
+          toast.error("Failed to fetch limited products", {
+          duration: 2000,
+          style: {
+            backgroundColor: "#ff4b4b",
+            color: "white",
+          },
+          iconTheme: {
+            primary: "#fff",
+            secondary: "#ff4b4b",
+          },
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLimitedProducts();
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-  };
-
-  const cartItems = useSelector((state) => state.cart.items);
-
-  const handleAddToCart = (product) => {
-    const productInCart = cartItems.find(
-      (item) => item.productID === product.productID
-    );
-
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: {
-          backgroundColor: "#ff4b4b",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#ff4b4b",
-        },
-      });
-    } else {
-      dispatch(addToCart(product));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: {
-          backgroundColor: "#07bc0c",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#07bc0c",
-        },
-      });
-    }
   };
 
   return (
@@ -79,6 +73,11 @@ const LimitedEdition = () => {
           <div className="swiper-button image-swiper-button-prev">
             <IoIosArrowBack />
           </div>
+          {loading ? (
+              <div className="limitedSpinnerWrapper">
+                <Spinner />
+              </div>
+            ) : (
           <Swiper
             slidesPerView={4}
             slidesPerGroup={4}
@@ -112,47 +111,44 @@ const LimitedEdition = () => {
               },
             }}
           >
-            {StoreData.slice(8, 13).map((product) => {
+    
+            {limitedProducts.map((product) => {
               return (
-                <SwiperSlide key={product.productID}>
+                <SwiperSlide key={product.id}>
                   <div className="lpContainer">
                     <div className="lpImageContainer">
-                      <Link to="/Product" onClick={scrollToTop}>
+                      <Link to={`/product/${product.id}`} onClick={scrollToTop}>
                         <img
-                          src={product.frontImg}
-                          alt={product.productName}
+                          src={`${BASE_URL}${product.images?.[0]}`}
+                          alt={product.name}
                           loading="lazy"
                           className="lpImage"
                         />
                       </Link>
-                      <h4 onClick={() => handleAddToCart(product)}>
+                      <h4 onClick={() => addToCartHandler(product)}>
                         Add to Cart
                       </h4>
                     </div>
-                    <div
-                      className="lpProductImagesCart"
-                      onClick={() => handleAddToCart(product)}
-                    >
-                    </div>
                     <div className="limitedProductInfo">
                       <div className="lpCategoryWishlist">
-                        <p>{product.productTitle}</p>
+                        <p>{product.name}</p>
                       </div>
                       <div className="productNameInfo">
-                        <Link to="/Product" onClick={scrollToTop}>
-                          <h5>{product.productName}</h5>
+                        <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+                          <h5>{product.description}</h5>
                         </Link>
-                        <p>₹{product.productPrice}</p>
+                        <p>₹{product.price}</p>
                         <div className="productRatingReviews">
                           <div className="productRatingStar">
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
+                          <FaStar color="#FEC78A" size={10} />
+                          <FaStar color="#FEC78A" size={10} />
+                          <FaStar color="#FEC78A" size={10} />
+                          <FaStar color="#FEC78A" size={10} />
+                          <FaStar color="#FEC78A" size={10} />
                           </div>
 
-                          <span>{product.productReviews}</span>
+                          <span>10k reviews</span>
+                         
                         </div>
                       </div>
                     </div>
@@ -161,6 +157,7 @@ const LimitedEdition = () => {
               );
             })}
           </Swiper>
+          )}
         </div>
       </div>
     </>

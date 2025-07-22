@@ -1,6 +1,6 @@
 .relatedProductSection {
   margin-top: 20px;
-  padding: 0px 160px;
+  padding: 0px 160px 80px;
 }
 
 .relatedProducts h2 {
@@ -156,13 +156,13 @@
     bottom: 10px;
   }
   .relatedProductSection {
-    padding: 0px 60px;
+    padding: 0px 60px 60px;
   }
 }
 
 @media screen and (max-width: 450px) {
   .relatedProductSection {
-    padding: 0px 15px;
+    padding: 0px 15px 20px;
   }
 
   .rpImages {

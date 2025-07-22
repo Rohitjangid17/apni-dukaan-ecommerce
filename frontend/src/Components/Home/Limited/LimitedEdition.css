@@ -1,3 +1,10 @@
+.limitedSpinnerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
 .limitedProductSection {
   margin: 40px 0;
   padding: 0px 160px;

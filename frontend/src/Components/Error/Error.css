@@ -5,9 +5,7 @@
   align-items: center;
   gap: 10px;
   height: 620px;
-  background-image: url("../../Assets/pattern_bg.png");
-  background-size: cover;
-  background-position: center;
+  background: linear-gradient(135deg, #eaf3f9, #f5f5f5, #ffffff);
 }
 
 .errorContainer h1 {
@@ -29,7 +27,8 @@
 
 .errorContainer a {
   text-decoration: none;
-  background-color: black;
+  background-color: #2f3e46;
+  border-radius: 30px;
   color: white;
   font-size: 14px;
   font-weight: 500;

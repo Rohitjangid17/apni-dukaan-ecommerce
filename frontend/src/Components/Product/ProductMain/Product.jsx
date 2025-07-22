@@ -1,33 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../Features/Cart/cartSlice";
 
-import product1 from "../../../Assets/ProductDetail/productdetail-1.jpg";
-import product2 from "../../../Assets/ProductDetail/productdetail-2.jpg";
-import product3 from "../../../Assets/ProductDetail/productdetail-3.jpg";
-import product4 from "../../../Assets/ProductDetail/productdetail-4.jpg";
-
 import { GoChevronLeft } from "react-icons/go";
 import { GoChevronRight } from "react-icons/go";
 import { FaStar } from "react-icons/fa";
-import { FiHeart } from "react-icons/fi";
-import { PiShareNetworkLight } from "react-icons/pi";
 
+import BASE_URL from "../../../constants/apiConfig";
+import Spinner from "../../Spinner/Spinner";
 import { Link } from "react-router-dom";
+import useAddToCart from "../../../hooks/useAddToCart";
 
 import toast from "react-hot-toast";
-
 import "./Product.css";
 
-const Product = () => {
+const Product = ({productId}) => {
+
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState(null);
+  const [productImg, setProductImg] = useState([]);
+  const addToCartHandler = useAddToCart();
+  
+  // Fetch product details from API
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true); 
+        const response = await fetch(`${BASE_URL}/products/${productId}`);
+        const data = await response.json();
+        setProduct(data);
+        setProductImg(data.images || []);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (productId) {
+      fetchProduct();
+    }
+  }, [productId]);
+
+  
+  
   // Product images Gallery
-
-  const productImg = [product1, product2, product3, product4];
   const [currentImg, setCurrentImg] = useState(0);
-
   const prevImg = () => {
     setCurrentImg(currentImg === 0 ? productImg.length - 1 : currentImg - 1);
   };
@@ -37,7 +58,6 @@ const Product = () => {
   };
 
   // Product Quantity
-
   const [quantity, setQuantity] = useState(1);
 
   const increment = () => {
@@ -57,92 +77,72 @@ const Product = () => {
     }
   };
 
-  // Product WishList
+  // Size and Color Selection
+  const [selectSize, setSelectSize] = useState(null);
+  const [highlightedColor, setHighlightedColor] = useState(null);
 
-  const [clicked, setClicked] = useState(false);
+  // Set default size and color after product is loaded
+  useEffect(() => {
+    if (product) {
+      if (!selectSize && product.sizes?.length > 0) {
+        setSelectSize(product.sizes[0]);
+      }
+      if (!highlightedColor && product.colors?.length > 0) {
+        setHighlightedColor(product.colors[0]);
+      }
+    }
+  }, [product]);
 
-  const handleWishClick = () => {
-    setClicked(!clicked);
-  };
-
-  // Product Sizes
-
-  const sizes = ["XS", "S", "M", "L", "XL"];
-  const sizesFullName = [
-    "Extra Small",
-    "Small",
-    "Medium",
-    "Large",
-    "Extra Large",
-  ];
-  const [selectSize, setSelectSize] = useState("S");
-
-  // Product Colors
-
-  const [highlightedColor, setHighlightedColor] = useState("#C8393D");
-  const colors = ["#222222", "#C8393D", "#E4E4E4"];
-  const colorsName = ["Black", "Red", "Grey"];
-
-  // Product Detail to Redux
-
-  const dispatch = useDispatch();
-
-  const cartItems = useSelector((state) => state.cart.items);
-
+  // Add to Cart Handler
   const handleAddToCart = () => {
-    const productDetails = {
-      productID: 14,
-      productName: "Men's Cotton Kurta",
-      productPrice: 899,
-      frontImg: productImg[0],
-      productReviews: "1.2k reviews",
+    if (!product) return;
+
+    const selectedColor = highlightedColor || (Array.isArray(product.colors) && product.colors[0]) || "-";
+    const selectedSize = selectSize || (Array.isArray(product.sizes) && product.sizes[0]) || "-";
+
+      addToCartHandler(
+        {
+          ...product,
+          color: selectedColor,
+          size: selectedSize,
+        },
+        8,
+        quantity
+      );
     };
 
-    const productInCart = cartItems.find(
-      (item) => item.productID === productDetails.productID
-    );
-
-    if (productInCart && productInCart.quantity >= 20) {
-      toast.error("Product limit reached", {
-        duration: 2000,
-        style: {
-          backgroundColor: "#ff4b4b",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#ff4b4b",
-        },
-      });
-    } else {
-      dispatch(addToCart(productDetails));
-      toast.success(`Added to cart!`, {
-        duration: 2000,
-        style: {
-          backgroundColor: "#07bc0c",
-          color: "white",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#07bc0c",
-        },
-      });
+    if (loading) {
+      return (
+        <div className="loadingContainer">
+          <Spinner />
+        </div>
+      );
     }
-  };
 
-  return (
-    <>
+    return (
+      <>
       <div className="productSection">
         <div className="productShowCase">
           <div className="productGallery">
             <div className="productThumb">
-              <img src={product1} onClick={() => setCurrentImg(0)} alt="" loading="lazy"/>
-              <img src={product2} onClick={() => setCurrentImg(1)} alt="" loading="lazy"/>
-              <img src={product3} onClick={() => setCurrentImg(2)} alt="" loading="lazy"/>
-              <img src={product4} onClick={() => setCurrentImg(3)} alt="" loading="lazy"/>
+              {productImg.map((img, index) => (
+                <img
+                  key={index}
+                  src={`${BASE_URL}${img}`}
+                  alt={`product-${index}`}
+                  onClick={() => setCurrentImg(index)}
+                  loading="lazy"
+                />
+              ))}
             </div>
             <div className="productFullImg">
-              <img src={productImg[currentImg]} alt="" loading="lazy"/>
+             {productImg.length > 0 && (
+                <img
+                  src={`${BASE_URL}${productImg[currentImg]}`}
+                  alt="current-product"
+                  loading="lazy"
+                />
+              )}
               <div className="buttonsGroup">
                 <button onClick={prevImg} className="directionBtn">
                   <GoChevronLeft size={18} />
@@ -161,7 +161,7 @@ const Product = () => {
               </div>
             </div>
             <div className="productName">
-              <h1>Men's Cotton Kurta</h1>
+              <h1>{product?.name}</h1>
             </div>
             <div className="productRating">
               <FaStar color="#FEC78A" size={10} />
@@ -172,25 +172,23 @@ const Product = () => {
               <p>1.2k reviews</p>
             </div>
             <div className="productPrice">
-              <h3>₹899</h3>
+              <h3>₹{product?.price}</h3>
             </div>
             <div className="productDescription">
               <p>
-                Embrace tradition in comfort with this 100% pure cotton kurta.
-                Lightweight and breathable, perfect for festive occasions and daily wear.
+                {product?.description}
               </p>
             </div>
             <div className="productSizeColor">
               <div className="productSize">
                 <p>Sizes</p>
                 <div className="sizeBtn">
-                  {sizes.map((size, index) => (
+                  {product?.sizes?.map((size) => (
                     <Tooltip
                       key={size}
-                      title={sizesFullName[index]}
+                      title={size}
                       placement="top"
                       TransitionComponent={Zoom}
-                      enterTouchDelay={0}
                       arrow
                     >
                       <button
@@ -206,37 +204,31 @@ const Product = () => {
                 </div>
               </div>
               <div className="productColor">
-                <p>Color</p>
-                <div className="colorBtn">
-                  {colors.map((color, index) => (
-                    <Tooltip
-                      key={color}
-                      title={colorsName[index]}
-                      placement="top"
-                      enterTouchDelay={0}
-                      TransitionComponent={Zoom}
-                      arrow
-                    >
-                      <button
-                        className={
-                          highlightedColor === color ? "highlighted" : ""
-                        }
-                        style={{
-                          backgroundColor: color.toLowerCase(),
-                          border:
-                            highlightedColor === color
-                              ? "0px solid #000"
-                              : "0px solid white",
-                          padding: "8px",
-                          margin: "5px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => setHighlightedColor(color)}
-                      />
-                    </Tooltip>
-                  ))}
+                  <p>Color</p>
+                  <div className="colorBtn">
+                    {product?.colors?.map((color, index) => (
+                      <Tooltip
+                        key={index}
+                        title={color}
+                        placement="top"
+                        TransitionComponent={Zoom}
+                        arrow
+                      >
+                        <button
+                          className={highlightedColor === color ? "highlighted" : ""}
+                          style={{
+                            backgroundColor: color.toLowerCase(),
+                            border: highlightedColor === color ? "2px solid #000" : "1px solid #ccc",
+                            padding: "8px",
+                            margin: "5px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => setHighlightedColor(color)}
+                        />
+                      </Tooltip>
+                    ))}
+                  </div>
                 </div>
-              </div>
             </div>
             <div className="productCartQuantity">
               <div className="productQuantity">
@@ -252,14 +244,40 @@ const Product = () => {
                 <button onClick={handleAddToCart}>Add to Cart</button>
               </div>
             </div>
-            <div className="productTags">
-              <p>
-                <span>CATEGORIES: </span>Traditional Wear, Kurta, Men
-              </p>
-              <p>
-                <span>TAGS: </span>ethnic, cotton, festive, kurta, men
-              </p>
-            </div>
+           {(product?.tags?.length > 0 ||
+              (product?.dimensions && product.dimensions.toLowerCase() !== "string") ||
+              (product?.weight && product.weight !== "string")) && (
+              <div className="productTags">
+                
+                {product?.tags?.length > 0 && (
+                  <p>
+                    <span>Tags: </span>
+                    {product.tags.map((tag, i) => (
+                      <span key={i}>
+                        {tag}
+                        {i !== product.tags.length - 1 && ", "}
+                      </span>
+                    ))}
+                  </p>
+                )}
+
+                {product?.dimensions &&
+                  product.dimensions.toLowerCase() !== "string" && (
+                    <p>
+                      <span>Dimensions: </span>
+                      {product.dimensions}
+                    </p>
+                  )}
+
+                {product?.weight &&
+                  product.weight !== "string" && (
+                    <p>
+                      <span>Weight: </span>
+                      {product.weight} kg
+                    </p>
+                  )}
+              </div>
+            )}
           </div>
         </div>
       </div>

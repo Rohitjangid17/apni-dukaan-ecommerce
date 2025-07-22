@@ -1,7 +1,7 @@
 .footer {
   padding: 30px 160px;
-  background-color: #e4e4e4;
-  margin-top: 50px;
+  border-top: 0.5px solid #cfcdcd;
+  background: linear-gradient(145deg, #f0f7fb, #ffffff, #edf2f4);
   display: flex;
   flex-direction: column;
   gap: 100px;
@@ -121,20 +121,21 @@
 .footer_right form {
   display: flex;
   margin-top: -10px;
+  border: 0.5px solid #cfcdcd;
+  border-radius: 15px;
 }
 
 .footer_right form input {
-  border-radius: 15px 0 0 15px;
   width: 100%;
   padding: 15px 20px;
   border: none;
   outline: none;
+  background-color: transparent;
 }
 
 .footer_right form button {
-  border-radius: 0 15px 15px 0;
   padding: 15px 20px;
-  background-color: white;
+  background-color: transparent;
   color: black;
   border: none;
   cursor: pointer;
