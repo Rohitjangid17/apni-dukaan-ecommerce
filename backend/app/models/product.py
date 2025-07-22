@@ -1,3 +1,4 @@
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from app.database import Base
 
@@ -9,8 +10,8 @@ class Product(Base):
     description = Column(String(1000))
     price = Column(Float, nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
-    images = Column(String(1000))
     created_by = Column(Integer, nullable=False)
+    images = Column(String(1000))
 
     weight = Column(Float, nullable=True)
     dimensions = Column(String(100), nullable=True)
@@ -19,3 +20,5 @@ class Product(Base):
     storage = Column(String(255), nullable=True)
     tags = Column(String(255), nullable=True)
     lining = Column(String(255), nullable=True)
+
+    category = relationship("Category", backref="products")
