@@ -9,14 +9,16 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
 class UserOut(BaseModel):
-    id: int
+    user_id: int
     username: str
     email: EmailStr
 
     class Config:
         orm_mode = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    message: str
+    user: UserOut

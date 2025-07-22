@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from app.schemas.product import ProductInCart
 
 class CartBase(BaseModel):
     user_id: int
@@ -18,7 +19,9 @@ class CartUpdate(BaseModel):
     size: Optional[str] = None
 
 class CartOut(CartBase):
-    id: int
+    cart_id: int
+    product_id: int
+    product: ProductInCart
 
     class Config:
-        orm_mode = True
+        from_attributes = True

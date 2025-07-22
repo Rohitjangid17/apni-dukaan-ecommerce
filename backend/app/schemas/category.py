@@ -12,8 +12,8 @@ class CategoryUpdate(CategoryBase):
     pass
 
 class CategoryOut(CategoryBase):
-    id: int
+    category_id: int
     created_by: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
