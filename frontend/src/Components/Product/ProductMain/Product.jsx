@@ -13,40 +13,20 @@ import BASE_URL from "../../../constants/apiConfig";
 import Spinner from "../../Spinner/Spinner";
 import { Link } from "react-router-dom";
 import useAddToCart from "../../../hooks/useAddToCart";
+import useProductDetails from "../../../hooks/useProductDetails";
 
 import toast from "react-hot-toast";
 import "./Product.css";
 
 const Product = ({productId}) => {
 
-  const [loading, setLoading] = useState(true);
-  const [product, setProduct] = useState(null);
+  // const [product, setProduct] = useState(null);
   const [productImg, setProductImg] = useState([]);
   const addToCartHandler = useAddToCart();
-  
-  // Fetch product details from API
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        setLoading(true); 
-        const response = await fetch(`${BASE_URL}/products/${productId}`);
-        const data = await response.json();
-        setProduct(data);
-        setProductImg(data.images || []);
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { product, loading } = useProductDetails(productId);
 
-    if (productId) {
-      fetchProduct();
-    }
-  }, [productId]);
+  console.log("Product ID in product",productId)
 
-  
-  
   // Product images Gallery
   const [currentImg, setCurrentImg] = useState(0);
   const prevImg = () => {

@@ -31,8 +31,9 @@ const LimitedEdition = () => {
         setLoading(true);
         const res = await fetch(`${BASE_URL}/products/`);
         const data = await res.json();
+        const productList = Array.isArray(data?.data) ? data.data : [];
 
-        setLimitedProducts(data);
+        setLimitedProducts(productList);
       } catch (err) {
           toast.error("Failed to fetch limited products", {
           duration: 2000,
@@ -114,16 +115,18 @@ const LimitedEdition = () => {
     
             {limitedProducts.map((product) => {
               return (
-                <SwiperSlide key={product.id}>
+                <SwiperSlide key={product.product_id}>
                   <div className="lpContainer">
                     <div className="lpImageContainer">
-                      <Link to={`/product/${product.id}`} onClick={scrollToTop}>
-                        <img
-                          src={`${BASE_URL}${product.images?.[0]}`}
-                          alt={product.name}
-                          loading="lazy"
-                          className="lpImage"
-                        />
+                      <Link to={`/product/${product.product_id}`} onClick={scrollToTop}>
+                        {product.images && product.images.length > 0 && (
+                          <img
+                            src={`${BASE_URL}${product.images[0]}`}
+                            loading="lazy"
+                            className="sdProduct_front"
+                            alt="product image"
+                          />
+                        )}
                       </Link>
                       <h4 onClick={() => addToCartHandler(product)}>
                         Add to Cart
@@ -131,11 +134,11 @@ const LimitedEdition = () => {
                     </div>
                     <div className="limitedProductInfo">
                       <div className="lpCategoryWishlist">
-                        <p>{product.name}</p>
+                        <p>{product.category?.name || 'Apparel'}</p>
                       </div>
                       <div className="productNameInfo">
-                        <Link to={`/product/${product.id}`} onClick={scrollToTop}>
-                          <h5>{product.description}</h5>
+                        <Link to={`/product/${product.product_id}`} onClick={scrollToTop}>
+                          <h5>{product.name}</h5>
                         </Link>
                         <p>₹{product.price}</p>
                         <div className="productRatingReviews">

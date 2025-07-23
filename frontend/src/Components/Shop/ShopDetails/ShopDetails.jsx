@@ -38,7 +38,9 @@ const ShopDetails = () => {
       try {
         const response = await fetch(`${BASE_URL}/products/`);
         const data = await response.json();
-        setProducts(data);
+        const productList = Array.isArray(data?.data) ? data.data : [];
+
+        setProducts(productList);
       } catch (error) {
         toast.error("Failed to fetch products", {
           duration: 2000,
@@ -104,9 +106,9 @@ const ShopDetails = () => {
             <div className="shopDetailsProducts">
               <div className="shopDetailsProductsContainer">
                 {products.map((product) => (
-                  <div className="sdProductContainer" key={product.id}>
+                  <div className="sdProductContainer" key={product.product_id}>
                     <div className="sdProductImages">
-                      <Link to={`/product/${product.id}`} onClick={scrollToTop}>
+                      <Link to={`/product/${product.product_id}`} onClick={scrollToTop}>
                         {product.images && product.images.length > 0 && (
                           <img src={`${BASE_URL}${product.images[0]}`}
                           loading="lazy"
@@ -115,16 +117,16 @@ const ShopDetails = () => {
                         )}
                       </Link>
                       <h4 onClick={() => addToCartHandler(product)}>
-                        Add to Cart for Test
+                        Add to Cart
                       </h4>
                     </div>
                     <div className="sdProductInfo">
                       <div className="sdProductCategoryWishlist">
-                        <p>{product?.name}</p>
+                        <p>{product.category?.name || 'Apparel'}</p>
                       </div>
                       <div className="sdProductNameInfo">
-                        <Link to={`/product/${product.id}`} onClick={scrollToTop}>
-                          <h5>{product?.description}</h5>
+                        <Link to={`/product/${product.product_id}`} onClick={scrollToTop}>
+                          <h5>{product?.name}</h5>
                         </Link>
 
                         <p>₹{product?.price}</p>
