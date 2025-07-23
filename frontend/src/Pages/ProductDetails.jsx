@@ -9,8 +9,8 @@ const ProductDetails = () => {
 
   return (
     <>
-      <Product productId={productId}/>
-      <AdditionalInfo productId={productId}/>
+      {/* <Product productId={productId}/>
+      <AdditionalInfo productId={productId}/> */}
       <RelatedProducts/>
     </>
   );

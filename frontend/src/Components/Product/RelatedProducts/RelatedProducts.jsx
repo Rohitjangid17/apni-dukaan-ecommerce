@@ -13,13 +13,15 @@ import BASE_URL from "../../../constants/apiConfig";
 import { Link } from "react-router-dom";
 import Spinner from "../../Spinner/Spinner";
 import useAddToCart from "../../../hooks/useAddToCart";
+import useProducts from "../../../hooks/useProducts";
 
 
 const RelatedProducts = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // const [products, setProducts] = useState([]);
+    // const [loading, setLoading] = useState(true);
 
     const addToCartHandler = useAddToCart();
+    const {products, loading} = useProducts();
 
     const scrollToTop = () => {
       window.scrollTo({
@@ -28,21 +30,22 @@ const RelatedProducts = () => {
       });
     };
 
-    useEffect(() => {
-      const fetchProducts = async () => {
-        try {
-          const response = await fetch(`${BASE_URL}/products/`);
-          const data = await response.json();
-          setProducts(data);
-        } catch (error) {
-          console.error("Failed to fetch products:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
+    // useEffect(() => {
+    //   const fetchProducts = async () => {
+    //     try {
+    //       const response = await fetch(`${BASE_URL}/products/`);
+    //       const data = await response.json();
+    //       const productList = Array.isArray(data?.data) ? data.data : [];
+    //       setProducts(productList);
+    //     } catch (error) {
+    //       console.error("Failed to fetch products:", error);
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    //   };
 
-      fetchProducts();
-    }, []);
+    //   fetchProducts();
+    // }, []);
 
   return (
     <>
@@ -92,29 +95,29 @@ const RelatedProducts = () => {
           >
             {products.slice(0, 8).map((product) => {
               return (
-                <SwiperSlide key={product.id}>
+                <SwiperSlide key={product.productId}>
                   <div className="rpContainer">
                     <div className="rpImages">
-                      <Link to={`/product/${product.id}`} onClick={scrollToTop}>
-                      {product.images?.[0] && (
-                      <img
-                        src={`${BASE_URL}${product.images[0]}`}
-                        alt={product.name}
-                        loading="lazy"
-                        className="rpFrontImg"
-                      />
-                      )}
+                      <Link to={`/product/${product.productId}`} onClick={scrollToTop}>
+                      {product.images && product.images.length > 0 && (
+                          <img
+                            src={`${BASE_URL}${product.images[0]}`}
+                            loading="lazy"
+                            className="sdProduct_front"
+                            alt="product image"
+                          />
+                        )}
                       </Link>
                       <h4 onClick={() => addToCartHandler(product)}>Add to Cart</h4>
                     </div>
 
                     <div className="relatedProductInfo">
                       <div className="rpCategoryWishlist">
-                        <p>{product.name}</p>
+                        <p>{product.category?.name || 'Apparel'}</p>
                       </div>
                       <div className="productNameInfo">
-                        <Link to={`/product/${product.id}`} onClick={scrollToTop}>
-                        <h5>{product.description}</h5>
+                        <Link to={`/product/${product.productId}`} onClick={scrollToTop}>
+                        <h5>{product.name}</h5>
                         </Link>
                         <p>₹{product.price}</p>
                         <div className="productRatingReviews">

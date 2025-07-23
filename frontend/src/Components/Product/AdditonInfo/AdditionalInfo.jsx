@@ -4,6 +4,8 @@ import BASE_URL from "../../../constants/apiConfig";
 
 import user1 from "../../../Assets/Users/user1.jpg";
 import user2 from "../../../Assets/Users/user2.jpg";
+import useProductDetails from "../../../hooks/useProductDetails";
+import Spinner from "../../Spinner/Spinner";
 
 import { FaStar } from "react-icons/fa";
 import Rating from "@mui/material/Rating";
@@ -12,6 +14,8 @@ const AdditionalInfo = ({ productId }) => {
   const [activeTab, setActiveTab] = useState("aiTab1");
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  // const [product, loading] = useProductDetails(productId)
+
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -33,7 +37,7 @@ const AdditionalInfo = ({ productId }) => {
     fetchProduct();
   }, [productId]);
 
-  if (!product) return <p>Loading additional info...</p>;
+  if (!product) return "No inforations";
 
   return (
     <>
