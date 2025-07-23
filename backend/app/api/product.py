@@ -81,7 +81,7 @@ def get_all_products(
 
 @router.get("/{product_id}", response_model=ProductOut)
 def get_product(product_id: int, db: Session = Depends(get_db)):
-    product = db.query(Product).options(joinedload(Product.category)).filter(Product.id == product_id).first()
+    product = db.query(Product).options(joinedload(Product.category)).filter(Product.product_id == product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
@@ -89,7 +89,7 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
 
 @router.delete("/{product_id}")
 def delete_product(product_id: int, db: Session = Depends(get_db)):
-    product = db.query(Product).filter(Product.id == product_id).first()
+    product = db.query(Product).filter(Product.product_id == product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     db.delete(product)
@@ -114,7 +114,7 @@ async def update_product(
     images: List[UploadFile] = File(None),
     db: Session = Depends(get_db)
 ):
-    product = db.query(Product).filter(Product.id == product_id).first()
+    product = db.query(Product).filter(Product.product_id == product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
