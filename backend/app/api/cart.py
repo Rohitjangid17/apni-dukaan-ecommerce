@@ -33,7 +33,7 @@ def get_cart_by_user(user_id: int, db: Session = Depends(get_db)):
 
 @router.put("/{cart_id}", response_model=CartOut)
 def update_cart(cart_id: int, payload: CartUpdate, db: Session = Depends(get_db)):
-    cart_item = db.query(Cart).filter(Cart.id == cart_id).first()
+    cart_item = db.query(Cart).filter(Cart.cart_id == cart_id).first()
     if not cart_item:
         raise HTTPException(status_code=404, detail="Cart item not found")
 
@@ -46,7 +46,7 @@ def update_cart(cart_id: int, payload: CartUpdate, db: Session = Depends(get_db)
 
 @router.delete("/{cart_id}")
 def delete_cart(cart_id: int, db: Session = Depends(get_db)):
-    cart_item = db.query(Cart).filter(Cart.id == cart_id).first()
+    cart_item = db.query(Cart).filter(Cart.cart_id == cart_id).first()
     if not cart_item:
         raise HTTPException(status_code=404, detail="Cart item not found")
     db.delete(cart_item)
