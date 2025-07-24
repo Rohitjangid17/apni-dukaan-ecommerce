@@ -17,12 +17,13 @@ const ShopDetails = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const [filters, setFilters] = useState({
-    category: null,
+    category: [],
     colors: [],
     sizes: [],
     priceRange: [100, 5000],
   });
 
+  
   const {
     products,
     loading,
@@ -30,7 +31,7 @@ const ShopDetails = () => {
     totalPages,
     setPage,
   } = useProducts({fetchAll: false, filters});
-
+  
   useEffect(() => {
       setPage(1);
     }, [filters]);

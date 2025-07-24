@@ -132,8 +132,6 @@ const ShoppingCart = () => {
   const token = localStorage.getItem("access_token");
   if (!token) return;
 
-
-  console.log("ID : ",cartId)
   try {
       const res = await fetch(`${BASE_URL}/cart/${cartId}`, {
         method: "DELETE",
@@ -145,7 +143,7 @@ const ShoppingCart = () => {
       if (!res.ok) throw new Error("Failed to delete item from backend");
 
       dispatch(removeFromCart(cartId));
-      // await fetchCartItems(dispatch);
+      await fetchCartItems(dispatch);
       toast.success("Item removed from cart", {
         duration: 2000,
         style: { backgroundColor: "#07bc0c", color: "white" },
@@ -217,6 +215,7 @@ const ShoppingCart = () => {
               <div className="shoppingBagSection">
                 <div className="shoppingBagTableSection">
                   {/* For Desktop Devices */}
+                  {cartItems.length > 0 ? (
                   <table className="shoppingBagTable">
                     <thead>
                       <tr>
@@ -229,8 +228,8 @@ const ShoppingCart = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {cartItems.length > 0 ? (
-                        cartItems.map((item) => (
+                      
+                        {cartItems.map((item) => (
                           <tr key={item.cartId}>
                             <td data-label="Product">
                               <div className="shoppingBagTableImg">
@@ -305,21 +304,17 @@ const ShoppingCart = () => {
                               />
                             </td>
                           </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan="6">
-                            <div className="shoppingCartEmpty">
-                              <span>Your cart is empty!</span>
-                              <Link to="/shop" onClick={scrollToTop}>
-                                <button>Shop Now</button>
-                              </Link>
-                            </div>
-                          </td>
-                        </tr>
-                      )}
+                        ))}
                     </tbody>
                   </table>
+                  ) : (
+                      <div className="shoppingCartEmpty">
+                        <span>Your cart is empty!</span>
+                        <Link to="/shop" onClick={scrollToTop}>
+                          <button>Shop Now</button>
+                        </Link>
+                      </div>
+                      )}
 
                   {/* For Mobile devices */}
 
