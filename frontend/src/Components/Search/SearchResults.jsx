@@ -15,7 +15,7 @@ const SearchResults = () => {
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query")?.toLowerCase();
     const [filtered, setFiltered] = useState([]);
-    const {products, loading} = useProducts()
+    const {products, loading} = useProducts({ fetchAll: true, limit: 10 })
     const [visibleCount, setVisibleCount] = useState(20);
 
     const scrollToTop = () => {

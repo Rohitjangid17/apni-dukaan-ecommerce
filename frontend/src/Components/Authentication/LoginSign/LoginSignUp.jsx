@@ -156,7 +156,6 @@ const LoginSignUp = () => {
           try {
             const parsedData = JSON.parse(savedUserData);
             setUserInfo(parsedData);
-            console.log("Retrieved userInfo from localStorage:", parsedData);
           } catch (err) {
             console.error("Error parsing saved user info from localStorage", err);
           }

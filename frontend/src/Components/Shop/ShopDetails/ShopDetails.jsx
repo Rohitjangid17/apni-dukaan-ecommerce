@@ -16,13 +16,24 @@ const ShopDetails = () => {
   const addToCartHandler = useAddToCart();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  const [filters, setFilters] = useState({
+    category: null,
+    colors: [],
+    sizes: [],
+    priceRange: [100, 5000],
+  });
+
   const {
     products,
     loading,
     page,
     totalPages,
     setPage,
-  } = useProducts();
+  } = useProducts({fetchAll: false, filters});
+
+  useEffect(() => {
+      setPage(1);
+    }, [filters]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -67,7 +78,8 @@ const handlePageChange = (newPage) => {
       <div className="shopDetails">
         <div className="shopDetailMain">
           <div className="shopDetails__left">
-            <Filter />
+            {/* <Filter /> */}
+            <Filter filters={filters} setFilters={setFilters} />
           </div>
           <div className="shopDetails__right">
             <div className="shopDetailsSorting">
@@ -179,7 +191,7 @@ const handlePageChange = (newPage) => {
           <IoClose onClick={closeDrawer} className="closeButton" size={26} />
         </div>
         <div className="drawerContent">
-          <Filter />
+          <Filter filters={filters} setFilters={setFilters} />
         </div>
       </div>
     </>
