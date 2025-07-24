@@ -65,6 +65,7 @@ def filter_products(
     sizes: Optional[str] = Query(None),
     min_price: Optional[float] = Query(None),
     max_price: Optional[float] = Query(None),
+    sort_by: Optional[str] = Query(None, description="Sort by price_asc or price_desc"),
     page: Optional[int] = Query(None, ge=1),
     limit: Optional[int] = Query(None, ge=1, le=100),
     db: Session = Depends(get_db)
@@ -86,9 +87,14 @@ def filter_products(
     if max_price is not None:
         query = query.filter(Product.price <= max_price)
 
+    # 🔽 Sorting
+    if sort_by == "price_asc":
+        query = query.order_by(Product.price.asc())
+    elif sort_by == "price_desc":
+        query = query.order_by(Product.price.desc())
+
     total = query.count()
 
-    # No pagination - return all
     if page is None or limit is None:
         products = query.all()
         return {
@@ -99,7 +105,6 @@ def filter_products(
             "data": [ProductOut.from_orm(p) for p in products]
         }
 
-    # With pagination
     skip = (page - 1) * limit
     products = query.offset(skip).limit(limit).all()
     total_pages = (total + limit - 1) // limit
