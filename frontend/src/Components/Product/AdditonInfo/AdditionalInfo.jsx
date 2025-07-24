@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./AdditionalInfo.css";
-import BASE_URL from "../../../constants/apiConfig";
 
 import user1 from "../../../Assets/Users/user1.jpg";
 import user2 from "../../../Assets/Users/user2.jpg";
@@ -12,30 +11,12 @@ import Rating from "@mui/material/Rating";
 
 const AdditionalInfo = ({ productId }) => {
   const [activeTab, setActiveTab] = useState("aiTab1");
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  // const [product, loading] = useProductDetails(productId)
+  const { product, loading } = useProductDetails(productId)
 
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/products/${productId}`);
-        const data = await res.json();
-        setProduct(data);
-      } catch (err) {
-        console.error("Failed to load product info:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, [productId]);
 
   if (!product) return "No inforations";
 
@@ -69,21 +50,27 @@ const AdditionalInfo = ({ productId }) => {
             {/* Tab1 / Description*/}
             {activeTab === "aiTab1" && (
             <div className="aiTabDescription">
-              {product.name && (
+              {product.category?.name && (
                 <div className="descriptionPara">
                   <h3>Category</h3>
-                  <p>{product.name || '-'}</p>
+                  <p>{product.category?.name || 'Apparel'}</p>
+                </div>
+              )}
+              {product.name && (
+                <div className="descriptionPara">
+                  <h3>Product Name</h3>
+                  <p>{product.name || 'Apparel'}</p>
                 </div>
               )}
               {product.description && (
                 <div className="descriptionPara">
-                  <h3>Description</h3>
+                  <h3>Product Description</h3>
                   <p>{product.description || '-'}</p>
                 </div>
               )}
               {product.tags?.length > 0 && (
                 <div className="descriptionPara">
-                  <h3>Tags</h3>
+                  <h3>Product Tags</h3>
                   <p>{product.tags.join(", ")}</p>
                 </div>
               )}
@@ -95,7 +82,7 @@ const AdditionalInfo = ({ productId }) => {
               )}
               {product.storage && (
                 <div className="descriptionPara">
-                  <h3>Storage Info</h3>
+                  <h3>Storage Information</h3>
                   <p>{product?.storage || '-'}</p>
                 </div>
               )}

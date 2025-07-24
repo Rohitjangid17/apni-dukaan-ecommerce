@@ -3,43 +3,38 @@ import { useState, useEffect } from "react";
 import BASE_URL from "../constants/apiConfig";
 
 
-const fakeReviewList = [
-    "4.8k+ reviews", "3.5k+ reviews", "5.1k+ reviews", "2.2k+ reviews", "4.1k+ reviews",
-    "1.9k+ reviews", "3.8k+ reviews", "3.1k+ reviews", "2.5k+ reviews", "4.9k+ reviews",
-    "1.1k+ reviews", "2.9k+ reviews", "1.4k+ reviews", "3.6k+ reviews", "2.0k+ reviews",
-    "1.7k+ reviews", "2.4k+ reviews", "1.3k+ reviews", "1.6k+ reviews", "1.2k+ reviews",
-    "2.6k+ reviews", "3.4k+ reviews", "4.3k+ reviews", "1.8k+ reviews", "2.1k+ reviews",
-    "3.9k+ reviews", "4.2k+ reviews", "2.3k+ reviews", "1.5k+ reviews", "5.0k+ reviews",
-    "1.0k+ reviews", "2.8k+ reviews", "3.3k+ reviews", "4.6k+ reviews", "3.2k+ reviews",
-    "2.7k+ reviews", "1.8k+ reviews", "4.5k+ reviews",
-    "3.0k+ reviews", "2.2k+ reviews", "1.9k+ reviews", "3.7k+ reviews", "2.6k+ reviews",
-    "4.4k+ reviews", "3.3k+ reviews", "2.1k+ reviews", "1.6k+ reviews", "3.5k+ reviews",
-    "4.0k+ reviews", "2.9k+ reviews"
-];
+// Generate fake review like "2.5k+ reviews"
+const generateFakeReview = () => {
+    const value = (Math.random() * 4 + 1).toFixed(1); // Between 1.0 and 5.0
+    const rounded = parseFloat(value).toFixed(1);
+    return `${rounded}k+ reviews`;
+};
 
 const useProducts = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await fetch(`${BASE_URL}/products/`);
+                const res = await fetch(`${BASE_URL}/products?page=${page}&limit=12`);
                 const data = await res.json();
+
                 const productList = Array.isArray(data?.data) ? data.data : [];
 
-                const enhancedProducts = productList.map((product, index) => ({
+                const enhancedProducts = productList.map((product) => ({
                     ...product,
-                    // Convert snake_case to camelCase for consistency
                     productId: product.product_id,
                     categoryId: product.category_id,
                     createdBy: product.created_by,
-
-                    productReviews: fakeReviewList[index % fakeReviewList.length],
+                    productReviews: generateFakeReview(),
                     rating: (Math.random() * 2 + 3).toFixed(1),
                 }));
 
                 setProducts(enhancedProducts);
+                setTotalPages(data.total_pages || 0);
             } catch (err) {
                 console.error("Failed to fetch products:", err);
             } finally {
@@ -48,9 +43,9 @@ const useProducts = () => {
         };
 
         fetchProducts();
-    }, []);
+    }, [page]);
 
-    return { products, loading };
+    return { products, loading, page, totalPages, setPage };
 };
 
 export default useProducts;

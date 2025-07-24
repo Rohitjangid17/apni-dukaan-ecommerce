@@ -244,7 +244,6 @@
 }
 
 /* Pagination */
-
 .shopDetailsPagination {
   display: flex;
   justify-content: space-between;
@@ -258,58 +257,22 @@
   align-items: center;
 }
 
-.sdPaginationPrev p,
-.sdPaginationNext p {
-  position: relative;
+.sdPaginationPrev button,
+.sdPaginationNext button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  background-color: #2f3e46;
+  border-radius: 20px;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
   cursor: pointer;
-}
-
-.sdPaginationPrev p::after,
-.sdPaginationNext p::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #000;
-  transition: width 0.3s ease;
-}
-
-.sdPaginationPrev p:hover::after,
-.sdPaginationNext p:hover::after {
-  width: 100%;
-}
-
-.paginationNum p {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-}
-
-.paginationNum p:not(:first-child)::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #000;
-  transition: width 0.3s ease;
-}
-
-.paginationNum p:hover::after {
-  width: 100%;
-}
-
-.paginationNum p:first-child::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #000;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 12px;
 }
 
 .paginationNum {
@@ -317,8 +280,38 @@
   gap: 30px;
 }
 
-.sdProductImagesCart {
-  display: none;
+.paginationNum p {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  padding-bottom: 4px;
+}
+
+/* Default underline hidden */
+.paginationNum p::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #000;
+  transition: width 0.3s ease;
+}
+
+/* On hover */
+.paginationNum p:hover::after {
+  width: 100%;
+}
+
+/* When active */
+.paginationNum p.activePage {
+  font-weight: 700;
+  color: #000;
+}
+
+.paginationNum p.activePage::after {
+  width: 100%;
 }
 
 /* responsive */
@@ -391,6 +384,10 @@
 }
 
 @media screen and (max-width: 768px) {
+  .sdPaginationPrev,
+  .sdPaginationNext {
+    display: none;
+  }
   .sdProductImages {
     width: 100%;
     height: 370px;

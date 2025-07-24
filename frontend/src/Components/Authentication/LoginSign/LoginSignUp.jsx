@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./LoginSignUp.css";
 import {  useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import BASE_URL from "../../../constants/apiConfig";
 
 const LoginSignUp = () => {
   const navigate = useNavigate();
@@ -39,6 +40,17 @@ const LoginSignUp = () => {
   });
 
 
+  const storeUserInfo = (user) => {
+  const savedUserData = {
+    user_id: user.user_id,
+    username: user.username,
+    email: user.email,
+  };
+    setUserInfo(savedUserData);
+    localStorage.setItem("userInfo", JSON.stringify(savedUserData));
+  };
+
+
   // Handle login function
 
   const handleLogin = async (e) => {
@@ -46,7 +58,7 @@ const LoginSignUp = () => {
   setLoading(true);
 
   try {
-    const res = await fetch("http://127.0.0.1:8000/auth/login", {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,27 +72,16 @@ const LoginSignUp = () => {
     const data = await res.json();
 
     if (res.ok && data?.access_token) {
-          // Save token
+          // Save token and show successful message
           localStorage.setItem("access_token", data.access_token);
-          console.log("Login token saved to localStorage.");
-          console.log("Token:", data.access_token);
-
-          // Show success message
-          showSuccessToast("Login successful.");
+          showSuccessToast(data.message || "Login successful.");
 
           // Clear login form fields
           setLoginEmail("");
           setLoginPassword("");
           setIsLoggedIn(true);
 
-          const savedUserData = {
-            email: loginEmail,
-          };
-          
-          // Save user info to state and localStorage
-          setUserInfo(savedUserData);
-          console.log("userInfo after login:", savedUserData);
-          localStorage.setItem("userInfo", JSON.stringify(savedUserData));
+          storeUserInfo(data.user);
 
           // Navigate to shop page
           navigate("/shop");
@@ -105,7 +106,7 @@ const LoginSignUp = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/auth/signup", {
+      const res = await fetch(`${BASE_URL}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -120,13 +121,9 @@ const LoginSignUp = () => {
       const data = await res.json();
 
       if (res.ok && data?.access_token) {
-          // Save token
+          // Save token and Show success message
           localStorage.setItem("access_token", data.access_token);
-          console.log("Sign up token saved to localStorage.");
-
-          // Show success message
-          showSuccessToast("Signup successful.");
-          console.log("Token:", data.access_token);
+          showSuccessToast(data.message || "Signup successful.");
 
           // Clear signup form fields
           setUsername("");
@@ -134,15 +131,7 @@ const LoginSignUp = () => {
           setPassword("");
           setIsLoggedIn(true);
 
-          const savedUserData = {
-            username,
-            email,
-          };
-
-          // Save user info to state and localStorage
-          setUserInfo(savedUserData);
-          console.log("userInfo after signup:", savedUserData);
-          localStorage.setItem("userInfo", JSON.stringify(savedUserData));
+          storeUserInfo(data.user);
 
           // Navigate to shop page
           navigate("/shop");  
@@ -178,6 +167,7 @@ const LoginSignUp = () => {
       // Handle logout function
       const handleLogout = () => {
       localStorage.removeItem("access_token");
+      localStorage.removeItem("userInfo");
       setIsLoggedIn(false);
       setUserInfo(null);
       setLoginEmail("");
