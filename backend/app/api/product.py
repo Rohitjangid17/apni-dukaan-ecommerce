@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, Form, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, joinedload
-from typing import List
+from typing import List, Optional
 from app.models.product import Product
 from app.schemas.product import ProductOut, PaginatedProductOut
 from app.utils.file_handler import save_image
@@ -58,26 +58,91 @@ async def create_product(
 
     return ProductOut.from_orm(product)
 
-@router.get("/", response_model=PaginatedProductOut)
-def get_all_products(
-    page: int = Query(1, ge=1),
-    limit: int = Query(10, ge=1, le=100),
+@router.get("/filters", response_model=PaginatedProductOut)
+def filter_products(
+    category_id: Optional[int] = Query(None),
+    colors: Optional[str] = Query(None),
+    sizes: Optional[str] = Query(None),
+    min_price: Optional[float] = Query(None),
+    max_price: Optional[float] = Query(None),
+    page: Optional[int] = Query(None, ge=1),
+    limit: Optional[int] = Query(None, ge=1, le=100),
     db: Session = Depends(get_db)
 ):
-    skip = (page - 1) * limit
-    total = db.query(Product).count()
-    total_pages = (total + limit - 1) // limit
+    query = db.query(Product).options(joinedload(Product.category))
 
-    products = db.query(Product).options(joinedload(Product.category)).offset(skip).limit(limit).all()
-    result = [ProductOut.from_orm(p) for p in products]
+    if category_id is not None:
+        query = query.filter(Product.category_id == category_id)
+
+    if colors:
+        query = query.filter(Product.colors.ilike(f"%{colors}%"))
+
+    if sizes:
+        query = query.filter(Product.sizes.ilike(f"%{sizes}%"))
+
+    if min_price is not None:
+        query = query.filter(Product.price >= min_price)
+
+    if max_price is not None:
+        query = query.filter(Product.price <= max_price)
+
+    total = query.count()
+
+    # No pagination - return all
+    if page is None or limit is None:
+        products = query.all()
+        return {
+            "total": total,
+            "page": 1,
+            "limit": total,
+            "total_pages": 1,
+            "data": [ProductOut.from_orm(p) for p in products]
+        }
+
+    # With pagination
+    skip = (page - 1) * limit
+    products = query.offset(skip).limit(limit).all()
+    total_pages = (total + limit - 1) // limit
 
     return {
         "total": total,
         "page": page,
         "limit": limit,
         "total_pages": total_pages,
-        "data": result
+        "data": [ProductOut.from_orm(p) for p in products]
     }
+
+@router.get("/", response_model=PaginatedProductOut)
+def get_all_products(
+    page: Optional[int] = Query(None, ge=1),
+    limit: Optional[int] = Query(None, ge=1, le=100),
+    db: Session = Depends(get_db)
+):
+    query = db.query(Product).options(joinedload(Product.category))
+    total = query.count()
+
+    if page is None or limit is None:
+        products = query.all()
+        return {
+            "total": total,
+            "page": 1,
+            "limit": total,
+            "total_pages": 1,
+            "data": [ProductOut.from_orm(p) for p in products]
+        }
+
+    skip = (page - 1) * limit
+    total_pages = (total + limit - 1) // limit
+
+    products = query.offset(skip).limit(limit).all()
+    return {
+        "total": total,
+        "page": page,
+        "limit": limit,
+        "total_pages": total_pages,
+        "data": [ProductOut.from_orm(p) for p in products]
+    }
+
 
 @router.get("/{product_id}", response_model=ProductOut)
 def get_product(product_id: int, db: Session = Depends(get_db)):
