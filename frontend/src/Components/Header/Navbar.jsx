@@ -110,7 +110,7 @@ const Navbar = () => {
               <MdOutlineClose size={20} onClick={toggleSearch} className="searchCloseIcon" />
             </form>
           ) : (
-            <FiSearch size={22} onClick={toggleSearch} />
+            <FiSearch size={22} cursor={'pointer'} onClick={toggleSearch} />
           )}
 
           <Link to="/loginSignUp" onClick={scrollToTop}>

@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
 
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../../Features/Cart/cartSlice";
-
 import { GoChevronLeft } from "react-icons/go";
 import { GoChevronRight } from "react-icons/go";
 import { FaStar } from "react-icons/fa";
@@ -15,17 +12,19 @@ import { Link } from "react-router-dom";
 import useAddToCart from "../../../hooks/useAddToCart";
 import useProductDetails from "../../../hooks/useProductDetails";
 
-import toast from "react-hot-toast";
 import "./Product.css";
 
 const Product = ({productId}) => {
-
-  // const [product, setProduct] = useState(null);
   const [productImg, setProductImg] = useState([]);
   const addToCartHandler = useAddToCart();
   const { product, loading } = useProductDetails(productId);
 
-  console.log("Product ID in product",productId)
+  useEffect(() => {
+    if (product?.images) {
+      setProductImg(product.images);
+    }
+  }, [product]);
+
 
   // Product images Gallery
   const [currentImg, setCurrentImg] = useState(0);
@@ -174,6 +173,7 @@ const Product = ({productId}) => {
                       <button
                         style={{
                           borderColor: selectSize === size ? "#000" : "#e0e0e0",
+                          borderRadius: "20px"
                         }}
                         onClick={() => setSelectSize(size)}
                       >
@@ -198,7 +198,7 @@ const Product = ({productId}) => {
                           className={highlightedColor === color ? "highlighted" : ""}
                           style={{
                             backgroundColor: color.toLowerCase(),
-                            border: highlightedColor === color ? "2px solid #000" : "1px solid #ccc",
+                            border: highlightedColor === color ? "1px solid #000" : "1px solid #ccc",
                             padding: "8px",
                             margin: "5px",
                             cursor: "pointer",

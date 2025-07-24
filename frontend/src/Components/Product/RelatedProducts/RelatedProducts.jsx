@@ -7,21 +7,19 @@ import "swiper/css/navigation";
 
 import { Navigation } from "swiper/modules";
 
-import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BASE_URL from "../../../constants/apiConfig";
 import { Link } from "react-router-dom";
 import Spinner from "../../Spinner/Spinner";
 import useAddToCart from "../../../hooks/useAddToCart";
 import useProducts from "../../../hooks/useProducts";
+import RenderStars from "../../../Utils/RenderStars";
 
 
 const RelatedProducts = () => {
-    // const [products, setProducts] = useState([]);
-    // const [loading, setLoading] = useState(true);
-
     const addToCartHandler = useAddToCart();
     const {products, loading} = useProducts();
+    const relatedProducts = products.slice(0, 8);
 
     const scrollToTop = () => {
       window.scrollTo({
@@ -29,23 +27,6 @@ const RelatedProducts = () => {
         behavior: "smooth",
       });
     };
-
-    // useEffect(() => {
-    //   const fetchProducts = async () => {
-    //     try {
-    //       const response = await fetch(`${BASE_URL}/products/`);
-    //       const data = await response.json();
-    //       const productList = Array.isArray(data?.data) ? data.data : [];
-    //       setProducts(productList);
-    //     } catch (error) {
-    //       console.error("Failed to fetch products:", error);
-    //     } finally {
-    //       setLoading(false);
-    //     }
-    //   };
-
-    //   fetchProducts();
-    // }, []);
 
   return (
     <>
@@ -93,7 +74,7 @@ const RelatedProducts = () => {
               },
             }}
           >
-            {products.slice(0, 8).map((product) => {
+            {relatedProducts.map((product) => {
               return (
                 <SwiperSlide key={product.productId}>
                   <div className="rpContainer">
@@ -120,16 +101,12 @@ const RelatedProducts = () => {
                         <h5>{product.name}</h5>
                         </Link>
                         <p>₹{product.price}</p>
+
                         <div className="productRatingReviews">
                           <div className="productRatingStar">
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
-                            <FaStar color="#FEC78A" size={10} />
+                            {RenderStars(product.rating || 4.3)}
                           </div>
-
-                          <span>0 reviews</span>
+                          <span>{product.productReviews}</span>
                         </div>
                       </div>
                     </div>

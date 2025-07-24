@@ -25,7 +25,8 @@ def add_to_cart(payload: CartCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=List[CartOut])
 def get_all_cart_items(db: Session = Depends(get_db)):
-    return db.query(Cart).options(joinedload(Cart.product)).all()
+    carts = db.query(Cart).options(joinedload(Cart.product)).all()
+    return [cart for cart in carts if cart.product is not None]
 
 @router.get("/user/{user_id}", response_model=List[CartOut])
 def get_cart_by_user(user_id: int, db: Session = Depends(get_db)):

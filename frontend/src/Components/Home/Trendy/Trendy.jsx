@@ -9,23 +9,7 @@ import BASE_URL from "../../../constants/apiConfig";
 import Spinner from "../../Spinner/Spinner";
 import useAddToCart from "../../../hooks/useAddToCart";
 import useProducts from "../../../hooks/useProducts";
-
-// Function to render stars based on rating
-const renderStars = (rating) => {
-  const stars = [];
-
-  for (let i = 1; i <= 5; i++) {
-    if (rating >= i) {
-      stars.push(<FaStar key={i} color="#FEC78A" size={10} />);
-    } else if (rating >= i - 0.5) {
-      stars.push(<FaStarHalfAlt key={i} color="#FEC78A" size={10} />);
-    } else {
-      stars.push(<FaRegStar key={i} color="#FEC78A" size={10} />);
-    }
-  }
-
-  return stars;
-};
+import RenderStars from "../../../Utils/RenderStars";
 
 const Trendy = () => {
 
@@ -43,8 +27,6 @@ const Trendy = () => {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
-  console.log("Trendy products :", products)
 
 
   // useMemo optimized data
@@ -104,7 +86,7 @@ const Trendy = () => {
             <p>₹{product.price}</p>
             <div className="trendyProductRatingReviews">
               <div className="trendyProductRatingStar">
-                {renderStars(product.rating || 4.3)}
+                {RenderStars(product.rating || 4.3)}
               </div>
               <span>{product.productReviews}</span>
             </div>
