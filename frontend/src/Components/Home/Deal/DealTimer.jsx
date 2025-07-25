@@ -76,27 +76,6 @@ const DealTimer = () => {
                 </Link>
               </div>
             </div>
-            <div className="dealTimeCounter">
-              <div className="dealTimeDigit">
-                <h4>{timeLeft.days}</h4>
-                <p>Days</p>
-              </div>
-              <h4>:</h4>
-              <div className="dealTimeDigit">
-                <h4>{timeLeft.hours}</h4>
-                <p>Hours</p>
-              </div>
-              <h4>:</h4>
-              <div className="dealTimeDigit">
-                <h4>{formatTime(timeLeft.minutes)}</h4>
-                <p>Minutes</p>
-              </div>
-              <h4>:</h4>
-              <div className="dealTimeDigit">
-                <h4>{formatTime(timeLeft.seconds)}</h4>
-                <p>Seconds</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
