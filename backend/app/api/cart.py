@@ -25,7 +25,8 @@ def add_to_cart(payload: CartCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=List[CartOut])
 def get_all_cart_items(db: Session = Depends(get_db)):
-    return db.query(Cart).options(joinedload(Cart.product)).all()
+    carts = db.query(Cart).options(joinedload(Cart.product)).all()
+    return [cart for cart in carts if cart.product is not None]
 
 @router.get("/user/{user_id}", response_model=List[CartOut])
 def get_cart_by_user(user_id: int, db: Session = Depends(get_db)):
@@ -33,7 +34,7 @@ def get_cart_by_user(user_id: int, db: Session = Depends(get_db)):
 
 @router.put("/{cart_id}", response_model=CartOut)
 def update_cart(cart_id: int, payload: CartUpdate, db: Session = Depends(get_db)):
-    cart_item = db.query(Cart).filter(Cart.id == cart_id).first()
+    cart_item = db.query(Cart).filter(Cart.cart_id == cart_id).first()
     if not cart_item:
         raise HTTPException(status_code=404, detail="Cart item not found")
 
@@ -46,7 +47,7 @@ def update_cart(cart_id: int, payload: CartUpdate, db: Session = Depends(get_db)
 
 @router.delete("/{cart_id}")
 def delete_cart(cart_id: int, db: Session = Depends(get_db)):
-    cart_item = db.query(Cart).filter(Cart.id == cart_id).first()
+    cart_item = db.query(Cart).filter(Cart.cart_id == cart_id).first()
     if not cart_item:
         raise HTTPException(status_code=404, detail="Cart item not found")
     db.delete(cart_item)

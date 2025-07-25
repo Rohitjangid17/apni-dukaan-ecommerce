@@ -7,14 +7,15 @@ import BASE_URL from "../../constants/apiConfig";
 import useAddToCart from "../../hooks/useAddToCart";
 import Spinner from "../Spinner/Spinner";
 import no_result_img from "../../Assets/no_results.jpg"
+import useProducts from "../../hooks/useProducts";
+import RenderStars from "../../Utils/RenderStars";
 
 const SearchResults = () => {
     const addToCartHandler = useAddToCart();
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query")?.toLowerCase();
-    const [products, setProducts] = useState([]);
     const [filtered, setFiltered] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const {products, loading} = useProducts({ fetchAll: true, limit: 10 })
     const [visibleCount, setVisibleCount] = useState(20);
 
     const scrollToTop = () => {
@@ -23,23 +24,6 @@ const SearchResults = () => {
         behavior: "smooth",
         });
     };
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            setLoading(true);
-        try {
-            const res = await fetch(`${BASE_URL}/products/`);
-            const data = await res.json();
-            setProducts(data);
-        } catch (err) {
-            console.error("Failed to fetch products", err);
-        } finally{
-            setLoading(false)
-        }
-        };
-
-        fetchProducts();
-    }, []);
 
     useEffect(() => {
       if (!loading && query && products.length) {
@@ -82,32 +66,34 @@ const SearchResults = () => {
                   <Spinner/>
                 ) : (
                   filtered.slice(0, visibleCount).map((product) => (
-                    <div className="searchProductContainer" key={product.id}>
+                    <div className="searchProductContainer" key={product.productId}>
                       <div className="searchProductImages">
-                        <Link to={`/product/${product.id}`} onClick={scrollToTop}>
-                          <img
-                            src={`${BASE_URL}${product.images?.[0]}`}
-                            alt={product.name}
-                            loading="lazy"
-                            className="searchProduct_front"
-                          />
+                        <Link to={`/product/${product.productId}`} onClick={scrollToTop}>
+                          {product.images && product.images.length > 0 && (
+                            <img
+                              src={`${BASE_URL}${product.images[0]}`}
+                              loading="lazy"
+                              className="sdProduct_front"
+                              alt="product image"
+                            />
+                          )}
                         </Link>
                         <h4 onClick={() => addToCartHandler(product)}>Add to Cart</h4>
                       </div>
                       <div className="searchProductInfo">
                         <div className="searchProductCategoryWishlist">
-                          <p>{product.name}</p>
+                          <p>{product.category?.name || 'Apparel'}</p>
                         </div>
                         <div className="searchProductNameInfo">
-                          <Link to={`/product/${product.id}`} onClick={scrollToTop}>
-                            <h5>{product.description}</h5>
+                          <Link to={`/product/${product.productId}`} onClick={scrollToTop}>
+                            <h5>{product.name}</h5>
                           </Link>
                           <p>₹{product.price}</p>
                           <div className="searchProductRatingReviews">
-                            {/* <div className="searchProductRatingStar">
-                              {renderStars(product.rating || 4.3)}
-                            </div> */}
-                            <span>{product.productReviews || "1.2k reviews"}</span>
+                            <div className="searchProductRatingStar">
+                              {RenderStars(product.rating || 4.3)}
+                            </div>
+                            <span>{product.productReviews}</span>
                           </div>
                         </div>
                       </div>

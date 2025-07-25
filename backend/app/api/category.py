@@ -31,14 +31,14 @@ def get_all_categories(db: Session = Depends(get_db)):
 
 @router.get("/{category_id}", response_model=CategoryOut)
 def get_category(category_id: int, db: Session = Depends(get_db)):
-    category = db.query(Category).filter(Category.id == category_id).first()
+    category = db.query(Category).filter(Category.category_id == category_id).first()
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
     return category
 
 @router.put("/{category_id}", response_model=CategoryOut)
 def update_category(category_id: int, category_data: CategoryUpdate, db: Session = Depends(get_db)):
-    category = db.query(Category).filter(Category.id == category_id).first()
+    category = db.query(Category).filter(Category.category_id == category_id).first()
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
 
@@ -51,7 +51,7 @@ def update_category(category_id: int, category_data: CategoryUpdate, db: Session
 
 @router.delete("/{category_id}")
 def delete_category(category_id: int, db: Session = Depends(get_db)):
-    category = db.query(Category).filter(Category.id == category_id).first()
+    category = db.query(Category).filter(Category.category_id == category_id).first()
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
 

@@ -8,46 +8,14 @@ import toast from "react-hot-toast";
 import BASE_URL from "../../../constants/apiConfig";
 import Spinner from "../../Spinner/Spinner";
 import useAddToCart from "../../../hooks/useAddToCart";
-
-// Function to render stars based on rating
-const renderStars = (rating) => {
-  const stars = [];
-
-  for (let i = 1; i <= 5; i++) {
-    if (rating >= i) {
-      stars.push(<FaStar key={i} color="#FEC78A" size={10} />);
-    } else if (rating >= i - 0.5) {
-      stars.push(<FaStarHalfAlt key={i} color="#FEC78A" size={10} />);
-    } else {
-      stars.push(<FaRegStar key={i} color="#FEC78A" size={10} />);
-    }
-  }
-
-  return stars;
-};
+import useProducts from "../../../hooks/useProducts";
+import RenderStars from "../../../Utils/RenderStars";
 
 const Trendy = () => {
-  const addToCartHandler = useAddToCart();;
+
+  const addToCartHandler = useAddToCart();
+  const { products, loading } = useProducts();
   const [activeTab, setActiveTab] = useState("tab1");
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fake review data
-    const fakeReviewList = [
-      "4.8k+ reviews", "3.5k+ reviews", "5.1k+ reviews", "2.2k+ reviews", "4.1k+ reviews",
-      "1.9k+ reviews", "3.8k+ reviews", "3.1k+ reviews", "2.5k+ reviews", "4.9k+ reviews",
-      "1.1k+ reviews", "2.9k+ reviews", "1.4k+ reviews", "3.6k+ reviews", "2.0k+ reviews",
-      "1.7k+ reviews", "2.4k+ reviews", "1.3k+ reviews", "1.6k+ reviews", "1.2k+ reviews",
-      "2.6k+ reviews", "3.4k+ reviews", "4.3k+ reviews", "1.8k+ reviews", "2.1k+ reviews",
-      "3.9k+ reviews", "4.2k+ reviews", "2.3k+ reviews", "1.5k+ reviews", "5.0k+ reviews",
-      "1.0k+ reviews", "2.8k+ reviews", "3.3k+ reviews", "4.6k+ reviews", "3.2k+ reviews", 
-      "2.7k+ reviews", "1.8k+ reviews", "4.5k+ reviews",
-      "3.0k+ reviews", "2.2k+ reviews", "1.9k+ reviews", "3.7k+ reviews", "2.6k+ reviews",
-      "4.4k+ reviews", "3.3k+ reviews", "2.1k+ reviews", "1.6k+ reviews", "3.5k+ reviews",
-      "4.0k+ reviews", "2.9k+ reviews"
-    ];
-
-  const cartItems = useSelector((state) => state.cart.items);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -59,34 +27,6 @@ const Trendy = () => {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
-  useEffect(() => {
-  // Fetch products
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`${BASE_URL}/products/`);
-      const data = await response.json();
-
-      // Map products to include fake reviews and ratings
-      const productsWithReviews = data.map((product, index) => ({
-        ...product,
-        productReviews: fakeReviewList[index % fakeReviewList.length],
-        rating: (Math.random() * 2 + 3).toFixed(1),
-      }));
-      
-
-      setProducts(productsWithReviews);
-      // setProducts(data);
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-    fetchProducts();
-  }, []);
 
 
   // useMemo optimized data
@@ -121,30 +61,32 @@ const Trendy = () => {
   // render cards
   const renderProducts = (products) =>
     products.map((product) => (
-      <div className="trendyProductContainer" key={product.id}>
+      <div className="trendyProductContainer" key={product.productId}>
         <div className="trendyProductImages">
-          <Link to={`/product/${product.id}`} onClick={scrollToTop}>
-            <img
-              src={`${BASE_URL}${product.images?.[0]}`}
-              alt=""
-              loading="lazy"
-              className="trendyProduct_front"
-            />
+          <Link to={`/product/${product.productId}`} onClick={scrollToTop}>
+            {product.images && product.images.length > 0 && (
+              <img
+                src={`${BASE_URL}${product.images[0]}`}
+                loading="lazy"
+                className="sdProduct_front"
+                alt="product image"
+              />
+            )}
           </Link>
           <h4 onClick={() => addToCartHandler(product)}>Add to Cart</h4>
         </div>
         <div className="trendyProductInfo">
           <div className="trendyProductCategoryWishlist">
-            <p>{product.name}</p>
+            <p>{product.category?.name || 'Apparel'}</p>
           </div>
           <div className="trendyProductNameInfo">
-            <Link to={`/product/${product.id}`} onClick={scrollToTop}>
-              <h5>{product.description}</h5>
+            <Link to={`/product/${product.productId}`} onClick={scrollToTop}>
+              <h5>{product.name}</h5>
             </Link>
             <p>₹{product.price}</p>
             <div className="trendyProductRatingReviews">
               <div className="trendyProductRatingStar">
-                {renderStars(product.rating || 4.3)}
+                {RenderStars(product.rating || 4.3)}
               </div>
               <span>{product.productReviews}</span>
             </div>

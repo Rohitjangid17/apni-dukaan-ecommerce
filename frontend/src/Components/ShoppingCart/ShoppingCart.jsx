@@ -27,7 +27,7 @@ const ShoppingCart = () => {
     try {
       const token = localStorage.getItem("access_token");
       if (!token) return;
-      const res = await fetch("http://127.0.0.1:8000/cart/", {
+      const res = await fetch(`${BASE_URL}/cart/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -38,12 +38,14 @@ const ShoppingCart = () => {
       const data = await res.json();
 
       const formatted = data.map((item) => ({
-        productID: item.id,
-        product_id: item.product_id,
-        productName: item.product_name || 'My Product',
-        productPrice: item.price,
+        userId: item.user_id,
+        cartId: item.cart_id,
+        productId: item.product_id,
+        productName: item.product.name || 'My Product',
+        productPrice: item.product.price,
         quantity: item.quantity,
-        frontImg: item.image_url,
+        frontImg: item.product.images?.[0],
+        images: item.product.images,      
         productReviews: item.reviews || "1.2k reviews",
       }));
 
@@ -126,12 +128,12 @@ const ShoppingCart = () => {
     callback();
   };
 
-  const handleRemoveFromCart = async (productID) => {
+  const handleRemoveFromCart = async (cartId) => {
   const token = localStorage.getItem("access_token");
   if (!token) return;
 
   try {
-      const res = await fetch(`http://127.0.0.1:8000/cart/${productID}`, {
+      const res = await fetch(`${BASE_URL}/cart/${cartId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -140,7 +142,7 @@ const ShoppingCart = () => {
 
       if (!res.ok) throw new Error("Failed to delete item from backend");
 
-      dispatch(removeFromCart(productID));
+      dispatch(removeFromCart(cartId));
       await fetchCartItems(dispatch);
       toast.success("Item removed from cart", {
         duration: 2000,
@@ -213,6 +215,7 @@ const ShoppingCart = () => {
               <div className="shoppingBagSection">
                 <div className="shoppingBagTableSection">
                   {/* For Desktop Devices */}
+                  {cartItems.length > 0 ? (
                   <table className="shoppingBagTable">
                     <thead>
                       <tr>
@@ -225,19 +228,19 @@ const ShoppingCart = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {cartItems.length > 0 ? (
-                        cartItems.map((item) => (
-                          <tr key={item.productID}>
+                      
+                        {cartItems.map((item) => (
+                          <tr key={item.cartId}>
                             <td data-label="Product">
                               <div className="shoppingBagTableImg">
-                                <Link to={`/product/${item.product_id}`} onClick={scrollToTop}>
+                                <Link to={`/product/${item.productId}`} onClick={scrollToTop}>
                                   <img src={`${BASE_URL}${item.images?.[0]}`} alt="" loading="lazy" />
                                 </Link>
                               </div>
                             </td>
                             <td data-label="">
                               <div className="shoppingBagTableProductDetail">
-                                <Link to={`/product/${item.product_id}`} onClick={scrollToTop}>
+                                <Link to={`/product/${item.productId}`} onClick={scrollToTop}>
                                   <h4>{item.productName}</h4>
                                 </Link>
                                 <p>{item.productReviews}</p>
@@ -297,25 +300,21 @@ const ShoppingCart = () => {
                             </td>
                             <td data-label="">
                               <MdOutlineClose
-                                onClick={() => handleRemoveFromCart(item.productID)}
+                                onClick={() => handleRemoveFromCart(item.cartId)}
                               />
                             </td>
                           </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan="6">
-                            <div className="shoppingCartEmpty">
-                              <span>Your cart is empty!</span>
-                              <Link to="/shop" onClick={scrollToTop}>
-                                <button>Shop Now</button>
-                              </Link>
-                            </div>
-                          </td>
-                        </tr>
-                      )}
+                        ))}
                     </tbody>
                   </table>
+                  ) : (
+                      <div className="shoppingCartEmpty">
+                        <span>Your cart is empty!</span>
+                        <Link to="/shop" onClick={scrollToTop}>
+                          <button>Shop Now</button>
+                        </Link>
+                      </div>
+                      )}
 
                   {/* For Mobile devices */}
 
@@ -323,16 +322,16 @@ const ShoppingCart = () => {
                     {cartItems.length > 0 ? (
                       <>
                         {cartItems.map((item) => (
-                          <div key={item.productID}>
+                          <div key={item.cartId}>
                             <div className="shoppingBagTableMobileItems">
                               <div className="shoppingBagTableMobileItemsImg">
-                                <Link to={`/product/${item.product_id}`} onClick={scrollToTop}>
+                                <Link to={`/product/${item.productId}`} onClick={scrollToTop}>
                                   <img src={`${BASE_URL}${item.images?.[0]}`} alt="" loading="lazy" />
                                 </Link>
                               </div>
                               <div className="shoppingBagTableMobileItemsDetail">
                                 <div className="shoppingBagTableMobileItemsDetailMain">
-                                  <Link to={`/product/${item.product_id}`} onClick={scrollToTop}>
+                                  <Link to={`/product/${item.productId}`} onClick={scrollToTop}>
                                     <h4>{item.productName}</h4>
                                   </Link>
                                   <p>{item.productReviews}</p>
@@ -375,7 +374,7 @@ const ShoppingCart = () => {
                                 <div className="shoppingBagTableMobileItemsDetailTotal">
                                   <MdOutlineClose
                                     size={20}
-                                    onClick={() => handleRemoveFromCart(item.productID)}
+                                    onClick={() => handleRemoveFromCart(item.cartId)}
                                   />
                                   <p>₹{item.quantity * item.productPrice}</p>
                                 </div>
@@ -501,7 +500,7 @@ const ShoppingCart = () => {
                         </thead>
                         <tbody>
                           {cartItems.map((items) => (
-                            <tr>
+                            <tr key={items.cartId}>
                               <td>
                                 {items.productName} x {items.quantity}
                               </td>

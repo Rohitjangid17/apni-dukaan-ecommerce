@@ -11,7 +11,6 @@ const useAddToCart = () => {
 
         const productInCart = cartItems.find((item) => item.id === product.id);
 
-
         if (productInCart && productInCart.quantity >= 20) {
             toast.error("Product limit reached", {
                 duration: 2000,
@@ -31,7 +30,7 @@ const useAddToCart = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     user_id: userId, // HARD CODED USER ID
-                    product_id: product.id,
+                    product_id: product.productId,
                     quantity,
                     price: product.price,
                     color: product.color,
@@ -44,6 +43,8 @@ const useAddToCart = () => {
             // dispatch(addToCart(product));
 
             dispatch(addToCart({ ...product, quantity }));
+
+            // dispatch(addToCart({ ...product, quantity, color, size }));
 
             toast.success("Added to cart!", {
                 duration: 2000,

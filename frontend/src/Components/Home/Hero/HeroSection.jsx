@@ -1,28 +1,44 @@
-import React, { useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-
+import React, { useState, useEffect } from "react";
 import "./HeroSection.css";
-import { Model } from "../../Model/Model";
 import { Link } from "react-router-dom";
 
-const HeroSection = () => {
-  const [tshirtColor, setTshirtColor] = useState("red");
+const backgroundImages = [
+  require("../../../Assets/slideshow-pattern-images/1.jpeg"),
+  require("../../../Assets/slideshow-pattern-images/2.jpeg"),
+  require("../../../Assets/slideshow-pattern-images/3.jpeg"),
+  require("../../../Assets/slideshow-pattern-images/4.jpeg"),
+  require("../../../Assets/slideshow-pattern-images/5.jpeg"),
+  require("../../../Assets/slideshow-pattern-images/6.jpeg"),
+];
 
-  const changeColor = (color) => {
-    setTshirtColor(color);
-  };
+const HeroSection = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+  const [fadeIn, setFadeIn] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFadeIn(false);
+      setTimeout(() => {
+        setCurrentImage((prev) => (prev + 1) % backgroundImages.length);
+        setFadeIn(true);
+      }, 500);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <>
-      <div className="heroMain">
+    <div className="heroMainWrapper">
+      <div
+        className={`heroMain ${fadeIn ? "fade-in" : "fade-out"}`}
+        style={{
+          backgroundImage: `url(${backgroundImages[currentImage]})`,
+        }}
+      >
         <div className="sectionleft">
           <p>Best Deals</p>
           <h1>Apni Dukaan Mega Sale</h1>
@@ -33,50 +49,8 @@ const HeroSection = () => {
             </Link>
           </div>
         </div>
-        {/* <div className="sectionright">
-          <Canvas
-            className="canvasModel"
-            camera={{ position: [0, 5, 15], fov: 50 }}
-          >
-            <ambientLight intensity={0.5} />
-            <directionalLight
-              position={[10, 10, 5]}
-              intensity={2.5}
-              color={"white"}
-            />
-
-            <OrbitControls
-              enableZoom={false}
-              enablePan={false}
-              minAzimuthAngle={-Infinity}
-              maxAzimuthAngle={Infinity}
-              maxPolarAngle={Math.PI / 2}
-              minPolarAngle={Math.PI / 2}
-            />
-
-            <Model color={tshirtColor} />
-          </Canvas>
-          <div className="heroColorBtn">
-            <button
-              onClick={() => changeColor("#353933")}
-              style={{ backgroundColor: "#353933" }}
-            ></button>
-            <button
-              onClick={() => changeColor("#EFBD4E")}
-              style={{ backgroundColor: "#EFBD4E" }}
-            ></button>
-            <button
-              onClick={() => changeColor("#726DE7")}
-              style={{ backgroundColor: "#726DE7" }}
-            ></button>
-            <button
-              onClick={() => changeColor("red")}
-              style={{ backgroundColor: "red" }}
-            ></button>
-          </div>
-        </div> */}
       </div>
-    </>
+    </div>
   );
 };
 
