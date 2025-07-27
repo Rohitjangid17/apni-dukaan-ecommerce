@@ -13,7 +13,7 @@
 }
 
 .contactInfo {
-  padding: 0 250px;
+  padding: 0 250px 80px;
   display: flex;
   flex-direction: column;
   gap: 60px;
@@ -98,7 +98,7 @@
   }
 
   .contactInfo {
-    padding: 0 60px;
+    padding: 0 60px 50px;
   }
 }
 
@@ -121,7 +121,7 @@
   }
 
   .contactInfo {
-    padding: 0 15px;
+    padding: 0 15px 30px;
   }
 
   .contactBox {

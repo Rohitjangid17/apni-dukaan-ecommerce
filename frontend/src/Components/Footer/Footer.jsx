@@ -1,7 +1,6 @@
 import React from "react";
 import "./Footer.css";
 import logo from "../../Assets/logo.png";
-import paymentIcon from "../../Assets/paymentIcon.png";
 import { FaFacebookF } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
@@ -34,10 +33,10 @@ const Footer = () => {
               <img src={logo} alt="" loading="lazy" />
             </div>
 
+            <div className="footer_address">
             <p>Vidhyadhar Nagar, Jaipur</p>
 
-            <div className="footer_address">
-              <strong> sale@apnidukaan.com </strong>
+              <strong> contact@apnidukaan.com </strong>
               <strong> +91 12345 12345 </strong>
             </div>
           </div>
@@ -113,14 +112,11 @@ const Footer = () => {
               <button type="submit">Subscribe</button>
             </form>
 
-            <h6>Secure Payments</h6>
-            <div className="paymentIconContainer">
-              <img src={paymentIcon} alt="" loading="lazy" />
-            </div>
+
           </div>
         </div>
         <div className="footer_bottom">
-               <div className="social_links">
+            <div className="social_links">
               <FaFacebookF />
               <FaXTwitter />
               <FaInstagram />

@@ -7,7 +7,6 @@
 
 .blogDetailsHeading {
   padding: 0 100px;
-  margin-bottom: 50px;
 }
 
 .blogDetailsHeading h2 {
@@ -72,11 +71,12 @@
 .blogDetailsContentImg {
   display: flex;
   gap: 30px;
+  padding-bottom: 30px;
 }
 
 .blogDetailsContentImg img {
-  width: 100%;
-  height: 100%;
+  width: 50%;
+  height: 50%;
 }
 
 /* share Buttons */
@@ -144,75 +144,6 @@
   background-color: #000;
 }
 
-.blogDetailsNextPrev {
-  display: flex;
-  justify-content: space-between;
-  padding: 50px 100px;
-}
-
-.blogDetailsNextPrevContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.blogDetailsNextPrevContainer p {
-  font-size: 14px;
-}
-
-.blogDetailsNextPrevContainerIcon {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.blogDetailsNextPrevContainerIcon p {
-  font-size: 14px;
-  font-weight: 500;
-  position: relative;
-}
-
-.blogDetailsNextPrevContainerIcon p::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -5px;
-  width: 0;
-  border-bottom: 2px solid black;
-  transition: width 0.3s ease;
-}
-
-.blogDetailsNextPrevContainerIcon p:hover::after {
-  width: 50%;
-}
-
-.blogDetailsNextPrevContainerIcon2 {
-  display: flex;
-  align-items: center;
-  justify-content: right;
-  cursor: pointer;
-}
-
-.blogDetailsNextPrevContainerIcon2 p {
-  font-size: 14px;
-  font-weight: 500;
-  position: relative;
-}
-
-.blogDetailsNextPrevContainerIcon2 p::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -5px;
-  width: 0;
-  border-bottom: 2px solid black;
-  transition: width 0.3s ease;
-}
-
-.blogDetailsNextPrevContainerIcon2 p:hover::after {
-  width: 50%;
-}
-
 @media screen and (max-width: 1210px) {
   .blogDetailsSectionContainer {
     padding: 0 60px;
@@ -230,10 +161,6 @@
   .share-buttons {
     padding: 0 50px;
   }
-
-  .blogDetailsNextPrev {
-    padding: 50px 50px;
-  }
 }
 
 @media screen and (max-width: 991px) {
@@ -247,6 +174,10 @@
 
   .blogDetailsContent {
     padding: 50px 25px;
+  }
+
+  .blogDetailsContentImg {
+    padding-bottom: 10px;
   }
 
   .blogDetailsContentImg img {
@@ -273,10 +204,6 @@
   .more svg {
     margin-right: 0;
   }
-
-  .blogDetailsNextPrev {
-    padding: 50px 25px;
-  }
 }
 
 @media screen and (max-width: 768px) {
@@ -300,10 +227,6 @@
   .share-button {
     padding: 15px 25px;
   }
-
-  .blogDetailsNextPrev {
-    padding: 50px 0;
-  }
 }
 
 @media screen and (max-width: 450px) {
@@ -326,14 +249,5 @@
 
   .share-button {
     padding: 15px 15px;
-  }
-
-  .blogDetailsNextPrev {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .blogDetailsNextPrevContainer {
-    align-items: flex-start;
   }
 }

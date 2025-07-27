@@ -7,7 +7,6 @@
 
 .blogListHeader {
   background-image: url(../../../Assets/pattern_bg.png);
-  background-size: cover;
   background-color: #eeeeee;
   display: flex;
   flex-direction: column;
@@ -70,6 +69,7 @@
 }
 
 .blogPostThumb img {
+  border-radius: 15px;
   width: 100%;
   height: 100%;
 }
