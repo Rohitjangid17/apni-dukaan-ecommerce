@@ -18,7 +18,7 @@ const AdditionalInfo = ({ productId }) => {
     setActiveTab(tab);
   };
 
-  if (!product) return "No inforations";
+  if (!product) return <h4 className="no_information_text">No inforations</h4>;
 
   return (
     <>
