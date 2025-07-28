@@ -17,11 +17,27 @@ def get_db():
 
 @router.post("/", response_model=CartOut)
 def add_to_cart(payload: CartCreate, db: Session = Depends(get_db)):
-    cart_item = Cart(**payload.dict())
-    db.add(cart_item)
-    db.commit()
-    db.refresh(cart_item)
-    return cart_item
+    # Check if same product + color + size exists in cart for the user
+    existing_item = db.query(Cart).filter(
+        Cart.user_id == payload.user_id,
+        Cart.product_id == payload.product_id,
+        Cart.color == payload.color,
+        Cart.size == payload.size,
+    ).first()
+
+    if existing_item:
+        # Merge: update quantity and price
+        existing_item.quantity += payload.quantity
+        db.commit()
+        db.refresh(existing_item)
+        return existing_item
+    else:
+        # New cart entry
+        cart_item = Cart(**payload.dict())
+        db.add(cart_item)
+        db.commit()
+        db.refresh(cart_item)
+        return cart_item
 
 @router.get("/", response_model=List[CartOut])
 def get_all_cart_items(db: Session = Depends(get_db)):
