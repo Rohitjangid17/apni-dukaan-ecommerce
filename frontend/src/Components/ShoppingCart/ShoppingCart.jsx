@@ -5,13 +5,13 @@ import {
   removeFromCart,
   updateQuantity,
   selectCartTotalAmount,
-} from "../../Features/Cart/cartSlice"; 
+  setCartItems
+} from "../../Features/Cart/cartSlice";
 
 import { MdOutlineClose } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import success from "../../Assets/success.png";
 import toast from "react-hot-toast";
-import { setCartItems } from "../../Features/Cart/cartSlice";
 import BASE_URL from "../../constants/apiConfig";
 
 const ShoppingCart = () => {
@@ -25,7 +25,7 @@ const ShoppingCart = () => {
 
   const fetchCartItems = async () => {
     try {
-      const token = localStorage.getItem("access_token");
+      const token = localStorage.getItem("token");
       if (!token) return;
       const res = await fetch(`${BASE_URL}/cart/`, {
         headers: {
@@ -42,10 +42,10 @@ const ShoppingCart = () => {
         cartId: item.cart_id,
         productId: item.product_id,
         productName: item.product.name || 'My Product',
-        productPrice: item.product.price,
+        productPrice: parseFloat(item.product.price),
         quantity: item.quantity,
         frontImg: item.product.images?.[0],
-        images: item.product.images,      
+        images: item.product.images,
         productReviews: item.reviews || "1.2k reviews",
       }));
 
@@ -56,7 +56,7 @@ const ShoppingCart = () => {
   };
 
   useEffect(() => {
-  fetchCartItems();
+    fetchCartItems();
   }, []);
 
   const handleTabClick = (tab) => {
@@ -65,9 +65,9 @@ const ShoppingCart = () => {
     }
   };
 
-  const handleQuantityChange = (productId, quantity) => {
+  const handleQuantityChange = (cartId, quantity) => {
     if (quantity >= 1 && quantity <= 20) {
-      dispatch(updateQuantity({ productID: productId, quantity: quantity }));
+      dispatch(updateQuantity({ cartId, quantity }));
     }
   };
 
@@ -81,7 +81,6 @@ const ShoppingCart = () => {
   };
 
   // current Date
-
   const currentDate = new Date();
 
   const formatDate = (date) => {
@@ -105,7 +104,7 @@ const ShoppingCart = () => {
     setSelectedPayment(e.target.value);
   };
 
-    const showErrorToast = (message) =>
+  const showErrorToast = (message) =>
     toast.error(message, {
       duration: 2000,
       style: { backgroundColor: "#ff4b4b", color: "white" },
@@ -115,13 +114,13 @@ const ShoppingCart = () => {
 
   // Function to handle checkout access
 
-  const handleCheckoutAccess = (targetTab, callback = () => {}) => {
-  const token = localStorage.getItem("access_token");
-  if (!token) {
-    showErrorToast("Please login or sign up to continue checkout.");
-    navigate("/loginSignUp");
-    return;
-  }
+  const handleCheckoutAccess = (targetTab, callback = () => { }) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      showErrorToast("Please login or sign up to continue checkout.");
+      navigate("/loginSignUp");
+      return;
+    }
 
     handleTabClick(targetTab);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -129,10 +128,10 @@ const ShoppingCart = () => {
   };
 
   const handleRemoveFromCart = async (cartId) => {
-  const token = localStorage.getItem("access_token");
-  if (!token) return;
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-  try {
+    try {
       const res = await fetch(`${BASE_URL}/cart/${cartId}`, {
         method: "DELETE",
         headers: {
@@ -216,21 +215,21 @@ const ShoppingCart = () => {
                 <div className="shoppingBagTableSection">
                   {/* For Desktop Devices */}
                   {cartItems.length > 0 ? (
-                  <table className="shoppingBagTable">
-                    <thead>
-                      <tr>
-                        <th>Product</th>
-                        <th></th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Subtotal</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      
-                        {cartItems.map((item) => (
-                          <tr key={item.cartId}>
+                    <table className="shoppingBagTable">
+                      <thead>
+                        <tr>
+                          <th>Product</th>
+                          <th></th>
+                          <th>Price</th>
+                          <th>Quantity</th>
+                          <th>Subtotal</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        {cartItems.map((item, index) => (
+                          <tr key={index}>
                             <td data-label="Product">
                               <div className="shoppingBagTableImg">
                                 <Link to={`/product/${item.productId}`} onClick={scrollToTop}>
@@ -256,10 +255,7 @@ const ShoppingCart = () => {
                               <div className="ShoppingBagTableQuantity">
                                 <button
                                   onClick={() =>
-                                    handleQuantityChange(
-                                      item.productID,
-                                      item.quantity - 1
-                                    )
+                                    handleQuantityChange(item.cartId, item.quantity - 1)
                                   }
                                 >
                                   -
@@ -270,18 +266,12 @@ const ShoppingCart = () => {
                                   max="20"
                                   value={item.quantity}
                                   onChange={(e) =>
-                                    handleQuantityChange(
-                                      item.productID,
-                                      parseInt(e.target.value)
-                                    )
+                                    handleQuantityChange(item.cartId, parseInt(e.target.value) || 1)
                                   }
                                 />
                                 <button
                                   onClick={() =>
-                                    handleQuantityChange(
-                                      item.productID,
-                                      item.quantity + 1
-                                    )
+                                    handleQuantityChange(item.cartId, item.quantity + 1)
                                   }
                                 >
                                   +
@@ -305,24 +295,24 @@ const ShoppingCart = () => {
                             </td>
                           </tr>
                         ))}
-                    </tbody>
-                  </table>
+                      </tbody>
+                    </table>
                   ) : (
-                      <div className="shoppingCartEmpty">
-                        <span>Your cart is empty!</span>
-                        <Link to="/shop" onClick={scrollToTop}>
-                          <button>Shop Now</button>
-                        </Link>
-                      </div>
-                      )}
+                    <div className="shoppingCartEmpty">
+                      <span>Your cart is empty!</span>
+                      <Link to="/shop" onClick={scrollToTop}>
+                        <button>Shop Now</button>
+                      </Link>
+                    </div>
+                  )}
 
                   {/* For Mobile devices */}
 
                   <div className="shoppingBagTableMobile">
                     {cartItems.length > 0 ? (
                       <>
-                        {cartItems.map((item) => (
-                          <div key={item.cartId}>
+                        {cartItems.map((item, index) => (
+                          <div key={index}>
                             <div className="shoppingBagTableMobileItems">
                               <div className="shoppingBagTableMobileItemsImg">
                                 <Link to={`/product/${item.productId}`} onClick={scrollToTop}>
@@ -430,12 +420,12 @@ const ShoppingCart = () => {
                       </tr>
                     </tbody>
                   </table>
-                    <button
-                      onClick={() => handleCheckoutAccess("cartTab2")}
-                      disabled={cartItems.length === 0}
-                    >
-                      Proceed to Checkout
-                    </button>
+                  <button
+                    onClick={() => handleCheckoutAccess("cartTab2")}
+                    disabled={cartItems.length === 0}
+                  >
+                    Proceed to Checkout
+                  </button>
                 </div>
               </div>
             )}
@@ -455,7 +445,7 @@ const ShoppingCart = () => {
                         type="text"
                         placeholder="Company Name (optional)"
                       />
-                        <select name="state" id="state" required>
+                      <select name="state" id="state" required>
                         <option value="" selected disabled>Select State</option>
                         <option value="Andhra Pradesh">Andhra Pradesh</option>
                         <option value="Bihar">Bihar</option>
@@ -499,12 +489,12 @@ const ShoppingCart = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {cartItems.map((items) => (
-                            <tr key={items.cartId}>
+                          {cartItems.map((item, index) => (
+                            <tr key={index}>
                               <td>
-                                {items.productName} x {items.quantity}
+                                {item.productName} x {item.quantity}
                               </td>
-                              <td>₹{items.productPrice * items.quantity}</td>
+                              <td>₹{item.productPrice * item.quantity}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -550,7 +540,7 @@ const ShoppingCart = () => {
                       <div className="checkoutPaymentMethod">
                         <span>UPI / Bank Transfer</span>
                         <p>
-                         You can pay directly via UPI apps like PhonePe, Google Pay, or through a direct bank transfer. Please use your Order ID as the payment reference. Your order will be processed once payment is confirmed.
+                          You can pay directly via UPI apps like PhonePe, Google Pay, or through a direct bank transfer. Please use your Order ID as the payment reference. Your order will be processed once payment is confirmed.
                         </p>
                       </div>
                     </label>
@@ -641,8 +631,8 @@ const ShoppingCart = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {cartItems.map((item) => (
-                            <tr key={item.cartId}>
+                          {cartItems.map((item, index) => (
+                            <tr key={index}>
                               <td>
                                 {item.productName} x {item.quantity}
                               </td>
