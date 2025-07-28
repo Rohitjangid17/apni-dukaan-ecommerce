@@ -15,7 +15,7 @@ const SearchResults = () => {
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query")?.toLowerCase();
     const [filtered, setFiltered] = useState([]);
-    const {products, loading} = useProducts({ fetchAll: true, limit: 10 })
+    const {products, loading} = useProducts()
     const [visibleCount, setVisibleCount] = useState(20);
 
     const scrollToTop = () => {
@@ -46,7 +46,7 @@ const SearchResults = () => {
     <div className="search-results-page">
       
       {filtered.length === 0 ? (
-        <div className="noResultsWrapper">
+            <div className="noResultsWrapper">
             <img src={no_result_img} alt="No Results" />
             <h3>No Matching Products Found</h3>
             <p>We couldn't find anything related to your search.</p>

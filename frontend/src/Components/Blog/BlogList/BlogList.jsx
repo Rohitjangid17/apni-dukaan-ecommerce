@@ -23,7 +23,7 @@ const BlogList = () => {
         </div>
         <div className="blogPostListContainer">
           {BlogData.map((blogPost) => (
-            <div className="blogPost">
+            <div className="blogPost" key={blogPost.blogID}>
               <div className="blogPostThumb">
                 <img src={blogPost.blogThumbnail} alt="blogPost" loading="lazy" />
               </div>

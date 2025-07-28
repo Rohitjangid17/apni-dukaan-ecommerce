@@ -51,10 +51,10 @@ const CollectionBox = () => {
             </div>
             <div className="box2">
               <h3 className="col-h3">
-                <span>E-gift</span> Cards
+                <span>Gift</span> Happiness
               </h3>
               <p className="col-p">
-                Surprise someone with the gift they really want.
+                The perfect gift — delivered in seconds.
               </p>
               <div className="col-link">
                 <Link to="/shop" onClick={scrollToTop}>

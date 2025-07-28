@@ -1,9 +1,6 @@
 import React from "react";
 import "./AboutPage.css";
 
-import about1 from "../../Assets/About/about-1.jpg";
-import about2 from "../../Assets/About/about-2.jpg";
-
 import Services from "../../Components/Home/Services/Services";
 
 import { Swiper, SwiperSlide } from "swiper/react";

@@ -23,7 +23,7 @@ const ContactPage = () => {
         <div className="contactInfo">
           <div className="contactBox">
             <div className="address">
-              <h3>Store in London</h3>
+              <h3>Store in India</h3>
               <p>
                 Vidhyadhar Nagar, Jaipur
                 <br /> India

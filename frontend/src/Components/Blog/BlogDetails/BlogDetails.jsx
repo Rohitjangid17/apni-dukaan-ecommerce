@@ -35,6 +35,10 @@ const BlogDetails = () => {
           </div>
 
           <div className="blogDetailsContent">
+          <div className="blogDetailsContentImg">
+            <img src={blogimage1} alt="blog detail" loading="lazy" />
+            <img src={blogimage2} alt="blog detail" loading="lazy" />
+          </div>
             <h5>Welcome to Apni Dukaan Blogs</h5>
             <p>
               At Apni Dukaan, we believe shopping should be simple, affordable, and enjoyable. That’s why our blog exists — to help you discover new trends, shop smarter, and make informed choices whether you're buying fashion, electronics, kitchen essentials, or daily-use products.
@@ -50,54 +54,6 @@ const BlogDetails = () => {
               At Apni Dukaan, we believe online shopping should be more than just convenient — it should be trustworthy, affordable, and tailored to your needs. Whether you’re browsing for daily essentials, upgrading your wardrobe, or looking for something special for your home, our goal is to make your experience smooth, reliable, and enjoyable. Through this blog, we aim to share valuable insights that help you shop smarter, discover trending products, and make informed buying decisions.
               Every blog we publish is written with our users in mind — to inspire, educate, and guide you through your shopping journey. Whether it’s a product review, a festival shopping guide, or simple tips to make the most of your order, we want this space to be useful and relevant for you. Your trust and satisfaction are at the heart of what we do, and we’re excited to keep growing with your support.
             </p>
-          </div>
-
-          <div className="blogDetailsContent">
-            <p>
-              Our mission is to make online shopping feel like your trusted local store — friendly, fast, and fair. From detailed product listings to verified reviews and helpful return policies, we aim to build long-term relationships with our customers, not just one-time sales.
-            </p>
-            <p>
-              Stay tuned to our blog space as we continue to share shopping inspiration, product launches, festival season deals, and helpful tips to make your Apni Dukaan experience even better.
-            </p>
-          </div>
-
-          <div className="blogDetailsContentImg">
-            <img src={blogimage1} alt="blog detail" loading="lazy" />
-            <img src={blogimage2} alt="blog detail" loading="lazy" />
-          </div>
-
-          <div className="blogDetailsContent">
-            <p>
-              Thanks for being a part of our journey. Whether you're a customer, seller, or first-time visitor — we welcome you to the Apni Dukaan family. Let’s shop smarter, support local, and grow together in the world of online commerce.
-            </p>
-            <p>
-              For more blogs like this, keep browsing and don’t forget to follow us on social media for daily tips and trending product updates!
-            </p>
-          </div>
-
-          <div className="blogDetailsNextPrev">
-            <div className="blogDetailsNextPrevContainer">
-              <div
-                className="blogDetailsNextPrevContainerIcon"
-                onClick={scrollToTop}
-              >
-                <GoChevronLeft size={20} />
-                <p>PREVIOUS POST</p>
-              </div>
-              <p>Why Apni Dukaan is the Best Choice for Small Town Shoppers</p>
-            </div>
-            <div className="blogDetailsNextPrevContainer">
-              <div
-                className="blogDetailsNextPrevContainerIcon2"
-                onClick={scrollToTop}
-              >
-                <p>NEXT POST</p>
-                <GoChevronRight size={20} />
-              </div>
-              <p style={{ textAlign: "right" }}>
-                2025 Summer Fashion Trends – Affordable Looks on Apni Dukaan
-              </p>
-            </div>
           </div>
         </div>
       </div>

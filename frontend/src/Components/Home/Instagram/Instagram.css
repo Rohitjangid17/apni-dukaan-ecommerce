@@ -14,23 +14,29 @@
 
 .instagramTiles {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 5px;
 }
 
 .instagramtile {
-  transition: 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-.instagramtile:hover {
-  opacity: 0.4;
+.instagramtile {
+  overflow: hidden;
+  position: relative;
 }
 
 .instagramtile img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.instagramtile:hover img {
+  transform: scale(1.1);
 }
 
 @media screen and (max-width: 1210px) {

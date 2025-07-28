@@ -641,12 +641,12 @@ const ShoppingCart = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {cartItems.map((items) => (
-                            <tr>
+                          {cartItems.map((item) => (
+                            <tr key={item.cartId}>
                               <td>
-                                {items.productName} x {items.quantity}
+                                {item.productName} x {item.quantity}
                               </td>
-                              <td>₹{items.productPrice * items.quantity}</td>
+                              <td>₹{item.productPrice * item.quantity}</td>
                             </tr>
                           ))}
                         </tbody>

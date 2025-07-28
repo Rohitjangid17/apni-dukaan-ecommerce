@@ -34,7 +34,7 @@ const LimitedEdition = () => {
     <>
       <div className="limitedProductSection">
         <h2>
-          Limited <span>Edition</span>
+          Elite <span>Collection</span>
         </h2>
         <div className="limitedProductSlider">
           <div className="swiper-button image-swiper-button-next">
