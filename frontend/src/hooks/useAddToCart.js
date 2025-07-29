@@ -7,7 +7,7 @@ const useAddToCart = () => {
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.cart.items);
 
-    const addToCartHandler = async (product, userId = 8, quantity = 1) => {
+    const addToCartHandler = async (product, userId = 1, quantity = 1) => {
 
         const productInCart = cartItems.find((item) => item.id === product.id);
 
@@ -25,7 +25,7 @@ const useAddToCart = () => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    user_id: userId, // HARD CODED USER ID
+                    user_id: userId,
                     product_id: product.productId,
                     quantity,
                     price: product.price,
@@ -36,11 +36,7 @@ const useAddToCart = () => {
 
             if (!res.ok) throw new Error("Failed to add to cart");
 
-            // dispatch(addToCart(product));
-
             dispatch(addToCart({ ...product, quantity }));
-
-            // dispatch(addToCart({ ...product, quantity, color, size }));
 
             toast.success("Added to cart!", {
                 duration: 2000,

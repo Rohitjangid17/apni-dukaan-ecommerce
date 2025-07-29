@@ -3,9 +3,12 @@ import "./LoginSignUp.css";
 import {  useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import BASE_URL from "../../../constants/apiConfig";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../../../Features/Cart/cartSlice";
 
 const LoginSignUp = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("access_token"));
   const [userInfo, setUserInfo] = useState(null)
 
@@ -165,17 +168,18 @@ const LoginSignUp = () => {
 
       // Handle logout function
       const handleLogout = () => {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("userInfo");
-      setIsLoggedIn(false);
-      setUserInfo(null);
-      setLoginEmail("");
-      setLoginPassword("");
-      setEmail("");
-      setUsername("");
-      setPassword("");
-      showSuccessToast("Logged out successfully.");
-    };
+        dispatch(clearCart());
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("userInfo");
+        setIsLoggedIn(false);
+        setUserInfo(null);
+        setLoginEmail("");
+        setLoginPassword("");
+        setEmail("");
+        setUsername("");
+        setPassword("");
+        showSuccessToast("Logged out successfully.");
+      };
 
   return (
     <>

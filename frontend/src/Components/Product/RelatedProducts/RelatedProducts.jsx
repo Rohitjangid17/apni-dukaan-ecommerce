@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./RelatedProducts.css";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,7 +11,6 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BASE_URL from "../../../constants/apiConfig";
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../../Spinner/Spinner";
-import useAddToCart from "../../../hooks/useAddToCart";
 import useProducts from "../../../hooks/useProducts";
 import RenderStars from "../../../Utils/RenderStars";
 

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./AdditionalInfo.css";
 
 import user1 from "../../../Assets/Users/user1.jpg";
 import user2 from "../../../Assets/Users/user2.jpg";
 import useProductDetails from "../../../hooks/useProductDetails";
-import Spinner from "../../Spinner/Spinner";
 
 import { FaStar } from "react-icons/fa";
 import Rating from "@mui/material/Rating";

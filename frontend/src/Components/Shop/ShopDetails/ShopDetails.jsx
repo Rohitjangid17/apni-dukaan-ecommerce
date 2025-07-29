@@ -109,9 +109,6 @@ const ShopDetails = () => {
                   <option value="recommended">Recommended</option>
                   <option value="price_asc">Price: Low to High</option>
                   <option value="price_desc">Price: High to Low</option>
-                  <option value="newest">Newest Arrivals</option>
-                  <option value="top_rated">Top Rated</option>
-                  <option value="best_selling">Best Selling</option>
                 </select>
 
                 <div className="filterRight" onClick={toggleDrawer}>
