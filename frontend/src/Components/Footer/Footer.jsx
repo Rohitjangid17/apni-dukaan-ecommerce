@@ -1,11 +1,15 @@
 import React from "react";
 import "./Footer.css";
 import logo from "../../Assets/logo.png";
-import { FaFacebookF } from "react-icons/fa";
+import { 
+  FaFacebookF, 
+  FaInstagram, 
+  FaYoutube, 
+  FaPinterest 
+} from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { FaInstagram } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
-import { FaPinterest } from "react-icons/fa";
+import { HiPhone } from "react-icons/hi";
+import { MdEmail } from "react-icons/md";
 
 import { Link } from "react-router-dom";
 
@@ -34,10 +38,19 @@ const Footer = () => {
             </div>
 
             <div className="footer_address">
-            <p>Vidhyadhar Nagar, Jaipur</p>
-
-              <strong> contact@apnidukaan.com </strong>
-              <strong> +91 12345 12345 </strong>
+            <p className="footer_label">Address</p>
+            <span className="footer_label_contnet">Vidhyadhar Nagar, Jaipur</span>
+            </div>
+            <div className="footerContactShort">
+              <p className="footer_label">Contact Us</p>
+              <div className="contact_item">
+              <HiPhone/>
+              <span className="footer_label_contnet"> +91 12345 12345 </span>
+              </div>
+              <div className="contact_item">
+              <MdEmail/>
+              <a className="footer_label_contnet" href="mailto:contact@apnidukaan.com">Email Support</a>
+              </div>
             </div>
           </div>
 
@@ -106,6 +119,7 @@ const Footer = () => {
             <p>
               Stay ahead with the latest offers, new arrivals, and smart shopping tips from Apni Dukaan!
             </p>
+            <p>Need help? Reach out directly:</p>
 
             <form onSubmit={handleSubscribe}>
               <input type="email" placeholder="Enter your email" required />

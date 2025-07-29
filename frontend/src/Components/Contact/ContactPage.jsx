@@ -34,18 +34,6 @@ const ContactPage = () => {
                 +91 12345 12345
               </p>
             </div>
-            {/* <div className="address">
-              <h3>Store in India</h3>
-              <p>
-                A-791, A-791, Bandra Reclamation Rd, Mumbai
-                <br /> Maharashtra
-              </p>
-              <p>
-                contact@dummymail.com
-                <br />
-                +44 20 7123 4567
-              </p>
-            </div> */}
           <div className="contactForm">
             <h3>Get In Touch</h3>
             <form onSubmit={handleSubmit}>

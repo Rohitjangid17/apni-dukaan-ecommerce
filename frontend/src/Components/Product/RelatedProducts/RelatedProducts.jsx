@@ -9,7 +9,7 @@ import { Navigation } from "swiper/modules";
 
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BASE_URL from "../../../constants/apiConfig";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../../Spinner/Spinner";
 import useAddToCart from "../../../hooks/useAddToCart";
 import useProducts from "../../../hooks/useProducts";
@@ -17,7 +17,7 @@ import RenderStars from "../../../Utils/RenderStars";
 
 
 const RelatedProducts = () => {
-    const addToCartHandler = useAddToCart();
+    const navigate = useNavigate()
     const {products, loading} = useProducts();
     const relatedProducts = products.slice(0, 8);
 
@@ -26,6 +26,11 @@ const RelatedProducts = () => {
         top: 0,
         behavior: "smooth",
       });
+    };
+
+    const handleNavigate = (productId) => {
+      navigate(`/product/${productId}`);
+        scrollToTop();
     };
 
   return (
@@ -89,7 +94,7 @@ const RelatedProducts = () => {
                           />
                         )}
                       </Link>
-                      <h4 onClick={() => addToCartHandler(product)}>Add to Cart</h4>
+                      <h4 onClick={() => handleNavigate(product.productId)}>Select Options</h4>
                     </div>
 
                     <div className="relatedProductInfo">
