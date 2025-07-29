@@ -40,17 +40,14 @@ const Filter = ({ filters = {}, setFilters = () => {}, scrollToTop = () => {} })
 
   const [localPrice, setLocalPrice] = useState(filters.priceRange || [100, 5000]);
 
-  // Sync local state with parent filter when changed outside (e.g., reset)
   useEffect(() => {
     setLocalPrice(filters.priceRange);
   }, [filters.priceRange]);
 
-  // Handle live slider movement — just local state
   const handleLocalPriceChange = (event, newValue) => {
     setLocalPrice(newValue);
   };
 
-  // Apply filter only when slider is dropped
   const handlePriceCommit = (event, newValue) => {
     setFilters((prev) => ({ ...prev, priceRange: newValue }));
     scrollToTop?.();

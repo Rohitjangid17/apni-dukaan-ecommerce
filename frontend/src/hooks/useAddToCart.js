@@ -36,11 +36,7 @@ const useAddToCart = () => {
 
             if (!res.ok) throw new Error("Failed to add to cart");
 
-            // dispatch(addToCart(product));
-
             dispatch(addToCart({ ...product, quantity }));
-
-            // dispatch(addToCart({ ...product, quantity, color, size }));
 
             toast.success("Added to cart!", {
                 duration: 2000,

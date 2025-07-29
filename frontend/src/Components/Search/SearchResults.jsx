@@ -1,17 +1,16 @@
 // src/Components/Search/SearchResults.jsx
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import "./SearchResults.css";
 import { Link } from "react-router-dom";
 import BASE_URL from "../../constants/apiConfig";
-import useAddToCart from "../../hooks/useAddToCart";
 import Spinner from "../Spinner/Spinner";
 import no_result_img from "../../Assets/no_results.jpg"
 import useProducts from "../../hooks/useProducts";
 import RenderStars from "../../Utils/RenderStars";
 
 const SearchResults = () => {
-    const addToCartHandler = useAddToCart();
+    const navigate = useNavigate()
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query")?.toLowerCase();
     const [filtered, setFiltered] = useState([]);
@@ -23,6 +22,12 @@ const SearchResults = () => {
         top: 0,
         behavior: "smooth",
         });
+    };
+
+
+    const handleNavigate = (productId) => {
+      navigate(`/product/${productId}`);
+        scrollToTop();
     };
 
     useEffect(() => {
@@ -78,7 +83,7 @@ const SearchResults = () => {
                             />
                           )}
                         </Link>
-                        <h4 onClick={() => addToCartHandler(product)}>Add to Cart</h4>
+                        <h4 onClick={() => handleNavigate(product.productId)}>Select Options</h4>
                       </div>
                       <div className="searchProductInfo">
                         <div className="searchProductCategoryWishlist">
@@ -110,7 +115,6 @@ const SearchResults = () => {
                 Load More
               </button>
             ) : (
-
                  <div className="searchDiscoverMore">
                     <Link to="/shop" onClick={scrollToTop}>
                     <p>Discover All</p>
@@ -118,8 +122,6 @@ const SearchResults = () => {
                 </div>
             )}
           </div>
-
-         
         </div>
       )}
     </div>
