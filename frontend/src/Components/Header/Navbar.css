@@ -235,44 +235,6 @@
   padding-left: 5px;
 }
 
-.mobile-menuFooterLangCurrency {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.footerLangCurrency {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.mobile-menuFooterLang {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.mobile-menuFooterLang select {
-  border: none;
-  outline: none;
-  background-color: transparent;
-  font-size: 14px;
-}
-
-.mobile-menuFooterCurrency {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.mobile-menuFooterCurrency select {
-  border: none;
-  outline: none;
-  background-color: transparent;
-  font-size: 14px;
-}
-
 .mobile-menuSocial_links {
   display: flex;
   gap: 30px;

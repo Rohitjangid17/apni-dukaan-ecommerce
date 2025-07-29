@@ -17,8 +17,19 @@
 
 .filterCategories p {
   font-size: 14px;
-  padding-bottom: 10px;
+  padding: 5px 0 5px;
   cursor: pointer;
+}
+
+.filterCategoryItem {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: #333;
+  border-radius: 4px;
+}
+
+.filterCategoryItem.selected {
+  font-weight: 900;
 }
 
 /* Filter Color */
@@ -36,7 +47,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   outline: none;
-  border: none;
+  border: 0.5px solid gray;
   position: relative;
 }
 
@@ -67,6 +78,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   border: 1px solid #e4e4e4;
+  border-radius: 20px;
   outline: none;
   font-size: 14px;
 }
@@ -77,89 +89,6 @@
 
 .sizeButton.selected {
   background-color: #e4e4e4;
-}
-
-/* filter brands */
-
-.searchBar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.searchIcon {
-  position: absolute;
-  right: 10px;
-}
-
-.searchBar input {
-  width: calc(100% - 30px);
-  padding: 12px 18px 9.6px;
-  padding-right: 30px;
-  border: 2px solid #e4e4e4;
-  outline: none;
-  font-size: 14px;
-  text-transform: uppercase;
-}
-
-.brandList {
-  margin-top: 10px;
-}
-
-.brandItem {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.brandRadio {
-  margin-right: 15px;
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #e4e4e4;
-  position: relative;
-  cursor: pointer;
-  outline: none;
-}
-
-.brandRadio:checked {
-  border: 2px solid #000000;
-}
-
-.brandRadio::after {
-  content: "";
-  display: block;
-  width: 8px;
-  height: 8px;
-  background-color: black;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0.2s ease-in-out;
-}
-
-.brandRadio:checked::after {
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.notFoundMessage {
-  font-size: 14px;
-  color: red;
-  margin-top: 10px;
-}
-
-.brandLabel {
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.brandCount {
-  margin-left: auto;
-  font-size: 14px;
-  color: #767676;
 }
 
 /* Filter Slider */

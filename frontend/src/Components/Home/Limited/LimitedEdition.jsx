@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./LimitedEdition.css";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,19 +8,18 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { Autoplay } from "swiper/modules";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BASE_URL from "../../../constants/apiConfig";
 
 import Spinner from "../../Spinner/Spinner";
-import useAddToCart from "../../../hooks/useAddToCart";
 import useProducts from "../../../hooks/useProducts";
 import RenderStars from "../../../Utils/RenderStars";
 
 
 const LimitedEdition = () => {
-  const addToCartHandler = useAddToCart();
   const { products, loading } = useProducts();
+  const navigate = useNavigate()
   const limitedProducts = products.slice(0, 8);
 
   const scrollToTop = () => {
@@ -30,11 +29,16 @@ const LimitedEdition = () => {
     });
   };
 
+  const handleNavigate = (productId) => {
+    navigate(`/product/${productId}`);
+      scrollToTop();
+  };
+
   return (
     <>
       <div className="limitedProductSection">
         <h2>
-          Limited <span>Edition</span>
+          Elite <span>Collection</span>
         </h2>
         <div className="limitedProductSlider">
           <div className="swiper-button image-swiper-button-next">
@@ -97,8 +101,8 @@ const LimitedEdition = () => {
                           />
                         )}
                       </Link>
-                      <h4 onClick={() => addToCartHandler(product)}>
-                        Add to Cart
+                      <h4 onClick={() => handleNavigate(product.productId)}>
+                        Select Options
                       </h4>
                     </div>
                     <div className="limitedProductInfo">

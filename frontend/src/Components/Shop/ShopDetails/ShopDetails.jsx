@@ -2,71 +2,69 @@ import React, { useState, useEffect } from "react";
 import "./ShopDetails.css";
 
 import Filter from "../Filters/Filter";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoFilterSharp, IoClose } from "react-icons/io5";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 import BASE_URL from "../../../constants/apiConfig";
 import Spinner from "../../Spinner/Spinner";
-import useAddToCart from "../../../hooks/useAddToCart";
-import useProducts from "../../../hooks/useProducts";
+import useShopProductList from "../../../hooks/useShopProductList";
 import RenderStars from "../../../Utils/RenderStars";
+import not_found_img from "../../../Assets/not_found.png"
 
 const ShopDetails = () => {
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const navigate = useNavigate()
 
-  const addToCartHandler = useAddToCart();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [page, setPage] = useState(1);
+    const [filters, setFilters] = useState({
+      category: "",
+      colors: [],
+      sizes: [],
+      priceRange: [100, 5000],
+      sort_by: "",
+    });
 
-  const [filters, setFilters] = useState({
-    category: [],
-    colors: [],
-    sizes: [],
-    priceRange: [100, 5000],
-  });
+    const { products, loading, totalPages } = useShopProductList({ filters, limit: 12, page });
 
-  
-  const {
-    products,
-    loading,
-    page,
-    totalPages,
-    setPage,
-  } = useProducts({fetchAll: false, filters});
-  
-  useEffect(() => {
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    };
+
+    const handleNavigate = (productId) => {
+      navigate(`/product/${productId}`);
+        scrollToTop();
+    };
+
+    const toggleDrawer = () => {
+      setIsDrawerOpen(!isDrawerOpen);
+    };
+
+    const closeDrawer = () => {
+      setIsDrawerOpen(false);
+    };
+
+
+    const handlePageChange = (newPage) => {
+      setPage(newPage);
+      scrollToTop();
+    };
+
+    const handleNext = () => {
+      if (page < totalPages) setPage(page + 1);
+      scrollToTop()
+    };
+
+    const handlePrev = () => {
+      if (page > 1) setPage(page - 1);
+      scrollToTop()
+    };
+
+    useEffect(() => {
       setPage(1);
     }, [filters]);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
-  };
-
-  const closeDrawer = () => {
-    setIsDrawerOpen(false);
-  };
-
-
-const handlePageChange = (newPage) => {
-  setPage(newPage);
-  scrollToTop();
-};
-
-   const handleNext = () => {
-    if (page < totalPages) setPage(page + 1);
-    scrollToTop()
-  };
-
-  const handlePrev = () => {
-    if (page > 1) setPage(page - 1);
-    scrollToTop()
-  };
-
 
   return (
     <>
@@ -79,8 +77,7 @@ const handlePageChange = (newPage) => {
       <div className="shopDetails">
         <div className="shopDetailMain">
           <div className="shopDetails__left">
-            {/* <Filter /> */}
-            <Filter filters={filters} setFilters={setFilters} />
+            <Filter filters={filters} setFilters={setFilters} scrollToTop={scrollToTop} />
           </div>
           <div className="shopDetails__right">
             <div className="shopDetailsSorting">
@@ -96,13 +93,24 @@ const handlePageChange = (newPage) => {
                 <p>Filter</p>
               </div>
               <div className="shopDetailsSort">
-                <select name="sort" id="sort">
-                  <option value="priceLowHigh">Price: Low to High</option>
-                  <option value="priceHighLow">Price: High to Low</option>
-                  <option value="newest">Newest Arrivals</option>
-                  <option value="topRated">Top Rated</option>
-                  <option value="bestSelling">Best Selling</option>
+                <select
+                    name="sort"
+                    id="sort"
+                    value={filters.sort_by || "recommended"}
+                    onChange={(e) => {
+                      const selected = e.target.value;
+                      setFilters((prev) => ({
+                        ...prev,
+                        sort_by: selected === "recommended" ? "" : selected,
+                      }));
+                    }}
+                  >
+                  <option value="" disabled>Sort By</option>
+                  <option value="recommended">Recommended</option>
+                  <option value="price_asc">Price: Low to High</option>
+                  <option value="price_desc">Price: High to Low</option>
                 </select>
+
                 <div className="filterRight" onClick={toggleDrawer}>
                   <div className="filterSeprator"></div>
                   <IoFilterSharp />
@@ -110,75 +118,84 @@ const handlePageChange = (newPage) => {
                 </div>
               </div>
             </div>
-            <div className="shopDetailsProducts">
-              <div className="shopDetailsProductsContainer">
-                {products.map((product) => (
-                  <div className="sdProductContainer" key={product.productId}>
-                    <div className="sdProductImages">
-                      <Link to={`/product/${product.productId}`} onClick={scrollToTop}>
-                        {product.images && product.images.length > 0 && (
-                          <img src={`${BASE_URL}${product.images[0]}`}
-                          loading="lazy"
-                          className="sdProduct_front"
-                          alt="product image" />
-                        )}
-                      </Link>
-                      <h4 onClick={() => addToCartHandler(product)}>
-                        Add to Cart
-                      </h4>
-                    </div>
-                    <div className="sdProductInfo">
-                      <div className="sdProductCategoryWishlist">
-                        <p>{product.category?.name || 'Apparel'}</p>
-                      </div>
-                      <div className="sdProductNameInfo">
+              <div className="shopDetailsProducts">
+              {products.length === 0 ? (
+              <div className="noProductsWrapper">
+                <img src={not_found_img} alt="No Products Found" />
+                <h3>No Products Found</h3>
+                <p>No matching products. Adjust your filters.</p>
+              </div>
+              ) : (
+                <div className="shopDetailsProductsContainer">
+                  {products.map((product) => (
+                    <div className="sdProductContainer" key={product.productId}>
+                      <div className="sdProductImages">
                         <Link to={`/product/${product.productId}`} onClick={scrollToTop}>
-                          <h5>{product?.name}</h5>
+                          {product.images && product.images.length > 0 && (
+                            <img
+                              src={`${BASE_URL}${product.images[0]}`}
+                              loading="lazy"
+                              className="sdProduct_front"
+                              alt="product image"
+                            />
+                          )}
                         </Link>
-
-                        <p>₹{product?.price}</p>
-                        <div className="sdProductRatingReviews">
-                          <div className="sdProductRatingStar">
-                            {RenderStars(product.rating || 4.3)}
+                        <h4 onClick={() => handleNavigate(product.productId)}>Select Options</h4>
+                      </div>
+                      <div className="sdProductInfo">
+                        <div className="sdProductCategoryWishlist">
+                          <p>{product.category?.name || "Apparel"}</p>
+                        </div>
+                        <div className="sdProductNameInfo">
+                          <Link to={`/product/${product.productId}`} onClick={scrollToTop}>
+                            <h5>{product?.name}</h5>
+                          </Link>
+                          <p>₹{product?.price}</p>
+                          <div className="sdProductRatingReviews">
+                            <div className="sdProductRatingStar">
+                              {RenderStars(product.rating || 4.3)}
+                            </div>
+                            <span>{product.productReviews}</span>
                           </div>
-                          <span>{product.productReviews}</span>
                         </div>
                       </div>
                     </div>
+                  ))}
+                </div>
+            )}
+              </div>
+            {products.length > 0 && (
+                <div className="shopDetailsPagination">
+                  <div className="sdPaginationPrev">
+                    <button onClick={handlePrev} disabled={page === 1}>
+                      <FaAngleLeft />
+                      Prev
+                    </button>
                   </div>
-                ))}
-              </div>
-            </div>
-            <div className="shopDetailsPagination">
-              <div className="sdPaginationPrev">
-                <button onClick={handlePrev} disabled={page === 1}>
-                  <FaAngleLeft />
-                  Prev
-                </button>
-              </div>
-              <div className="sdPaginationNumber">
-                  <div className="paginationNum">
-                    {Array.from({ length: totalPages }, (_, i) => {
-                      const pageNumber = i + 1;
-                      return (
-                        <p
-                          key={pageNumber}
-                          onClick={() => handlePageChange(pageNumber)}
-                          className={pageNumber === page ? "activePage" : ""}
-                        >
-                          {pageNumber}
-                        </p>
-                      );
-                    })}
+                  <div className="sdPaginationNumber">
+                    <div className="paginationNum">
+                      {Array.from({ length: totalPages }, (_, i) => {
+                        const pageNumber = i + 1;
+                        return (
+                          <p
+                            key={pageNumber}
+                            onClick={() => handlePageChange(pageNumber)}
+                            className={pageNumber === page ? "activePage" : ""}
+                          >
+                            {pageNumber}
+                          </p>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="sdPaginationNext">
+                    <button onClick={handleNext} disabled={page === totalPages}>
+                      Next
+                      <FaAngleRight />
+                    </button>
                   </div>
                 </div>
-              <div className="sdPaginationNext">
-                <button onClick={handleNext} disabled={page === totalPages}>
-                  Next
-                  <FaAngleRight />
-                </button>
-              </div>
-            </div>
+              )}
           </div>
         </div>
       </div>
@@ -192,7 +209,7 @@ const handlePageChange = (newPage) => {
           <IoClose onClick={closeDrawer} className="closeButton" size={26} />
         </div>
         <div className="drawerContent">
-          <Filter filters={filters} setFilters={setFilters} />
+          <Filter filters={filters} setFilters={setFilters} scrollToTop={scrollToTop} />
         </div>
       </div>
     </>

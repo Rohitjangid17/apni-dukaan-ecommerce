@@ -1,27 +1,26 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import "./Trendy.css";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../../Features/Cart/cartSlice";
-import { Link } from "react-router-dom";
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
-import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import BASE_URL from "../../../constants/apiConfig";
 import Spinner from "../../Spinner/Spinner";
-import useAddToCart from "../../../hooks/useAddToCart";
 import useProducts from "../../../hooks/useProducts";
 import RenderStars from "../../../Utils/RenderStars";
 
 const Trendy = () => {
-
-  const addToCartHandler = useAddToCart();
   const { products, loading } = useProducts();
   const [activeTab, setActiveTab] = useState("tab1");
+  const navigate = useNavigate()
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
+  };
+
+  const handleNavigate = (productId) => {
+    navigate(`/product/${productId}`);
+      scrollToTop();
   };
 
   const handleTabClick = (tab) => {
@@ -73,7 +72,7 @@ const Trendy = () => {
               />
             )}
           </Link>
-          <h4 onClick={() => addToCartHandler(product)}>Add to Cart</h4>
+          <h4 onClick={() => handleNavigate(product.productId)}>Select Options</h4>
         </div>
         <div className="trendyProductInfo">
           <div className="trendyProductCategoryWishlist">

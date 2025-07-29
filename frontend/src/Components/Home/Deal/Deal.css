@@ -1,0 +1,128 @@
+.mainDeal {
+  padding: 15px;
+}
+
+.deal {
+  background-color: #ebebeb;
+  background-image: url(../../../Assets/Deal/dealbg.jpg);
+  height: 500px;
+  background-size: cover;
+  padding: 0 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dealMainContent {
+  display: flex;
+  flex-direction: column;
+  padding: 60px 0;
+  gap: 40px;
+}
+
+.dealContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dealContent p {
+  position: relative;
+  padding-left: 5px;
+  color: #2f3e46;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.dealContent h3 {
+  font-size: 70px;
+  text-transform: uppercase;
+}
+
+.dealContent h3 span {
+  font-weight: 500;
+}
+
+.dealLink {
+  display: flex;
+}
+
+.dealLink a {
+  text-transform: uppercase;
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  font-size: 14px;
+  position: relative;
+}
+
+.dealLink a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 50%;
+  border-bottom: 2px solid black;
+  transition: width 0.2s ease;
+}
+
+.dealLink a:hover::after {
+  width: 100%;
+}
+
+@media screen and (max-width: 1210px) {
+  .deal {
+    padding: 0 60px;
+    height: 450px;
+    background-position: center;
+  }
+  .dealMainContent {
+    padding: 50px 0;
+  }
+  .dealContent p {
+    padding-left: 40px;
+  }
+  .dealContent h3 {
+    font-size: 60px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .deal {
+    height: 450px;
+    background-position: center right 40%;
+  }
+  .dealContent a:hover::after {
+    width: 13%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .deal {
+    padding: 0 15px;
+    height: 400px;
+    background-position: center right 40%;
+  }
+  .dealMainContent {
+    padding: 40px 0;
+  }
+  .dealContent h3 {
+    font-size: 40px;
+  }
+  .dealContent a:hover::after {
+    width: 25%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .deal {
+    padding: 0 20px;
+    height: 350px;
+  }
+  .dealMainContent {
+    padding: 20px 0;
+  }
+  .dealContent p {
+    padding-left: 50px;
+  }
+}

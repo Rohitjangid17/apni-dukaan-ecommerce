@@ -11,6 +11,7 @@ import Spinner from "../../Spinner/Spinner";
 import { Link } from "react-router-dom";
 import useAddToCart from "../../../hooks/useAddToCart";
 import useProductDetails from "../../../hooks/useProductDetails";
+import getUserInfo from "../../../Utils/getUserInfo";
 
 import "./Product.css";
 
@@ -18,6 +19,8 @@ const Product = ({productId}) => {
   const [productImg, setProductImg] = useState([]);
   const addToCartHandler = useAddToCart();
   const { product, loading } = useProductDetails(productId);
+  const user = getUserInfo();
+  const userId = user?.user_id;
 
   useEffect(() => {
     if (product?.images) {
@@ -85,7 +88,7 @@ const Product = ({productId}) => {
           color: selectedColor,
           size: selectedSize,
         },
-        8,
+        userId,
         quantity
       );
     };
