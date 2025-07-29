@@ -7,7 +7,7 @@ const useAddToCart = () => {
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.cart.items);
 
-    const addToCartHandler = async (product, userId, quantity = 1) => {
+    const addToCartHandler = async (product, userId = 1, quantity = 1) => {
 
         const productInCart = cartItems.find((item) => item.id === product.id);
 
