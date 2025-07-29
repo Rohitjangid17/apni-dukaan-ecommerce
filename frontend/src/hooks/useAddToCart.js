@@ -20,10 +20,6 @@ const useAddToCart = () => {
             return;
         }
 
-        product.color = product.color ? product.color : product.colors[0];
-        product.size = product.size ? product.size : product.sizes[0];
-
-
         try {
             const res = await fetch(`${BASE_URL}/cart/`, {
                 method: "POST",

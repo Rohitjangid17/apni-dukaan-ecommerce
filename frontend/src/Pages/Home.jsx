@@ -5,7 +5,7 @@ import Services from "../Components/Home/Services/Services";
 import Instagram from "../Components/Home/Instagram/Instagram";
 import Trendy from "../Components/Home/Trendy/Trendy";
 import LimitedEdition from "../Components/Home/Limited/LimitedEdition";
-import DealTimer from "../Components/Home/Deal/DealTimer";
+import Deal from "../Components/Home/Deal/Deal";
 import HeroSection from "../Components/Home/Hero/HeroSection";
 
 const Home = () => {
@@ -14,7 +14,7 @@ const Home = () => {
       <HeroSection />
       <CollectionBox />
       <Trendy />
-      <DealTimer />
+      <Deal />
       <Banner />
       <LimitedEdition />
       <Instagram />

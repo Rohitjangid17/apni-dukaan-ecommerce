@@ -2,36 +2,40 @@ import React, { useState, useEffect } from "react";
 import "./ShopDetails.css";
 
 import Filter from "../Filters/Filter";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoFilterSharp, IoClose } from "react-icons/io5";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 import BASE_URL from "../../../constants/apiConfig";
 import Spinner from "../../Spinner/Spinner";
-import useAddToCart from "../../../hooks/useAddToCart";
 import useShopProductList from "../../../hooks/useShopProductList";
 import RenderStars from "../../../Utils/RenderStars";
 import not_found_img from "../../../Assets/not_found.png"
 
 const ShopDetails = () => {
-  const addToCartHandler = useAddToCart();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const navigate = useNavigate()
 
-  const [page, setPage] = useState(1);
-  const [filters, setFilters] = useState({
-    category: "",
-    colors: [],
-    sizes: [],
-    priceRange: [100, 5000],
-    sort_by: "",
-  });
+    const [page, setPage] = useState(1);
+    const [filters, setFilters] = useState({
+      category: "",
+      colors: [],
+      sizes: [],
+      priceRange: [100, 5000],
+      sort_by: "",
+    });
 
-  const { products, loading, totalPages } = useShopProductList({ filters, limit: 12, page });
+    const { products, loading, totalPages } = useShopProductList({ filters, limit: 12, page });
 
     const scrollToTop = () => {
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
+    };
+
+    const handleNavigate = (productId) => {
+      navigate(`/product/${productId}`);
+        scrollToTop();
     };
 
     const toggleDrawer = () => {
@@ -139,7 +143,7 @@ const ShopDetails = () => {
                             />
                           )}
                         </Link>
-                        <h4 onClick={() => addToCartHandler(product)}>Add to Cart</h4>
+                        <h4 onClick={() => handleNavigate(product.productId)}>Select Options</h4>
                       </div>
                       <div className="sdProductInfo">
                         <div className="sdProductCategoryWishlist">
