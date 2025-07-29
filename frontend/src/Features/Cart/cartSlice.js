@@ -19,7 +19,6 @@ const cartSlice = createSlice({
     },
 
     addToCart(state, action) {
-      console.log("add to cart action ", action.payload);
       const product = action.payload;
 
       const existingItem = state.items.find(
@@ -28,17 +27,6 @@ const cartSlice = createSlice({
           item.color === product.color &&
           item.size === product.size
       );
-
-
-      // if (existingItem) {
-      //   if (existingItem.quantity < MAX_QUANTITY) {
-      //     existingItem.quantity += product.quantity || 1;
-      //     state.totalAmount += product.price * (product.quantity || 1);
-      //   }
-      // } else {
-      //   state.items.push({ ...product, quantity: product.quantity || 1 });
-      //   state.totalAmount += product.price * (product.quantity || 1);
-      // }
 
       const addQuantity = product.quantity ?? 1; // safe fallback
 
@@ -50,7 +38,7 @@ const cartSlice = createSlice({
       } else {
         state.items.push({
           ...product,
-          productPrice: product.price, // 👈 fix this
+          productPrice: product.price,
           quantity: addQuantity,
         });
         state.totalAmount += product.price * addQuantity;
@@ -78,6 +66,11 @@ const cartSlice = createSlice({
         state.totalAmount -= itemToRemove.price * itemToRemove.quantity;
         state.items = state.items.filter((item) => item.id !== productId);
       }
+    },
+
+    clearCart(state) {
+      state.items = [];
+      state.totalAmount = 0;
     }
   },
 });
@@ -87,6 +80,7 @@ export const {
   removeFromCart,
   updateQuantity,
   setCartItems,
+  clearCart
 } = cartSlice.actions;
 
 export const selectCartItems = (state) => state.cart.items;

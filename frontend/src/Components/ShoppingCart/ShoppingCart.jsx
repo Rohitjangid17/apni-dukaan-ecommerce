@@ -13,11 +13,13 @@ import { Link, useNavigate } from "react-router-dom";
 import success from "../../Assets/success.png";
 import toast from "react-hot-toast";
 import BASE_URL from "../../constants/apiConfig";
+import getUserInfo from "../../Utils/getUserInfo";
 
 const ShoppingCart = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const [billingInfo, setBillingInfo] = useState({
     firstName: "",
     lastName: "",
@@ -38,8 +40,15 @@ const ShoppingCart = () => {
   const fetchCartItems = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      if (!token) return;
-      const res = await fetch(`${BASE_URL}/cart/`, {
+      const user = getUserInfo();
+      const userId = user?.user_id;
+
+      if (!token || !userId) {
+        console.warn("Missing token or user ID");
+        return;
+      }
+
+      const res = await fetch(`${BASE_URL}/cart/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,14 +70,19 @@ const ShoppingCart = () => {
         productReviews: item.reviews || "1.2k reviews",
       }));
 
-      dispatch(setCartItems(formatted));
+      if (localStorage.getItem("access_token")) {
+        dispatch(setCartItems(formatted));
+      }
     } catch (err) {
       console.error("Fetch cart failed", err);
     }
   };
 
   useEffect(() => {
-    fetchCartItems();
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      fetchCartItems();
+    }
   }, []);
 
   const handleTabClick = (tab) => {
@@ -139,6 +153,7 @@ const ShoppingCart = () => {
     callback();
   };
 
+  // Billing form validation
   const isFormValid = () => {
     const {
       firstName,
@@ -184,10 +199,14 @@ const ShoppingCart = () => {
     return true;
   };
 
+  // Handle place order function
   const handlePlaceOrder = () => {
-  if (!isFormValid()) return;
-  handleCheckoutAccess("cartTab3", () => setPayments(true));
-};
+    if (!isFormValid()) {
+      scrollToTop();
+      return;
+    }
+    handleCheckoutAccess("cartTab3", () => setPayments(true));
+  };
 
   const handleRemoveFromCart = async (cartId) => {
     const token = localStorage.getItem("access_token");
