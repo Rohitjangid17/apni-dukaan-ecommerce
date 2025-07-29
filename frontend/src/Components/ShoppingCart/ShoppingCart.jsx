@@ -18,6 +18,18 @@ const ShoppingCart = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [billingInfo, setBillingInfo] = useState({
+    firstName: "",
+    lastName: "",
+    company: "",
+    state: "",
+    address: "",
+    city: "",
+    pincode: "",
+    phone: "",
+    email: "",
+    notes: ""
+  });
 
   const [activeTab, setActiveTab] = useState("cartTab1");
   const [payments, setPayments] = useState(false);
@@ -25,7 +37,7 @@ const ShoppingCart = () => {
 
   const fetchCartItems = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       if (!token) return;
       const res = await fetch(`${BASE_URL}/cart/`, {
         headers: {
@@ -115,7 +127,7 @@ const ShoppingCart = () => {
   // Function to handle checkout access
 
   const handleCheckoutAccess = (targetTab, callback = () => { }) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (!token) {
       showErrorToast("Please login or sign up to continue checkout.");
       navigate("/loginSignUp");
@@ -127,8 +139,58 @@ const ShoppingCart = () => {
     callback();
   };
 
+  const isFormValid = () => {
+    const {
+      firstName,
+      lastName,
+      state,
+      address,
+      city,
+      pincode,
+      phone,
+      email
+    } = billingInfo;
+
+    if (
+      !firstName ||
+      !lastName ||
+      !state ||
+      !address ||
+      !city ||
+      !pincode ||
+      !phone ||
+      !email
+    ) {
+      toast.error("Please complete all Billing Details before placing your order.");
+      return false;
+    }
+
+    // Additional checks (optional)
+    if (!/^\d{6}$/.test(pincode)) {
+      toast.error("Enter a valid 6-digit pincode.");
+      return false;
+    }
+
+    if (!/^\d{10}$/.test(phone)) {
+      toast.error("Enter a valid 10-digit phone number.");
+      return false;
+    }
+
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      toast.error("Enter a valid email.");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handlePlaceOrder = () => {
+  if (!isFormValid()) return;
+  handleCheckoutAccess("cartTab3", () => setPayments(true));
+};
+
   const handleRemoveFromCart = async (cartId) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (!token) return;
 
     try {
@@ -438,14 +500,30 @@ const ShoppingCart = () => {
                   <div className="checkoutDetailsForm">
                     <form>
                       <div className="checkoutDetailsFormRow">
-                        <input type="text" placeholder="First Name" />
-                        <input type="text" placeholder="Last Name" />
+                        <input
+                          type="text"
+                          placeholder="First Name"
+                          value={billingInfo.firstName}
+                          onChange={(e) => setBillingInfo({ ...billingInfo, firstName: e.target.value })}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Last Name"
+                            value={billingInfo.lastName}
+                            onChange={(e) => setBillingInfo({ ...billingInfo, lastName: e.target.value })}
+                          />
                       </div>
                       <input
-                        type="text"
-                        placeholder="Company Name (optional)"
-                      />
-                      <select name="state" id="state" required>
+                            type="text"
+                            placeholder="Company Name (Optional)"
+                            value={billingInfo.company}
+                            onChange={(e) => setBillingInfo({ ...billingInfo, company: e.target.value })}
+                          />
+                        <select
+                            name="state"
+                            value={billingInfo.state}
+                            onChange={(e) => setBillingInfo({ ...billingInfo, state: e.target.value })}
+                          >
                         <option value="" selected disabled>Select State</option>
                         <option value="Andhra Pradesh">Andhra Pradesh</option>
                         <option value="Bihar">Bihar</option>
@@ -464,15 +542,47 @@ const ShoppingCart = () => {
                         <option value="West Bengal">West Bengal</option>
                         <option value="Chandigarh">Chandigarh</option>
                       </select>
-                      <input type="text" placeholder="Street Address*" />
-                      <input type="text" placeholder="Town / City *" />
-                      <input type="text" placeholder="6-digit Pincode *" required />
-                      <input type="text" placeholder="Phone *" />
-                      <input type="mail" placeholder="Your Mail *" />
+                      <input
+                        type="text"
+                        placeholder="Street Address*"
+                        value={billingInfo.address}
+                        onChange={(e) => setBillingInfo({ ...billingInfo, address: e.target.value })}
+                      />
+
+                      <input
+                        type="text"
+                        placeholder="Town / City *"
+                        value={billingInfo.city}
+                        onChange={(e) => setBillingInfo({ ...billingInfo, city: e.target.value })}
+                      />
+
+                      <input
+                        type="text"
+                        placeholder="6-digit Pincode *"
+                        maxLength={6}
+                        value={billingInfo.pincode}
+                        onChange={(e) => setBillingInfo({ ...billingInfo, pincode: e.target.value })}
+                      />
+
+                      <input
+                        type="text"
+                        placeholder="Phone *"
+                        maxLength={10}
+                        value={billingInfo.phone}
+                        onChange={(e) => setBillingInfo({ ...billingInfo, phone: e.target.value })}
+                      />
+
+                      <input
+                        type="email"
+                        placeholder="Your Mail *"
+                        value={billingInfo.email}
+                        onChange={(e) => setBillingInfo({ ...billingInfo, email: e.target.value })}
+                      />
+
                       <textarea
-                        cols={30}
-                        rows={8}
-                        placeholder="Order Notes (Optional)"
+                        placeholder="Order notes (optional)"
+                        value={billingInfo.notes}
+                        onChange={(e) => setBillingInfo({ ...billingInfo, notes: e.target.value })}
                       />
                     </form>
                   </div>
@@ -582,7 +692,7 @@ const ShoppingCart = () => {
                   </div>
                   <button
                     onClick={() =>
-                      handleCheckoutAccess("cartTab3", () => setPayments(true))
+                      handlePlaceOrder("cartTab3", () => setPayments(true))
                     }
                   >
                     Place Order
